@@ -3,32 +3,52 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ANP_Academy</title>
+    <title>@ViewData["Title"] ANP - Academia Nacional De Parrilleros</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="icon" href="~/Img/LogoANP.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="~/Img/LogoANP.png" type="image/x-icon" />
+    <link rel="stylesheet" href="~/css/Home.css" asp-append-version="true" />
+    <!--Links para estilos de w3 para el menu desplegable del admin-->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="~/ANP_Academy.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ANP_Academy</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+        <nav class="nav-container">
+            <div class="logo"><img src="~/Img/LogoANP.png" alt="LogoANP" style="height: 95px; width: 120px; margin-left:10px"></div>
+            <ul class="nav-links">
+                <li><a href="#classes">Clases</a></li>
+                <li><a href="#about">Sobre Nosotros</a></li>
+                <li><a href="#recipes">Recetas</a></li>
+                <li><a href="#faqs">FAQs</a></li>
+                <li><a href="#chat">ChatBot</a></li>
+                <button type="button" class="btn btn-outline-danger" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Admin Menu">Admin</button>
+            </ul>
+            <!--Inicio de Menu desplegable para Modulos de Admin-->
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+          <div class="offcanvas-header">
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 m-3">
+
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-cart-shopping" style="margin-right: 15px;"></i> Carrito</a>
+              </li>
+                </ul>
+
                 </div>
             </div>
+        <!--Fin de Menu desplegable para Modulos de Admin-->
+            
+        <div class="auth-buttons">
+            <a href="#register" class="register">Regístrate</a>
+            <a href="#login" class="login">Iniciar Sesión</a>
+         </div>
+
         </nav>
+        
     </header>
     <div class="container">
         <main role="main" class="pb-3">
@@ -36,14 +56,36 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - ANP_Academy - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section about">
+                <h3>About ANP Academy</h3>
+                <p>
+                    We are dedicated to the art of grilling, providing world-class education in culinary barbecue arts.
+                </p>
+                <div class="socials">
+                    <a href="#">Facebook</a> |
+                    <a href="#">Twitter</a> |
+                    <a href="#">Instagram</a>
+                </div>
+            </div>
+            <div class="footer-section contact-form">
+                <h3>Contact Us</h3>
+                <form action="#">
+                    <input type="email" name="email" placeholder="Your email address" required>
+                    <textarea name="message" rows="4" placeholder="Your message" required></textarea>
+                    <button type="submit">Send</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2024 ANP Academy | Designed by ANP Design Team
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/2964e4382f.js" crossorigin="anonymous"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
