@@ -4,11 +4,15 @@ namespace ANP_Academy.Controllers
 {
     public class AdminController : Controller
     {
-        public IActionResult DashBoard()
+        public IActionResult ControlSuscrip()
+        {
+            return View();
+        }
+        public IActionResult GestionForo()
         {
             return View();
         }
 
-   
+
     }
 }

@@ -1,0 +1,32 @@
+﻿main{
+    font-family: Arial, sans-serif;
+    padding-left: 0;
+    margin-bottom: 5rem;
+}
+
+.container {
+    display: flex;
+    padding-left: 20px;
+    margin: 0;
+    width 100%;
+}
+
+aside {
+    width: 300px;
+    background-color: #fff;
+    margin-left: 100PX;
+    margin-right: 150px;
+    display: flex;
+    flex-direction: column;
+    font-size: larger;
+    border-right: 2px solid #ddd; /* Borde gris claro de 2px en el lado derecho */
+}
+
+.col-lg-8 {
+    flex: 0 0 90%; 
+}
+
+.col-md-2,
+.col-md-3 {
+    flex: 0 0 25%
+}

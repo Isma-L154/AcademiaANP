@@ -16,7 +16,7 @@
 <body>
     <header>
         <nav class="nav-container">
-            <div class="logo"><img src="~/Img/LogoANP.png" alt="LogoANP" style="height: 95px; width: 120px; margin-left:10px"></div>
+            <div class="logo"><a  asp-controller="Home" asp-action="Index" ><img src="~/Img/LogoANP.png" alt="LogoANP" style="height: 95px; width: 120px; margin-left:10px"></a></div>
             <ul class="nav-links">
                 <li><a href="#classes">Clases</a></li>
                 <li><a href="#about">Sobre Nosotros</a></li>
@@ -33,9 +33,21 @@
           <div class="offcanvas-body">
                  <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 m-3">
 
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-cart-shopping" style="margin-right: 15px;"></i> Carrito</a>
-              </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="ControlSuscrip" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-wallet" style="margin-right: 15px;"></i> Subscripciones</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-user" style="margin-right: 15px;"></i> Gestion de Usuarios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-boxes-stacked" style="margin-right: 15px;"></i> Inventario</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="GestionForo" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-bullhorn" style="margin-right: 15px;"></i> Gestion del Foro</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page"  style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-photo-film" style="margin-right: 15px;"></i> Contenidos</a>
+                        </li>
                 </ul>
 
                 </div>
@@ -50,11 +62,11 @@
         </nav>
         
     </header>
-    <div class="container">
+    
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
-    </div>
+   
 
     <footer>
         <div class="footer-content">
