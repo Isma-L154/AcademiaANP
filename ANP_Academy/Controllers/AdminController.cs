@@ -13,6 +13,14 @@ namespace ANP_Academy.Controllers
             return View();
         }
 
+        public IActionResult GestionContenido()
+        {
+            return View();
+        }
 
+        public IActionResult ContenidoFormulario()
+        {
+            return View();
+        }
     }
 }
