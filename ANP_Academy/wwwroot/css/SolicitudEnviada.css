@@ -1,0 +1,58 @@
+﻿/* Establece el estilo general de la página */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Inconsolata', sans-serif;
+    background-color: #0a0a0a; /* Fondo negro */
+    color: #FFFAFA; /* Letras blancas */
+}
+
+/* Contenedor principal que va de lado a lado */
+.container-solicitud-enviada {
+    padding: 20px;
+    text-align: center; /* Centra el texto horizontalmente */
+    background-color: #0a0a0a;
+}
+
+    /* Título principal */
+    .container-solicitud-enviada h1 {
+        font-size: 2em; /* Tamaño del título */
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+    }
+
+    /* Subtítulo */
+    .container-solicitud-enviada h2 {
+        font-size: 1.5em;
+        margin-top: 0.25em;
+        margin-bottom: 1em;
+    }
+
+    /* Enlace para volver al inicio, con un estilo más destacado */
+    .container-solicitud-enviada a {
+        font-size: 1em;
+        color: #FFFAFA;
+        text-decoration: underline;
+        margin-top: 2em; /* Espacio adicional sobre el enlace */
+        display: inline-block; /* Para aplicar margen y padding */
+        
+    }
+
+    .bottom-left-image {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        max-width: 20%; /* Adjust the size accordingly */
+        height: auto;
+    }
+
+    /* Se asegura de que la etiqueta <a> esté visible y tenga un color que destaque */
+    .container-solicitud-enviada a.volver-inicio {
+        color: #0095f6; /* Tema de color de ANP o cualquier otro color que destaque */
+        padding: 10px;
+        margin-top: 50px; /* Asegura un espacio después del mensaje principal */
+    }
+
+        .container-solicitud-enviada a.volver-inicio:hover {
+            text-decoration: none; /* Remueve el subrayado al hacer hover */
+        }

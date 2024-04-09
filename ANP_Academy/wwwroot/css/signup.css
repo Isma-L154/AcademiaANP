@@ -78,7 +78,7 @@ input[type='password'] {
     background-color: #ed3330; /* Red background */
     border: none;
     border-radius: 5px;
-    color: white;
+    color: #0a0a0a;
     font-size: 1em;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -86,7 +86,7 @@ input[type='password'] {
 
     .button:hover {
         background-color: darkred;
-        color: white !important;
+        color: #0a0a0a !important;
     }
 
 /* Smaller text and link styling */

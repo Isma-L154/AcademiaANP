@@ -24,6 +24,7 @@
                 <input type="text" placeholder="Nombre completo" />
                 <input type="text" placeholder="Número de teléfono"/>
                 <input type="password" placeholder="Contraseña" />
+                <input type="password" placeholder="Confirmar la contraseña" />
                 <button type="submit" class="button">Crear cuenta</button>
             </form>
             <p class="smaller-text">
@@ -56,7 +57,9 @@
         </label>
     </div>
     <footer>
-        <button id="acceptButton" class="button" disabled>Enviar solicitud de suscripción</button>
+        <button id="acceptButton" class="button" disabled>
+            <a asp-controller="Usuario" asp-action="SolicitudEnviada">Enviar solicitud de suscripción</a>
+        </button>
     </footer>
 </dialog>
 

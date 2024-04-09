@@ -1,0 +1,11 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/SolicitudEnviada.css" asp-append-version="true" />
+
+<div class="container-solicitud-enviada">
+    <h1>Tu solicitud de suscripción ha sido enviada.</h1>
+    <h2>El equipo administrador pronto se pondrá en contacto contigo.</h2>
+    <a href="@Url.Action("Index", "Home")" class="volver-inicio">Volver al Inicio</a>    
+</div>
