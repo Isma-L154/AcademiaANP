@@ -1,0 +1,118 @@
+﻿/* sobre-nosotros.css */
+
+
+
+.full-width-background {
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    color: white;
+    text-align: center;
+    padding: 50px 0; /* Adjust padding to suit your design */
+}
+
+    .full-width-background h1 {
+        font-size: 2.5em; /* Adjust font size to suit your design */
+        margin: 0;
+        font-weight: bold;
+        text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        font-family: "Inconsolata", sans-serif;
+    }
+
+.about-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.about-text {
+    flex: 1;
+    padding-right: 20px; /* Adjust spacing to suit your design */
+    text-align: justify;
+    font-family: "Inconsolata", sans-serif;
+}
+
+.about-image {
+    flex: 1;
+    background-image: url('~/Img/about_image.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 300px; /* Adjust height to suit your design */
+}
+
+.about-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    padding-bottom: 50px;
+}
+
+.about-text {
+    flex: 1;
+    padding-right: 20px; /* Adjust spacing to suit your design */
+}
+
+.about-image {
+    flex: 1;
+    background-image: url('~/Img/about_image.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 300px; /* Adjust height to suit your design */
+}
+
+.team-section {
+    padding: 20px;
+}
+
+.team-title {
+    text-align: center;
+    font-size: 2em; /* Adjust font size to suit your design */
+    margin-bottom: 20px; /* Adjust margin to suit your design */
+    font-family: "Inconsolata", sans-serif;
+}
+
+.team-member {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px; /* Space between team member entries */
+    padding: 20px;
+    border: 1px solid #e1e1e1; /* Light grey border */
+    border-radius: 8px; /* Rounded corners for the border */
+    background-color:silver;
+}
+
+.member-photo {
+    border-radius: 50%; /* Circular image */
+    margin-right: 20px; /* Space between the image and the text */
+    width: 120px; /* Fixed size */
+    height: 120px; /* Fixed size */
+    object-fit: cover; /* Ensure the image covers the area without distortion */
+}
+
+.member-info {
+    flex: 1; /* Take up remaining space */
+}
+
+.member-name {
+    font-size: 1.5em;
+    margin: 0 0 10px 0; /* Margin below the name */
+    font-family: "Inconsolata", sans-serif;
+}
+
+.member-title {
+    font-size: 1.2em;
+    color: #f1f1f1; /* Dark grey color for the title */
+    margin: 0 0 10px 0;
+    
+}
+
+.member-bio {
+    font-size: 1em;
+    margin-bottom: 10px;
+    text-align: left; /* Align text to the left */
+    font-family: "Inconsolata", sans-serif;
+}

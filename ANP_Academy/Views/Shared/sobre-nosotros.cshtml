@@ -1,0 +1,40 @@
+﻿<!-- Include the site's main layout and CSS -->
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Reference css file to be used -->
+<link rel="stylesheet" href="~/css/sobre-nosotros.css" asp-append-version="true" />
+
+<!-- Full-width background section -->
+<section class="full-width-background" style="background-image: url('@Url.Content("~/img/banner_inicial.jpg")');">
+    <h1>Bienvenido a la casa del parrillero</h1>
+</section>
+
+<!-- About section like the image attached -->
+<section class="about-section">
+    <div class="about-text">
+        <h2>Sobre nosotros</h2>
+        <p>Honoramos la memoria y el legado de Rodrigo Morales “El Capi”, un verdadero maestro de la parrilla, cuyo amor por el asado dejó una marca indeleble en todos los que tuvieron el privilegio de conocerlo. A través de su dedicación y pasión, Rodrigo enseñó a innumerables personas las técnicas y secretos del asado a la parrilla, compartiendo su conocimiento con generosidad y alegría.</p>
+        <p>La Academia Nacional de Parrilleros es más que un lugar de aprendizaje; es un tributo a la vida y al amor que Rodrigo dedicó a su arte. Nos enorgullece continuar sus cursos y compartir su sabiduría con todos aquellos que deseen explorar el emocionante mundo del asado a la parrilla.</p>
+    </div>
+    <div class="about-image"> <img src="~/img/about-section.png" /></div>
+</section>
+
+<br></br>
+
+<!-- Team introduction section -->
+<section class="team-section">
+    <h2 class="team-title">Nuestro equipo</h2>
+
+    <div class="team-member">
+        <img src="~/img/team-member-1-6603520da88f1.png" alt="Arturo Flores" class="member-photo" />
+        <div class="member-info">
+            <h3 class="member-name">Arturo Flores</h3>
+            <p class="member-title">Chef especializado en carnes a la parrilla</p>
+            <p class="member-bio">Con más de 8 años de experiencia detrás de las parrillas. <br></br>Chef graduado del Foro Iberoamericano de Organizaciones Gastronómicas Profesionales. </p>
+            <!-- Repeat for additional bio paragraphs as needed -->
+        </div>
+    </div>
+
+</section>

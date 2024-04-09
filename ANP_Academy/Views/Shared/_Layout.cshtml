@@ -19,7 +19,7 @@
             <div class="logo"><a  asp-controller="Home" asp-action="Index" ><img src="~/Img/LogoANP.png" alt="LogoANP" style="height: 95px; width: 120px; margin-left:10px"></a></div>
             <ul class="nav-links">
                 <li><a href="#classes">Clases</a></li>
-                <li><a href="#about">Sobre Nosotros</a></li>
+                <li><a asp-controller="SobreNosotros" asp-action="SobreNosotros">Sobre Nosotros</a></li>
                 <li><a href="#recipes">Recetas</a></li>
                 <li><a href="#faqs">FAQs</a></li>
                 <li><a href="#chat">ChatBot</a></li>
@@ -55,7 +55,7 @@
         <!--Fin de Menu desplegable para Modulos de Admin-->
             
         <div class="auth-buttons">
-            <a href="#register" class="register">Regístrate</a>
+            <a href="@Url.Action("Signup", "Usuario")" class="register">Regístrate</a>
             <a href="#login" class="login">Iniciar Sesión</a>
          </div>
 

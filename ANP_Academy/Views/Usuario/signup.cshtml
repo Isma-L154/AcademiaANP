@@ -1,0 +1,65 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/signup.css" />
+
+<div class="container">
+    <div class="left-partition">
+        <h2 class="left-partition-title">¿Quieres llevar tus habilidades parrilleras al siguiente nivel?</h2>
+        <h4>Suscríbete a la plataforma de aprendizaje en línea para obtener los siguientes beneficios:</h4>
+        <ul>
+            <li class="list-item">Accede a recetas en cualquier momento.</li>
+            <li class="list-item">Lecciones en video con expertos de las parrillas.</li>
+            <li class="list-item">Conoce a más personas que comparten la pasión de las parrillas a través de nuestro foro.</li>
+        </ul>
+        <img src="~/img/LogoANP.png" alt="Descripción" class="bottom-left-image" />
+    </div>
+    <div class="right-partition">
+        <div class="form-container">
+            <h2>Crea tu cuenta ANP Rodrigo Morales</h2>
+            <form>
+
+                <input type="email" placeholder="Correo electronico" />
+                <input type="text" placeholder="Nombre completo" />
+                <input type="text" placeholder="Número de teléfono"/>
+                <input type="password" placeholder="Contraseña" />
+                <button type="submit" class="button">Crear cuenta</button>
+            </form>
+            <p class="smaller-text">
+                ¿Ya tienes una cuenta? <a href="#">Inicia sesión</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div id="modalOverlay" class="modal-overlay"></div>
+<dialog id="termsDialog">
+    <header>
+        <h2>Último paso antes de crear tu cuenta.</h2>
+        <button id="closeDialog" class="close-dialog">&times;</button>
+    </header>
+
+    
+    <ul>
+        <li>Se debe cancelar el monto de la suscripción mediante SINPE al número 8888-8888</li>
+        <li>La suscripción tiene un costo de ₡5000 mensuales.</li>
+        <li>Una vez hecha la transferencia, enviar un comprobante al número 8888-8888</li>
+        <li>El equipo revisará la solicitud en un plazo de 24 horas y aprobará la suscripción.</li>
+        <li>El plazo de la suscripción inicia cuando el equipo aprueba la suscripción, no cuando se hace la transferencia.</li>
+        <li>Se enviará un correo electrónico a manera de confirmación cuando el equipo activa la suscripción.</li>
+    </ul>
+    <div>
+        <label>
+            <input type="checkbox" id="agreeCheckbox">
+            He leído y acepto los términos y condiciones.
+        </label>
+    </div>
+    <footer>
+        <button id="acceptButton" class="button" disabled>Enviar solicitud de suscripción</button>
+    </footer>
+</dialog>
+
+@section Scripts {
+    <script src="~/js/signup-dialog.js"></script>
+}

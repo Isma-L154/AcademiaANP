@@ -1,0 +1,177 @@
+﻿/* Set the font for the whole page */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Inconsolata', sans-serif;
+    background-color: #0a0a0a;
+    color: #FFFAFA;
+}
+
+/* Flex container for the two partitions */
+.container {
+    display: flex;
+    height: 100%;
+}
+
+/* Left partition styles */
+.left-partition {
+    width: 40%;
+    padding: 20px;
+    background-color: #000000; /* Dark background */
+    position: relative;
+    z-index: 1;
+}
+
+.left-partition-title {
+
+    text-align: center;
+}
+
+.list-title, .list-item {
+    margin: 0 0 10px 0;
+}
+
+.list-item {
+    margin-left: 20px; /* Indentation for list items */
+}
+
+/* Image at the bottom left of the left partition */
+.bottom-left-image {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    max-width: 45%; /* Adjust the size accordingly */
+    height: auto;
+    z-index: -1;
+}
+
+/* Right partition styles */
+.right-partition {
+    width: 60%;
+    padding: 20px;
+    background-color: #000000; /* Lighter background for contrast */
+}
+
+/* Form and elements styling */
+.form-container {
+    background-color: #000000;
+    border-radius: 8px;
+    padding: 40px;
+    max-width: 400px;
+    margin: auto;
+}
+
+input[type='text'],
+input[type='email'],
+input[type='password'] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+}
+
+/* Button styling */
+.button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ed3330; /* Red background */
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .button:hover {
+        background-color: darkred;
+        color: white !important;
+    }
+
+/* Smaller text and link styling */
+.smaller-text {
+    text-align: center;
+    font-size: 0.9em;
+}
+
+a {
+    color: #0095f6; /* ANP's theme color or any color that stands out */
+    text-decoration: none;
+}
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+    z-index: 10; /* Ensure it's below the dialog but above other content */
+    display: none; /* Hidden by default */
+}
+
+dialog {
+    border: none;
+    border-radius: 5px;
+    padding: 20px;
+    position: fixed;
+    width: 50%; /* Adjust to your preference */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    background: #0a0a0a; /* Black background */
+    color: #FFFAFA; /* Light color text */
+}
+
+    dialog header {
+        display: flex;
+        justify-content: space-between; /* Keeps items spread; left-aligned and right-aligned */
+        align-items: center; /* Vertically centers the items */
+        background: #0a0a0a; /* Black background */
+        padding: 10px; /* Provides some padding within the header */
+    }
+
+
+    dialog footer {
+        background: #0a0a0a; /* Black background */
+    }
+
+.close-dialog {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    color: #FFFAFA; /* Light color text */
+    cursor: pointer;
+    padding: 20px; /* Adds padding for clickable area, adjust as needed */
+    margin: -20px -20px 0 0; /* Aligns the button to the top-right corner */
+}
+
+/* Style the checkbox label */
+dialog label {
+    color: #FFFAFA; /* Light color text */
+}
+
+/* Style the accept button */
+#acceptButton {
+    background: #ed3330; /* Red background */
+    color: #FFFAFA; /* Light color text */
+    /* Other styles */
+}
+
+    #acceptButton:hover {
+        background-color: #f44336; /* Slightly lighter red on hover */
+    }
+
+/* Ensure the form inputs and list items also have light colored text */
+input[type='text'],
+input[type='email'],
+input[type='password'],
+dialog ul {
+    color: #FFFAFA; /* Light color text */
+}
