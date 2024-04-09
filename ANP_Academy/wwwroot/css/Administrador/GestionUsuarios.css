@@ -1,0 +1,111 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#gestion {
+    width: 100%;
+    padding: 20px;
+}
+
+.tabla {
+    overflow-x: auto;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color:#e7dfd1;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+img {
+    max-width: 100px;
+    height: auto;
+}
+
+.boton-verde {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+    .boton-verde:hover {
+        background-color: #45a049; /* Un verde un poco más claro o más oscuro para el efecto hover */
+    }
+
+.boton-rojo {
+    background-color: #E32A07;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+    
+    .boton-rojo:hover {
+        background-color: #cc2906; /* Un rojo un poco más claro o más oscuro para el efecto hover */
+    }
+
+.filtro {
+    margin-bottom: 20px; /* Espacio entre el formulario y la tabla */
+    text-align: center; /* Centrar el formulario si es necesario */
+}
+
+    .filtro form {
+        display: inline-flex; /* Para alinear los elementos del formulario horizontalmente */
+        align-items: center; /* Alinear verticalmente los elementos del formulario */
+    }
+
+.filtro-dropdown {
+    padding: 5px 10px; /* Ajustar al gusto */
+    margin-right: 10px; /* Espacio entre el dropdown y el input de texto */
+}
+
+.filtro input[type="text"] {
+    padding: 5px;
+    margin-right: 10px; /* Espacio entre el input de texto y el botón */
+}
+
+.boton-buscar {
+    padding: 5px 10px;
+    background-color: #2C0B0B; /* O ajustar al color deseado */
+    border: none;
+    cursor: pointer;
+    color: white;
+    border-radius: 4px; /* Opcional, para bordes redondeados */
+}
+
+    .boton-buscar i {
+        margin-right: 5px;
+        justify-items:center;
+    }
+
+    .boton-buscar:hover {
+        background-color: #5B2B29; /* Un tono más claro o más oscuro para el hover */
+    }

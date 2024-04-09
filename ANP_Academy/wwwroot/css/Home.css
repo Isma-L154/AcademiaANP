@@ -8,7 +8,7 @@ body {
 }
 
 header {
-    background-color: #000; 
+    background-color: #040404; 
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -54,11 +54,11 @@ header {
         text-decoration: none;
         padding: 10px 20px;
         margin-right: 10px;
-        border: 2px solid #ED3330; 
-        border-radius: 5px; 
-        background-color: #ED3330;
-        color: white !important;
-        transition: all 0.3s ease; 
+        border: 2px solid #E32A07;
+        border-radius: 5px;
+        background-color: #E32A07;
+        color: #E7DFD1 !important;
+        transition: all 0.3s ease;
     }
 
         .auth-buttons a:hover {
@@ -109,7 +109,7 @@ main {
 
 
 footer {
-    background: #000;
+    background: #040404;
     color: white;
     padding: 20px 5%;
     text-align: center;

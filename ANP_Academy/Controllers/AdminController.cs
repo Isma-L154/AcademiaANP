@@ -22,5 +22,15 @@ namespace ANP_Academy.Controllers
         {
             return View();
         }
+
+        public IActionResult GestionUsuarios()
+        {
+            return View();
+        }
+
+        public IActionResult EditarUsuario()
+        {
+            return View();
+        }
     }
 }

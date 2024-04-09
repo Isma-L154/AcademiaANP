@@ -1,0 +1,53 @@
+﻿/* Continuación de los estilos existentes */
+
+.formulario-edicion {
+    background-color: #fff; /* Fondo blanco para el formulario */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    max-width: 600px; /* Ancho máximo */
+    margin: 20px auto; /* Centrado con margen arriba y abajo */
+}
+
+.campo-formulario {
+    margin-bottom: 20px; /* Espacio entre campos */
+}
+
+    .campo-formulario label {
+        display: block; /* Los labels se muestran en bloque */
+        margin-bottom: 5px; /* Espacio entre el label y el input */
+    }
+
+    .campo-formulario input[type="text"],
+    .campo-formulario input[type="email"],
+    .campo-formulario select {
+        width: 100%; /* Ancho completo */
+        padding: 10px; /* Padding para mayor comodidad al escribir */
+        border: 1px solid #ddd; /* Borde sutil */
+        border-radius: 4px; /* Bordes redondeados */
+    }
+
+.botones-formulario {
+    text-align: center; /* Botones centrados */
+}
+
+.boton-verde {
+    background-color: #2C0B0B; /* Correcto según tu descripción */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px; /* Asegura bordes redondeados */
+    transition: background-color 0.3s;
+}
+
+    .boton-verde:hover {
+        background-color: #5B2B29;
+    }
+
+
