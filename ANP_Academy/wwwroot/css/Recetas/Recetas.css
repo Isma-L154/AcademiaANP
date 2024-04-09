@@ -1,0 +1,12 @@
+﻿.card {
+    margin-bottom: 10px; /* Ajusta este valor según tus necesidades */
+}
+
+.card-img-top {
+    height: 200px; /* Establece la altura deseada para todas las imágenes */
+    object-fit: cover; /* Ajusta la imagen para cubrir el tamaño del contenedor */
+}
+
+.card-title {
+    font-weight: bold;
+}

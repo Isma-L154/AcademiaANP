@@ -20,8 +20,8 @@
             <ul class="nav-links">
                 <li><a href="#classes">Clases</a></li>
                 <li><a asp-controller="SobreNosotros" asp-action="SobreNosotros">Sobre Nosotros</a></li>
-                <li><a href="#recipes">Recetas</a></li>
-                <li><a href="#faqs">FAQs</a></li>
+                <li><a href="~/Recetas/Index">Recetas</a></li>
+                <li><a href="~/FAQs/Index">FAQs</a></li>
                 <li><a href="#chat">ChatBot</a></li>
                 <button type="button" class="btn btn-outline-danger" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Admin Menu">Admin</button>
             </ul>
@@ -46,7 +46,7 @@
                             <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="GestionForo" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-bullhorn" style="margin-right: 15px;"></i> Gestion del Foro</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page"  style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-photo-film" style="margin-right: 15px;"></i> Contenidos</a>
+                            <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="GestionContenido" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-photo-film" style="margin-right: 15px;"></i> Gestion Contenidos</a>
                         </li>
                 </ul>
 
