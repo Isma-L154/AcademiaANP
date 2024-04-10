@@ -1,0 +1,85 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Administrador/EditarUsuario.css" asp-append-version="true" />
+
+<main>
+    <section id="gestion">
+        <h2 style="text-align: center;">Editar Inventario</h2>
+        <div class="formulario-edicion">
+            <form action="@Url.Action("GestionInventario", "Admin")" method="post">
+                <div class="campo-formulario">
+                    <label for="codigo">Código:</label>
+                    <input type="text" id="codigo" name="codigo" placeholder="1" readonly/>
+                </div>
+                <div class="campo-formulario">
+                    <label for="descripcion">Descripción:</label>
+                    <input type="text" id="descripcion" name="descripcion" placeholder="Costillas de cerdo St. Louis" />
+                </div>
+                <div class="campo-formulario">
+                    <label for="categoria">Categoría:</label>
+                    <select id="categoria" name="categoria"  >
+                        <option value="Carnes">Carnes</option>
+                        <option value="Vegetales">Vegetales</option>
+                        <option value="Especias">Especias</option>
+                        <option value="Equipamiento">Equipamiento</option>
+                        <option value="Utensilios">Utensilios</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                <div class="campo-formulario">
+                    <label for="cantidad">Cantidad en Stock:</label>
+                    <input type="number" id="cantidad" name="cantidad" placeholder="4" />
+                </div>
+                <div class="campo-formulario">
+                    <label for="unidad_medida">Unidad de Medida:</label>
+                    <select id="unidad_medida" name="unidad_medida"  >
+                        <option value="Kilogramos">Kilogramos</option>
+                        <option value="Gramos">Gramos</option>
+                        <option value="Litros">Litros</option>
+                        <option value="Unidades">Unidades</option>
+                    </select>
+                </div>
+                <div class="campo-formulario">
+                    <label for="precio_unidad">Precio por Unidad:</label>
+                    <input type="number" id="precio_unidad" name="precio_unidad" placeholder="5000" />
+                </div>
+                <div class="campo-formulario">
+                    <label for="proveedor">Proveedor:</label>
+                    <input type="text" id="proveedor" name="proveedor" placeholder="Carnes La Buena" />
+                </div>
+                <div class="campo-formulario">
+                    <label for="fecha_pedido">Fecha de Pedido:</label>
+                    <input type="date" id="fecha_pedido" name="fecha_pedido" value="2024-03-27" />
+                </div>
+                <div class="campo-formulario">
+                    <label for="fecha_recepcion">Fecha de Recepción:</label>
+                    <input type="date" id="fecha_recepcion" name="fecha_recepcion" value="2024-03-27" />
+                </div>
+                <div class="campo-formulario">
+                    <label for="fecha_caducidad">Fecha de Caducidad:</label>
+                    <input type="date" id="fecha_caducidad" name="fecha_caducidad" value="2024-04-08" />
+                </div>
+                <div class="campo-formulario">
+                    <label for="estado">Estado:</label>
+                    <select id="estado" name="estado"  >
+                        <option value="Disponible">Disponible</option>
+                        <option value="Bajo en stock">Bajo en stock</option>
+                        <option value="En pedido">En pedido</option>
+                        <option value="Descontinuado">Descontinuado</option>
+                    </select>
+                </div>
+                <div class="campo-formulario">
+                    <label for="ubicacion">Ubicación:</label>
+                    <input type="text" id="ubicacion" name="ubicacion" placeholder="Congelador 1" />
+                </div>
+                <div class="botones-formulario">
+                    <button type="submit" class="boton-atras">Atrás</button>
+                    <button type="submit" class="boton-verde">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+

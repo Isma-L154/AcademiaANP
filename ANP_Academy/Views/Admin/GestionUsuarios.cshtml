@@ -1,22 +1,27 @@
 ﻿@{
-
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" href="~/css/Administrador/GestionUsuarios.css" asp-append-version="true" />
 
 <main>
     <section id="gestion">
         <h2 style="text-align: center;">Gestión de usuarios</h2>
-        <div class="filtro">
-            <form>
-                <select name="filtro" aria-label="Buscar por" class="filtro-dropdown">
-                    <option value="" disabled selected>Buscar por...</option>
-                    <option value="identificador">Identificador</option>
-                    <option value="nombre">Nombre</option>
-                    <option value="correo">Correo Electrónico</option>
-                </select>
-                <input type="text" name="valor" aria-label="Valor de búsqueda" placeholder="Escribe aquí...">
-                <button type="submit" class="boton-buscar"><i class="fas fa-search"></i></button>
-            </form>
+        <div class="filtro-y-crear">
+            <div class="filtro">
+                <form>
+                    <select name="filtro" aria-label="Buscar por" class="filtro-dropdown">
+                        <option value="" disabled selected>Buscar por...</option>
+                        <option value="identificador">Identificador</option>
+                        <option value="nombre">Nombre</option>
+                        <option value="correo">Correo Electrónico</option>
+                    </select>
+                    <input type="text" name="valor" aria-label="Valor de búsqueda" placeholder="Escribe aquí...">
+                    <button type="submit" class="boton-buscar"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+            <div class="crear-usuario">
+                <a href="@Url.Action("CrearUsuario", "Admin")" class="boton-crear">Crear usuario</a>
+            </div>
         </div>
         <div class="tabla">
             <table>
@@ -26,6 +31,7 @@
                     <th>Correo electrónico</th>
                     <th>Teléfono</th>
                     <th>Rol</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
                 <tr>
@@ -34,8 +40,10 @@
                     <td>usuario1@gmail.com</td>
                     <td>8451-7845</td>
                     <td>Estudiante</td>
+                    <td>Activo</td>
                     <td>
-                        <a href="@Url.Action("EditarUsuario", "Admin")" class="boton-rojo">Editar</a>
+                        <a href="@Url.Action("EditarUsuario", "Admin")" class="boton-editar">Editar</a>
+                        <a class="boton-desactivar">Desactivar</a>
                     </td>
                 </tr>
                 <tr>
@@ -44,8 +52,10 @@
                     <td>usuario2@yahoo.com</td>
                     <td>8787-5411</td>
                     <td>Profesor</td>
+                    <td>Inactivo</td>
                     <td>
-                        <a href="@Url.Action("EditarUsuario", "Admin")" class="boton-rojo">Editar</a>
+                        <a href="@Url.Action("EditarUsuario", "Admin")" class="boton-editar">Editar</a>
+                        <a class="boton-activar">Activar</a>
                     </td>
                 </tr>
                 <tr>
@@ -54,8 +64,10 @@
                     <td>usuario3@gmail.com.com</td>
                     <td>8451-4545</td>
                     <td>Administrador</td>
+                    <td>Activo</td>
                     <td>
-                        <a href="@Url.Action("EditarUsuario", "Admin")" class="boton-rojo">Editar</a>
+                        <a href="@Url.Action("EditarUsuario", "Admin")" class="boton-editar">Editar</a>
+                        <a class="boton-desactivar">Desactivar</a>
                     </td>
                 </tr>
                 

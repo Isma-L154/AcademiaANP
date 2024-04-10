@@ -32,5 +32,25 @@ namespace ANP_Academy.Controllers
         {
             return View();
         }
+
+        public IActionResult CrearUsuario()
+        {
+            return View();
+        }
+
+        public IActionResult GestionInventario()
+        {
+            return View();
+        }
+
+        public IActionResult CrearInventario()
+        {
+            return View();
+        }
+
+        public IActionResult EditarInventario()
+        {
+            return View();
+        }
     }
 }
