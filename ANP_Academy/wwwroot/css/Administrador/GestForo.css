@@ -4,13 +4,6 @@
     margin-bottom: 5rem;
 }
 
-.container {
-    display: flex;
-    padding-left: 20px;
-    margin: 0;
-    width 100%;
-}
-
 aside {
     width: 300px;
     background-color: #fff;
@@ -47,3 +40,40 @@ aside {
     .aplicar-btn i {
         margin-right: 5px;
     }
+.boton-buscar {
+    padding: 5px 10px;
+    background-color: #2C0B0B; 
+    border: none;
+    cursor: pointer;
+    color: white;
+    border-radius: 4px; 
+}
+
+    .boton-buscar i {
+        margin-right: 5px;
+        justify-items: center;
+    }
+
+    .boton-buscar:hover {
+        background-color: #5B2B29; 
+    }
+
+.filtro {
+    margin-bottom: 20px; 
+    text-align: center; 
+}
+
+    .filtro form {
+        display: inline-flex; 
+        align-items: center; 
+    }
+
+.filtro-dropdown {
+    padding: 5px 10px; 
+    margin-right: 10px; 
+}
+
+.filtro input[type="text"] {
+    padding: 5px;
+    margin-right: 10px; 
+}
