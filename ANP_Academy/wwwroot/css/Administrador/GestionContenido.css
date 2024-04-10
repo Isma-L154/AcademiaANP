@@ -11,17 +11,15 @@
 }
 
 h1 {
-    color: #007bff;
+    color: #040404;
 }
 
 .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #e32a07;
 }
 
     .btn-primary:hover {
-        background-color: #0056b3;
-        border-color: #0056b3;
+        background-color: #5b2b29;
     }
 
 .table {
