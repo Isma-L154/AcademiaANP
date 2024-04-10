@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suscripciones</title>
+    <link rel="stylesheet" href="~/css/Suscripciones/Suscripciones.css" asp-append-version="true" />
+   </head>
+<body>
+    <a href="~/Suscripciones/MisSuscripciones" class="mis-suscripciones">Mis Suscripciones</a>
+
+    <div class="container">
+        <div class="subscription">
+            <h2>Suscripción Mensual</h2>
+            <ul>
+                <li>Acceso completo durante un mes.</li>
+                <li>Actualizaciones regulares de contenido.</li>
+                <li>Acceso a material exclusivo para suscriptores.</li>
+                <li>Posibilidad de cancelar en cualquier momento sin compromisos a largo plazo.</li>
+            </ul>
+            <div class="price">₡5000</div>
+            <button onclick="showModal()">Elige este plan</button>
+        </div>
+        <div class="subscription">
+            <h2>Suscripción Trimestral</h2>
+            <ul>
+                <li>Acceso completo durante tres meses.</li>
+                <li>Actualizaciones regulares de contenido.</li>
+                <li>Acceso a material exclusivo para suscriptores.</li>
+                <li>Posibilidad de cancelar en cualquier momento sin compromisos a largo plazo.</li>
+            </ul>
+            <div class="price">₡12000</div>
+            <button onclick="showModal()">Elige este plan</button>
+        </div>
+        <div class="subscription">
+            <h2>Suscripción Anual</h2>
+            <ul>
+                <li>Acceso completo durante un año.</li>
+                <li>Actualizaciones regulares de contenido.</li>
+                <li>Acceso a material exclusivo para suscriptores.</li>
+                <li>Posibilidad de cancelar en cualquier momento sin compromisos a largo plazo.</li>
+            </ul>
+            <div class="price">₡55000</div>
+            <button onclick="showModal()">Elige este plan</button>
+        </div>
+    </div>
+
+    <!-- Ventana modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Adjuntar Comprobante</h2>
+            <form>
+                <label for="comprobante">Selecciona tu comprobante:</label>
+                <input type="file" id="comprobante" name="comprobante" accept="image/*, .pdf">
+                <button type="submit">Adjuntar</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showModal() {
+            document.getElementById("myModal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("myModal").style.display = "none";
+        }
+    </script>
+</body>
+</html>

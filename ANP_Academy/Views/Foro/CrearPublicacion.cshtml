@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Publicación</title>
+    <link rel="stylesheet" href="~/css/Foro/CrearPublicacion.css" asp-append-version="true" />
+</head>
+<body>
+    <h2>Crear Publicación</h2>
+    <div class="content-form">
+        <form action="#" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="comment">Comentario:</label><br>
+                <textarea id="comment" name="comment" rows="4" placeholder="Escribe tu comentario aquí..." required style="width: 100%;"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="media">Adjuntar multimedia:</label><br>
+                <input type="file" id="media" name="media" accept="image/*, video/*">
+                <label for="media" class="custom-file-upload">Seleccionar archivo</label>
+            </div>
+            <input type="submit" value="Publicar" class="btn-danger">
+            <a href="~/Foro/Index" class="btn btn-primary btn-block">Atrás</a>
+        </form>
+    </div>
+</body>
+</html>

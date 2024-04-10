@@ -22,6 +22,8 @@
                 <li><a asp-controller="SobreNosotros" asp-action="SobreNosotros">Sobre Nosotros</a></li>
                 <li><a href="~/Recetas/Index">Recetas</a></li>
                 <li><a href="~/FAQs/Index">FAQs</a></li>
+                <li><a href="~/Foro/Index">Foro</a></li>
+                <li><a href="~/Suscripciones/Index">Suscripciones</a></li> 
                 <li><a href="#chat">ChatBot</a></li>
                 <button type="button" class="btn btn-outline-danger" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Admin Menu">Admin</button>
             </ul>
@@ -56,7 +58,7 @@
             
         <div class="auth-buttons">
             <a href="@Url.Action("Signup", "Usuario")" class="register">Regístrate</a>
-            <a href="#login" class="login">Iniciar Sesión</a>
+            <a href="@Url.Action("Login", "Usuario")" class="login">Iniciar Sesión</a>
          </div>
 
         </nav>

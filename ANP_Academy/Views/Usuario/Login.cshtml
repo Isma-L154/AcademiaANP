@@ -1,0 +1,34 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/signup.css" />
+
+<div class="container">
+    <div class="left-partition">
+        <h2 class="left-partition-title">¡Bienvenido de nuevo!</h2>
+        <h4>Inicia sesión para acceder a tus lecciones y recetas favoritas:</h4>
+        <img src="~/img/LogoANP.png" alt="Descripción" class="bottom-left-image" />
+    </div>
+    <div class="right-partition">
+        <div class="form-container">
+            <h2>Iniciar sesión</h2>
+            <form action="#" method="post">
+
+                <input type="email" name="email" placeholder="Correo electrónico" required />
+                <input type="password" name="password" placeholder="Contraseña" required />
+                <button type="submit" class="button">Iniciar sesión</button>
+            </form>
+            <p class="smaller-text">
+                ¿Olvidaste tu contraseña? <a href="#">Restablecer contraseña</a>
+            </p>
+            <p class="smaller-text">
+                ¿No tienes cuenta? <a href="~/Usuario/signup">Registrate</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/signup-dialog.js"></script>
+}

@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foro de Discusión</title>
+    <link rel="stylesheet" href="~/css/Foro/Foro.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="container">
+        <h2>Foro de Discusión</h2>
+        <button class="button" onclick="window.location.href='/Foro/CrearPublicacion';">Crear Publicación</button>
+        <button class="button" onclick="window.location.href='/Foro/MisPublicaciones';">Mis Publicaciones</button>
+
+        <!-- Primer comentario -->
+        <div class="comment">
+            <div class="user">Usuario 1</div>
+            <div class="content">Este es el primer comentario en el foro.</div>
+            <div class="attachments">
+                <span class="attachment"><img src="https://via.placeholder.com/100" alt="Imagen adjunta"></span>
+            </div>
+            <!-- Botón para reportar comentario -->
+            <button class="report-btn" onclick="toggleReportForm('report-form-1')">Reportar</button>
+            <!-- Formulario para reportar comentario -->
+            <div id="report-form-1" class="report-form">
+                <label for="report-reason-1">Motivo del reporte:</label>
+                <select name="report-reason-1" id="report-reason-1">
+                    <option value="spam">Spam</option>
+                    <option value="inapropiado">Contenido inapropiado</option>
+                    <option value="otros">Otros</option>
+                </select>
+                <button>Enviar reporte</button>
+            </div>
+            <!-- Formulario para responder al comentario -->
+            <div class="reply-form">
+                <textarea placeholder="Escribe tu comentario aquí..."></textarea>
+                <button>Responder</button>
+            </div>
+        </div>
+
+        <!-- Segundo comentario -->
+        <div class="comment">
+            <div class="user">Usuario 2</div>
+            <div class="content">Este es el segundo comentario en el foro.</div>
+            <div class="attachments">
+                <span class="attachment"><img src="https://via.placeholder.com/100" alt="Imagen adjunta"></span>
+            </div>
+            <!-- Botón para reportar comentario -->
+            <button class="report-btn" onclick="toggleReportForm('report-form-2')">Reportar</button>
+            <!-- Formulario para reportar comentario -->
+            <div id="report-form-2" class="report-form">
+                <label for="report-reason-2">Motivo del reporte:</label>
+                <select name="report-reason-2" id="report-reason-2">
+                    <option value="spam">Spam</option>
+                    <option value="inapropiado">Contenido inapropiado</option>
+                    <option value="otros">Otros</option>
+                </select>
+                <button>Enviar reporte</button>
+            </div>
+            <!-- Formulario para responder al comentario -->
+            <div class="reply-form">
+                <textarea placeholder="Escribe tu comentario aquí..."></textarea>
+                <button>Responder</button>
+            </div>
+        </div>
+        <!-- Agrega más comentarios según sea necesario -->
+    </div>
+
+    <script>
+        // Función para alternar la visibilidad del formulario de reporte
+        function toggleReportForm(id) {
+            var form = document.getElementById(id);
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
