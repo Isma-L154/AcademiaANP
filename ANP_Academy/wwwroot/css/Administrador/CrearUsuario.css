@@ -20,6 +20,7 @@
 
     .campo-formulario input[type="text"],
     .campo-formulario input[type="email"],
+    .campo-formulario input[type="password"],
     .campo-formulario select {
         width: 100%; /* Ancho completo */
         padding: 10px; /* Padding para mayor comodidad al escribir */
@@ -30,25 +31,6 @@
 .botones-formulario {
     text-align: center; /* Botones centrados */
 }
-
-.boton-verde {
-    background-color: #4CAF50; /* Correcto según tu descripción */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 4px; /* Asegura bordes redondeados */
-    transition: background-color 0.3s;
-}
-
-    .boton-verde:hover {
-        background-color: #419441;
-    }
 
 .boton-atras {
     background-color: #2C0B0B; /* Correcto según tu descripción */
@@ -67,4 +49,23 @@
 
     .boton-atras:hover {
         background-color: #5B2B29;
+    }
+
+.boton-activar {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+    .boton-activar:hover {
+        background-color: #419441; /* Un verde un poco más claro o más oscuro para el efecto hover */
     }

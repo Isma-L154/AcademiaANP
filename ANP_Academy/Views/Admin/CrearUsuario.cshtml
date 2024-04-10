@@ -2,40 +2,44 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link rel="stylesheet" href="~/css/Administrador/EditarUsuario.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/Administrador/CrearUsuario.css" asp-append-version="true" />
 
 <main>
     <section id="gestion">
-        <h2 style="text-align: center;">Editar Usuario</h2>
+        <h2 style="text-align: center;">Crear Usuario</h2>
         <div class="formulario-edicion">
             <form action="@Url.Action("GestionUsuarios", "Admin")" method="post">
                 <div class="campo-formulario">
-                    <label for="identificador">Identificador:</label>
-                    <input type="text" id="identificador" name="identificador" placeholder="1"  />
-                </div>
-                <div class="campo-formulario">
                     <label for="nombre">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre" placeholder="Usuario1"  />
+                    <input type="text" id="nombre" name="nombre" placeholder="" />
                 </div>
                 <div class="campo-formulario">
                     <label for="correo">Correo electrónico:</label>
-                    <input type="email" id="correo" name="correo" placeholder="usuario1@gmail.com	"  />
+                    <input type="email" id="correo" name="correo" placeholder="" />
                 </div>
                 <div class="campo-formulario">
                     <label for="telefono">Teléfono:</label>
-                    <input type="text" id="telefono" name="telefono" placeholder="8451-7845	"  />
+                    <input type="text" id="telefono" name="telefono" placeholder="" />
                 </div>
                 <div class="campo-formulario">
                     <label for="rol">Rol:</label>
-                    <select id="rol" name="rol" placeholder="Estudiante" >
+                    <select id="rol" name="rol" placeholder="Estudiante">
                         <option value="Estudiante">Estudiante</option>
                         <option value="Profesor">Profesor</option>
                         <option value="Administrador">Administrador</option>
                     </select>
                 </div>
+                <div class="campo-formulario">
+                    <label for="">Contraseña:</label>
+                    <input type="password" id="password" name="password" placeholder="" />
+                </div>
+                <div class="campo-formulario">
+                    <label for="rol">Confirmar la contraseña:</label>
+                    <input type="password" id="conf-password" name="conf-password" placeholder="" />
+                </div>
                 <div class="botones-formulario">
                     <button type="submit" class="boton-atras">Atrás</button>
-                    <button type="submit" class="boton-verde">Actualizar</button>
+                    <button type="submit" class="boton-activar">Crear</button>
                 </div>
             </form>
         </div>

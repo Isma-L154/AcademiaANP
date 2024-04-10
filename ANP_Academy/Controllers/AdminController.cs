@@ -32,5 +32,10 @@ namespace ANP_Academy.Controllers
         {
             return View();
         }
+
+        public IActionResult CrearUsuario()
+        {
+            return View();
+        }
     }
 }

@@ -34,7 +34,26 @@ img {
     height: auto;
 }
 
-.boton-verde {
+.boton-desactivar {
+    background-color: #E32A07;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+    .boton-desactivar:hover {
+        background-color: #cc2906; /* Un verde un poco más claro o más oscuro para el efecto hover */
+    }
+
+.boton-activar {
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -49,12 +68,12 @@ img {
     transition: background-color 0.3s;
 }
 
-    .boton-verde:hover {
-        background-color: #45a049; /* Un verde un poco más claro o más oscuro para el efecto hover */
+    .boton-activar:hover {
+        background-color: #419441; /* Un verde un poco más claro o más oscuro para el efecto hover */
     }
 
-.boton-rojo {
-    background-color: #E32A07;
+.boton-editar {
+    background-color: #5B2B29;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -67,10 +86,17 @@ img {
     border-radius: 4px;
     transition: background-color 0.3s;
 }
-    
-    .boton-rojo:hover {
-        background-color: #cc2906; /* Un rojo un poco más claro o más oscuro para el efecto hover */
+
+    .boton-editar:hover {
+        background-color: #2C0B0B; /* Un rojo un poco más claro o más oscuro para el efecto hover */
     }
+
+.filtro-y-crear {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
 
 .filtro {
     margin-bottom: 20px; /* Espacio entre el formulario y la tabla */
@@ -94,7 +120,7 @@ img {
 
 .boton-buscar {
     padding: 5px 10px;
-    background-color: #2C0B0B; /* O ajustar al color deseado */
+    background-color: #5B2B29; /* O ajustar al color deseado */
     border: none;
     cursor: pointer;
     color: white;
@@ -107,5 +133,36 @@ img {
     }
 
     .boton-buscar:hover {
-        background-color: #5B2B29; /* Un tono más claro o más oscuro para el hover */
+        background-color: #2C0B0B; /* Un tono más claro o más oscuro para el hover */
     }
+
+/* Estilo para el botón Crear Usuario */
+.boton-crear {
+    background-color: #5B2B29; /* Utiliza el mismo color que el botón editar para la consistencia */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+    .boton-crear:hover {
+        background-color: #2C0B0B; /* Oscurece un poco para el efecto hover */
+    }
+
+/* Asegúrate de que el contenedor del filtro tenga un ancho máximo para permitir el alineamiento correcto */
+.filtro {
+    flex: 1;
+    max-width: calc(100% - 150px); /* 150px es un ejemplo, ajusta según el ancho de tu botón Crear */
+}
+
+/* Ajusta el margen o el ancho del botón de búsqueda si es necesario para alinear con el botón crear */
+.boton-buscar {
+    margin-right: 10px; /* Asegúrate de que el margen derecho no empuje el botón fuera de alineación */
+}
