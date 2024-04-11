@@ -18,7 +18,7 @@
     <div class="right-partition">
         <div class="form-container">
             <h2>Crea tu cuenta ANP Rodrigo Morales</h2>
-            <form>
+            <form action="@Url.Action("CuentaCreada", "Usuario")">
 
                 <input type="email" placeholder="Correo electronico" />
                 <input type="text" placeholder="Nombre completo" />
@@ -33,36 +33,3 @@
         </div>
     </div>
 </div>
-
-<div id="modalOverlay" class="modal-overlay"></div>
-<dialog id="termsDialog">
-    <header>
-        <h2>Último paso antes de crear tu cuenta.</h2>
-        <button id="closeDialog" class="close-dialog">&times;</button>
-    </header>
-
-    
-    <ul>
-        <li>Se debe cancelar el monto de la suscripción mediante SINPE al número 8888-8888</li>
-        <li>La suscripción tiene un costo de ₡5000 mensuales.</li>
-        <li>Una vez hecha la transferencia, enviar un comprobante al número 8888-8888</li>
-        <li>El equipo revisará la solicitud en un plazo de 24 horas y aprobará la suscripción.</li>
-        <li>El plazo de la suscripción inicia cuando el equipo aprueba la suscripción, no cuando se hace la transferencia.</li>
-        <li>Se enviará un correo electrónico a manera de confirmación cuando el equipo activa la suscripción.</li>
-    </ul>
-    <div>
-        <label>
-            <input type="checkbox" id="agreeCheckbox">
-            He leído y acepto los términos y condiciones.
-        </label>
-    </div>
-    <footer>
-        <button id="acceptButton" class="button" disabled>
-            <a asp-controller="Usuario" asp-action="SolicitudEnviada">Enviar solicitud de suscripción</a>
-        </button>
-    </footer>
-</dialog>
-
-@section Scripts {
-    <script src="~/js/signup-dialog.js"></script>
-}

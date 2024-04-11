@@ -1,0 +1,12 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/CuentaCreada.css" asp-append-version="true" />
+
+<div class="container-solicitud-enviada">
+    <h1>Gracias por unirte a la mejor comunidad parrillera.</h1>
+    <h2>Accede a más beneficios mediante nuestra suscripción mensual.</h2>
+    <h2>Conoce más sobre nuestras suscripciones <a href="@Url.Action("Index", "Suscripciones")" class="volver-inicio"> aquí. </a> </h2>
+    <a href="@Url.Action("Index", "Home")" class="volver-inicio">Volver al Inicio</a>
+</div>

@@ -82,7 +82,7 @@
     padding: 20px;
     border: 1px solid #e1e1e1; /* Light grey border */
     border-radius: 8px; /* Rounded corners for the border */
-    background-color:silver;
+    background-color:#7c7c7c;
 }
 
 .member-photo {
@@ -101,13 +101,14 @@
     font-size: 1.5em;
     margin: 0 0 10px 0; /* Margin below the name */
     font-family: "Inconsolata", sans-serif;
+    color: #040404;
 }
 
 .member-title {
     font-size: 1.2em;
     color: #f1f1f1; /* Dark grey color for the title */
     margin: 0 0 10px 0;
-    
+    color: #E7DFD1;
 }
 
 .member-bio {
@@ -115,4 +116,5 @@
     margin-bottom: 10px;
     text-align: left; /* Align text to the left */
     font-family: "Inconsolata", sans-serif;
+    color: #040404;
 }

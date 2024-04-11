@@ -10,7 +10,7 @@ namespace ANP_Academy.Controllers
             return View();
          }
 
-         public IActionResult SolicitudEnviada()
+         public IActionResult CuentaCreada()
          {
             return View();
          }

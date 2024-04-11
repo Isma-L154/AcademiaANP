@@ -63,12 +63,15 @@ body, html {
 
 input[type='text'],
 input[type='email'],
-input[type='password'] {
+input[type='password'] { /* Si tienes campos de fecha */
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
     border: none;
     border-radius: 5px;
+    color: #040404; /* Color de texto negro para los campos de entrada */
+    background-color: #FFFAFA; /* Puedes ajustar esto si quieres otro color de fondo */
+    /* Asegúrate de que no hay otros estilos que estén sobrescribiendo este color */
 }
 
 /* Button styling */
@@ -103,75 +106,3 @@ a {
     a:hover {
         text-decoration: underline;
     }
-
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
-    z-index: 10; /* Ensure it's below the dialog but above other content */
-    display: none; /* Hidden by default */
-}
-
-dialog {
-    border: none;
-    border-radius: 5px;
-    padding: 20px;
-    position: fixed;
-    width: 50%; /* Adjust to your preference */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-    background: #0a0a0a; /* Black background */
-    color: #FFFAFA; /* Light color text */
-}
-
-    dialog header {
-        display: flex;
-        justify-content: space-between; /* Keeps items spread; left-aligned and right-aligned */
-        align-items: center; /* Vertically centers the items */
-        background: #0a0a0a; /* Black background */
-        padding: 10px; /* Provides some padding within the header */
-    }
-
-
-    dialog footer {
-        background: #0a0a0a; /* Black background */
-    }
-
-.close-dialog {
-    background: none;
-    border: none;
-    font-size: 1.5em;
-    color: #FFFAFA; /* Light color text */
-    cursor: pointer;
-    padding: 20px; /* Adds padding for clickable area, adjust as needed */
-    margin: -20px -20px 0 0; /* Aligns the button to the top-right corner */
-}
-
-/* Style the checkbox label */
-dialog label {
-    color: #FFFAFA; /* Light color text */
-}
-
-/* Style the accept button */
-#acceptButton {
-    background: #ed3330; /* Red background */
-    color: #FFFAFA; /* Light color text */
-    /* Other styles */
-}
-
-    #acceptButton:hover {
-        background-color: #f44336; /* Slightly lighter red on hover */
-    }
-
-/* Ensure the form inputs and list items also have light colored text */
-input[type='text'],
-input[type='email'],
-input[type='password'],
-dialog ul {
-    color: #FFFAFA; /* Light color text */
-}
