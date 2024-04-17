@@ -22,6 +22,7 @@
                                 <th>Descripción</th>
                                 <th>Etiqueta</th>
                                 <th>Archivo</th>
+                                <th>Acciones<th/>
                             </tr>
                         </thead>
                         <tbody>
@@ -31,6 +32,10 @@
                                 <td>Condimentado con sal, pimienta y hierbas secas al gusto.</td>
                                 <td>Receta</td>
                                 <td><a href="/AsadoTira.pdf">AsadoTira.pdf</a></td> <!-- No redirecciona a ningun lado -->
+                                <td>
+                                    <a href="@Url.Action("EditarInventario", "Admin")" class="btn btn-danger">Editar</a>
+                                    <a class="btn btn-danger">Eliminar</a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

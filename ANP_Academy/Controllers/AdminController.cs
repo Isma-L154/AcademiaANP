@@ -52,5 +52,12 @@ namespace ANP_Academy.Controllers
         {
             return View();
         }
+
+        public IActionResult MostrarRecaudacion()
+        {
+            return View();
+        }
+        
+
     }
 }

@@ -1,0 +1,109 @@
+﻿/* MostrarRecaudacion.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#gestion {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
+}
+
+.tabla {
+    overflow-x: auto;
+    margin-top: 20px; /* Espacio adicional sobre la tabla */
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #e7dfd1;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.filtro-y-crear {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.filtro {
+    text-align: left; /* Alinea el texto del filtro a la izquierda */
+}
+
+.etiqueta-fecha-corte {
+    display: block; /* Hace que la etiqueta ocupe su propia línea */
+    margin-bottom: 5px; /* Espacio debajo de la etiqueta */
+}
+
+.input-fecha-corte {
+    /* Ningún estilo adicional es necesario aquí, a menos que quieras cambiar la apariencia del selector de fecha */
+}
+
+.boton-buscar {
+    padding: 5px 10px;
+    background-color: #5B2B29; /* O ajustar al color deseado */
+    border: none;
+    cursor: pointer;
+    color: white;
+    border-radius: 4px; /* Opcional, para bordes redondeados */
+}
+
+    .boton-buscar:hover {
+        background-color: #2C0B0B; /* Un tono más claro o más oscuro para el hover */
+    }
+
+.boton-crear {
+    padding: 10px 20px;
+    background-color: #5B2B29; /* Color coherente con el resto del diseño */
+    color: white;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+    .boton-crear:hover {
+        background-color: #2C0B0B; /* Color más oscuro para el hover */
+    }
+
+.recaudacion-y-fecha {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px; /* Espacio después del filtro */
+}
+
+.fecha-corte {
+    text-align: left; /* Alinea el texto a la izquierda */
+}
+
+.fecha-corte-busqueda {
+    display: flex; /* Establishes a flex container */
+    align-items: center; /* Centers the children vertically */
+    gap: 10px; /* Adds space between items */
+}
+
+/* Label style */
+.etiqueta-fecha-corte {
+    margin-bottom: 0; /* Removes bottom margin from the label */
+    white-space: nowrap; /* Prevents the label from wrapping */
+}
+
+/* Agrega aquí más estilos si necesitas personalizar otros elementos */
