@@ -26,6 +26,8 @@
                 <li><a href="~/Suscripciones/Index">Suscripciones</a></li> 
                 <li><a href="#chat">ChatBot</a></li>
                 <button type="button" class="btn btn-outline-danger" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Admin Menu">Admin</button>
+                <button type="button" class="btn btn-outline-danger" data-bs-toggle="offcanvas" data-bs-target="#offcanvasPerfil" aria-controls="offcanvasPerfil">Mi Perfil</button>
+
             </ul>
             <!--Inicio de Menu desplegable para Modulos de Admin-->
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
@@ -51,13 +53,38 @@
                             <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="GestionContenido" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-photo-film" style="margin-right: 15px;"></i> Gestión Contenidos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="MostrarRecaudacion" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-money-bill-trend-up" style="margin-right: 15px;"></i> Recaudación</a>
+                            <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="MostrarFacturas" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-file-invoice-dollar" style="margin-right: 15px;"></i> Facturación</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="MostrarContabilidad" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-money-bill-trend-up" style="margin-right: 15px;"></i> Contabilidad</a>
                         </li>
                 </ul>
-
+            <!--Fin de Menu desplegable para Modulos de Admin-->
+            <!--Inicio de Menu desplegable para Perfil-->
                 </div>
             </div>
-        <!--Fin de Menu desplegable para Modulos de Admin-->
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasPerfil" aria-labelledby="offcanvasPerfilLabel">
+                <div class="offcanvas-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 m-3">
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Usuario" asp-action="EditarPerfil" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-address-card" style="margin-right: 15px;"></i>Editar Perfil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Facturas" asp-action="VerFacturasUsuario" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-file-invoice" style="margin-right: 15px;"></i>Mis facturas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="~/Suscripciones/MisSuscripciones" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-chalkboard-user" style="margin-right: 15px;"></i>Mis suscripciones</a>
+                        </li>
+                       
+                    </ul>
+                </div>
+            </div>
+
+        
             
         <div class="auth-buttons">
             <a href="@Url.Action("Signup", "Usuario")" class="register">Regístrate</a>

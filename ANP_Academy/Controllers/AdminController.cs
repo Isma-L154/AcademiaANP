@@ -53,11 +53,16 @@ namespace ANP_Academy.Controllers
             return View();
         }
 
-        public IActionResult MostrarRecaudacion()
+        public IActionResult MostrarContabilidad()
         {
             return View();
         }
-        
+
+        public IActionResult MostrarFacturas()
+        {
+            return View();
+        }
+
 
     }
 }

@@ -1,0 +1,42 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Administrador/EditarUsuario.css" asp-append-version="true" />
+
+<main>
+    <section id="gestion">
+        <h2 style="text-align: center;">Detalle de la Factura</h2>
+        <div class="formulario-edicion">
+            <form action="@Url.Action("VerFacturasUsuario", "Facturas")" method="post">
+                <div class="campo-formulario">
+                    <label for="identificador">Identificador:</label>
+                    <input type="text" id="identificador" name="identificador" value="1" readonly />
+                </div>
+                <div class="campo-formulario">
+                    <label for="NombreUsuario">Nombre cliente:</label>
+                    <input type="text" id="NombreUsuario" name="NombreUsuario" value="Andrés Elizondo" readonly />
+                </div>
+                <div class="campo-formulario">
+                    <label for="fechaCompra">Fecha Compra:</label>
+                    <input type="date" id="fechaCompra" name="fechaCompra" value="2024-01-15" readonly />
+                </div>
+                <div class="campo-formulario">
+                    <label for="precio">Precio:</label>
+                    <input type="text" id="precio" name="precio" value="₡5000" readonly />
+                </div>
+                <div class="campo-formulario">
+                    <label for="desde">Desde:</label>
+                    <input type="date" id="desde" name="desde" value="2024-01-15" readonly />
+                </div>
+                <div class="campo-formulario">
+                    <label for="hasta">Hasta:</label>
+                    <input type="date" id="hasta" name="hasta" value="2024-02-15" readonly />
+                </div>
+                <div class="botones-formulario">
+                    <button type="submit" class="boton-atras">Atrás</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>

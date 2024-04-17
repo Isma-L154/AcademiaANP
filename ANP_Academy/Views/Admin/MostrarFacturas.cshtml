@@ -1,0 +1,91 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/css/Facturas/VerFacturasUsuario.css" asp-append-version="true" />
+
+<main>
+    <section id="gestion">
+        <h2 style="text-align: center;">Facturación</h2>
+        <div class="filtro-y-crear">
+            <div class="filtro">
+                <form>
+                    <select name="filtro" aria-label="Filtrar por tipo de suscripción" class="filtro-dropdown">
+                        <option value="" disabled selected>Buscar por...</option>
+                        <option value="Mensual">Mensual</option>
+                        <option value="Trimestral">Trimestral</option>
+                        <option value="Anual">Anual</option>
+                    </select>
+                    <input type="text" name="valor" aria-label="Valor de búsqueda" placeholder="Escribe aquí...">
+                    <button type="submit" class="boton-buscar"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+            <div class="filtro">
+                <form>
+                    <select name="filtro" aria-label="Buscar por" class="filtro-dropdown">
+                        <option value="" disabled selected>Buscar por...</option>
+                        <option value="identificador">Identificador</option>
+                        <option value="nombre">Nombre</option>
+                        <option value="correo">Correo Electrónico</option>
+                        <option value="fechacompra">Fecha Compra</option>
+                    </select>
+                    <input type="text" name="valor" aria-label="Valor de búsqueda" placeholder="Escribe aquí...">
+                    <button type="submit" class="boton-buscar"><i class="fas fa-search"></i></button>
+                </form>
+            </div>
+
+        </div>
+        <div class="tabla">
+            <table>
+                <tr>
+                    <th>Identificador</th>
+                    <th>Identificador Usuario</th>
+                    <th>Fecha Compra</th>
+                    <th>Tipo de Suscripción</th>
+                    <th>Precio</th>
+                    <th>Desde</th>
+                    <th>Hasta</th>
+                    <th>Acciones</th>
+                </tr>
+                <tr>
+                    <td>542187</td>
+                    <td>133</td>
+                    <td>01/01/24</td>
+                    <td>Mensual</td>
+                    <td>₡5000</td>
+                    <td>01/01/24</td>
+                    <td>01/02/24</td>
+                    <td>
+                        <a href="@Url.Action("VerDetalleFacturaAdmin", "Facturas")" class="boton-editar">Ver detalle</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>542187</td>
+                    <td>133</td>
+                    <td>01/02/24</td>
+                    <td>Mensual</td>
+                    <td>₡5000</td>
+                    <td>01/02/24</td>
+                    <td>01/03/24</td>
+                    <td>
+                        <a href="@Url.Action("VerDetalleFacturaUsuario", "Facturas")" class="boton-editar">Ver detalle</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>542187</td>
+                    <td>133</td>
+                    <td>01/03/24</td>
+                    <td>Mensual</td>
+                    <td>₡5000</td>
+                    <td>01/03/24</td>
+                    <td>01/04/24</td>
+                    <td>
+                        <a href="@Url.Action("VerDetalleFacturaUsuario", "Facturas")" class="boton-editar">Ver detalle</a>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </section>
+</main>
+
+

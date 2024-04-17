@@ -1,11 +1,11 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link rel="stylesheet" href="~/css/Administrador/MostrarRecaudacion.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/Administrador/MostrarContabilidad.css" asp-append-version="true" />
 
 <main>
     <section id="gestion">
-        <h2 style="text-align: center;">Recaudación</h2>
+        <h2 style="text-align: center;">Contabilidad</h2>
         <div class="filtro-y-crear">
             <div class="filtro">
                 <div class="fecha-corte-busqueda">
@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="crear-usuario">
-                <a href="@Url.Action("MostrarRecaudacion", "Admin")" class="boton-crear">Descargar facturas asociadas al corte</a>
+                <a href="@Url.Action("MostrarContabilidad", "Admin")" class="boton-crear">Descargar facturas asociadas al corte</a>
             </div>
         </div>
         <div class="tabla">
