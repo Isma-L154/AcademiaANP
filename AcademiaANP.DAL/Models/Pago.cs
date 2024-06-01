@@ -1,10 +1,13 @@
-﻿using System;
+﻿using ANP_Academy.DAL.Models;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace AcademiaANP.DAL.Models;
+namespace ANP_Academy.DAL.Models;
 
 public partial class Pago
 {
+    [Key]
     public int IdPagos { get; set; }
 
     public string Nombre { get; set; } = null!;
@@ -21,7 +24,7 @@ public partial class Pago
 
     public virtual ICollection<Facturacion> Facturacions { get; set; } = new List<Facturacion>();
 
-    public virtual Suscripcione? IdSuscripcionNavigation { get; set; }
+    public virtual Suscripcion? IdSuscripcionNavigation { get; set; }
 
     public virtual Usuario? IdUserNavigation { get; set; }
 }

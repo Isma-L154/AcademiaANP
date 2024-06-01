@@ -1,10 +1,13 @@
-﻿using System;
+﻿using ANP_Academy.DAL.Models;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace AcademiaANP.DAL.Models;
+namespace ANP_Academy.DAL.Models;
 
 public partial class Inventario
 {
+    [Key]
     public int Id { get; set; }
 
     public string? Descripcion { get; set; }
@@ -31,7 +34,7 @@ public partial class Inventario
 
     public virtual Categoria? IdCategoriaNavigation { get; set; }
 
-    public virtual Proveedore? IdProveedorNavigation { get; set; }
+    public virtual Proveedor? IdProveedorNavigation { get; set; }
 
     public virtual Ubicacion? IdUbicacionNavigation { get; set; }
 }

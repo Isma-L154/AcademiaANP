@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Microsoft.EntityFrameworkCore;
 
-namespace AcademiaANP.DAL.Models;
+namespace ANP_Academy.DAL.Models;
 
 public partial class AnpdesarrolloContext : DbContext
 {
@@ -25,15 +26,15 @@ public partial class AnpdesarrolloContext : DbContext
 
     public virtual DbSet<Pago> Pagos { get; set; }
 
-    public virtual DbSet<Proveedore> Proveedores { get; set; }
+    public virtual DbSet<Proveedor> Proveedores { get; set; }
 
-    public virtual DbSet<Publicacione> Publicaciones { get; set; }
+    public virtual DbSet<Publicacion> Publicaciones { get; set; }
 
 
-    public virtual DbSet<Suscripcione> Suscripciones { get; set; }
+    public virtual DbSet<Suscripcion> Suscripciones { get; set; }
 
     public virtual DbSet<Ubicacion> Ubicacions { get; set; }
-  
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Categoria>(entity =>
@@ -140,7 +141,7 @@ public partial class AnpdesarrolloContext : DbContext
                 .HasConstraintName("FK__Pagos__Id_Suscri__1BC821DD");
         });
 
-        modelBuilder.Entity<Proveedore>(entity =>
+        modelBuilder.Entity<Proveedor>(entity =>
         {
             entity.HasKey(e => e.IdProveedor).HasName("PK__Proveedo__477B858ED514B108");
 
@@ -150,7 +151,7 @@ public partial class AnpdesarrolloContext : DbContext
                 .IsUnicode(false);
         });
 
-        modelBuilder.Entity<Publicacione>(entity =>
+        modelBuilder.Entity<Publicacion>(entity =>
         {
             entity.HasKey(e => e.IdPublicacion).HasName("PK__Publicac__BE87075764D95DCC");
 
@@ -167,7 +168,7 @@ public partial class AnpdesarrolloContext : DbContext
                 .HasConstraintName("FK__Publicaci__Id_Co__14270015");
         });
 
-        modelBuilder.Entity<Suscripcione>(entity =>
+        modelBuilder.Entity<Suscripcion>(entity =>
         {
             entity.HasKey(e => e.IdSuscripcion).HasName("PK__Suscripc__C0583DB0622B2151");
 

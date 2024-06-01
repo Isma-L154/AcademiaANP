@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace AcademiaANP.DAL.Models;
-
-public partial class Proveedore
+namespace ANP_Academy.DAL.Models;
+public partial class Proveedor
 {
+    [Key]
     public int IdProveedor { get; set; }
 
     public string Nombre { get; set; } = null!;

@@ -8,8 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AcademiaANP.DAL.Models
-{
+namespace ANP_Academy.DAL.Models{
     [Table("Users")]
     public class Usuario : IdentityUser
     {
@@ -22,6 +21,13 @@ namespace AcademiaANP.DAL.Models
         public string PrimApellido { get; set; }
         public string SegApellido { get; set; }
 
-        public int? Activo { get; set; }
+        public bool? Activo { get; set; }
+
+        public bool? Suscrito { get; private set; }
+
+        public int? SuscripcionId { get; set; }
+        public Suscripcion? Suscripcion { get; set; }
+
+       
     }
 }

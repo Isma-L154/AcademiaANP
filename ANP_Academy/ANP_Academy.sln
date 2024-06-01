@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ANP_Academy", "ANP_Academy.csproj", "{047FA5DA-B031-410E-915D-D56C79F87DED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcademiaANP.DAL", "..\AcademiaANP.DAL\AcademiaANP.DAL.csproj", "{10989573-FF5F-4999-8110-FB1691B36BFE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ANP_Academy.DAL", "..\AcademiaANP.DAL\ANP_Academy.DAL.csproj", "{10989573-FF5F-4999-8110-FB1691B36BFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,7 +1,8 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 
-namespace AcademiaANP.DAL.Models;
+namespace ANP_Academy.DAL.Models;
 
 public partial class Categoria
 {

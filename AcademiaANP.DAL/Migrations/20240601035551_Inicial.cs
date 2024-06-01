@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace AcademiaANP.DAL.Migrations
+namespace ANP_Academy.DAL.Migrations
 {
     /// <inheritdoc />
     public partial class Inicial : Migration

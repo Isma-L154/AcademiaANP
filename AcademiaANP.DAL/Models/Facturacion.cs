@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace AcademiaANP.DAL.Models;
+namespace ANP_Academy.DAL.Models;
 
 public partial class Facturacion
 {
+    [Key]
     public int IdFactura { get; set; }
 
     public DateTime Fecha { get; set; }
@@ -19,7 +19,7 @@ public partial class Facturacion
 
     public virtual Pago? IdPagosNavigation { get; set; }
 
-    public virtual Suscripcione? IdSuscripcionNavigation { get; set; }
+    public virtual Suscripcion? IdSuscripcionNavigation { get; set; }
 
     public virtual Usuario? IdUserNavigation { get; set; }
 }

@@ -1,10 +1,13 @@
-﻿using System;
+﻿using ANP_Academy.DAL.Models;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace AcademiaANP.DAL.Models;
+namespace ANP_Academy.DAL.Models;
 
-public partial class Publicacione
+public partial class Publicacion
 {
+    [Key]
     public int IdPublicacion { get; set; }
 
     public string? Descripcion { get; set; }

@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AcademiaANP.DAL\AcademiaANP.DAL.csproj" />
+    <ProjectReference Include="..\AcademiaANP.DAL\ANP_Academy.DAL.csproj" />
   </ItemGroup>
 
 </Project>

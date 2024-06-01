@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
-namespace AcademiaANP.DAL.Models
+namespace ANP_Academy.DAL.Models
 {
     public class IdentityContext : IdentityDbContext<Usuario>
     {
@@ -20,10 +19,10 @@ namespace AcademiaANP.DAL.Models
             modelBuilder.Entity<IdentityRoleClaim<string>>().HasKey(x => x.Id);
         }
     }
+
+
+
+
+
+
 }
-
-
-
-
-
-
