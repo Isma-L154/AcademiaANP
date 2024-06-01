@@ -1,15 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics.Contracts;
+using System.Reflection.Emit;
 
-
-namespace ANP_Academy.Models
+namespace AcademiaANP.DAL.Models
 {
-    public class ApplicationDBContext : IdentityDbContext<IdentityUser>
+    public class IdentityContext : IdentityDbContext<Usuario>
     {
-        public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options) { }
+        public IdentityContext(DbContextOptions<IdentityContext> options) : base(options) { }
 
         // Aqui se agregan los DbSet
 
@@ -20,8 +18,12 @@ namespace ANP_Academy.Models
             modelBuilder.Entity<IdentityUserClaim<string>>().HasKey(x => x.Id);
             modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(x => new { x.LoginProvider, x.ProviderKey });
             modelBuilder.Entity<IdentityRoleClaim<string>>().HasKey(x => x.Id);
-
         }
-
     }
 }
+
+
+
+
+
+

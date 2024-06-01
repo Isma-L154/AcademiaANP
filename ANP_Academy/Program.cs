@@ -1,3 +1,4 @@
+using AcademiaANP.DAL.Models;
 using ANP_Academy.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,19 +12,23 @@ namespace ANP_Academy
             var builder = WebApplication.CreateBuilder(args);
 
             //Configure the ConnectionString and DbContext class
-            builder.Services.AddDbContext<ApplicationDBContext>(options =>
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDBContext>();
+            builder.Services.AddDbContext<AnpdesarrolloContext>(options => options.UseSqlServer(connectionString));
+
+
+            //Config of the Identity Conecction
+            builder.Services.AddDbContext<IdentityContext>(options => options.UseSqlServer(connectionString));
+
+            builder.Services.AddIdentity<Usuario ,IdentityRole >(options => options.SignIn.RequireConfirmedAccount = false)
+            .AddEntityFrameworkStores<IdentityContext>()
+            .AddDefaultUI();
 
 
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages();
 
             var app = builder.Build();
 
