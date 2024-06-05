@@ -1,0 +1,23 @@
+﻿@model ANP_Academy.DAL.Models.Usuario
+
+<link rel="stylesheet" href="~/css/Usuario/VerPerfil.css" asp-append-version="true" />
+
+<div class="profile-container">
+    <h1 class="text-center">Perfil de Usuario</h1>
+
+    <div class="profile-card">
+        <div class="profile-details">
+            <p><strong>Correo Electrónico:</strong> @Model.Email</p>
+            <p><strong>Nombre:</strong> @Model.Nombre</p>
+            <p><strong>Primer Apellido:</strong> @Model.PrimApellido</p>
+            <p><strong>Segundo Apellido:</strong> @Model.SegApellido</p>
+            <p><strong>Teléfono:</strong> @Model.PhoneNumber</p>
+        </div>
+        <div class="profile-actions">
+            <a asp-action="Edit" class="btn btn-primary">Editar</a>
+            <form asp-action="Delete" method="post" class="d-inline">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar tu cuenta?');">Eliminar</button>
+            </form>
+        </div>
+    </div>
+</div>

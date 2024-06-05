@@ -6,24 +6,31 @@
 <link rel="stylesheet" href="~/css/Home.css" asp-append-version="true" />
 
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    <li class="nav-item">
-        <a id="manage" class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
-    </li>
-    <li class="nav-item">
-        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="auth-buttons">
-        <a class="nav-link text-light" id="register" asp-area="Identity" asp-page="/Account/Register">Registrarse</a>
-    </li>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a id="manage" class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hola @UserManager.GetUserName(User)!</a>
+        </li>
+        <li class="nav-item">
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button id="logout" type="submit" class="nav-link btn btn-link text-light border-0">Cerrar Sesión</button>
+            </form>
+        </li>
+    }
+    else
+    {
         <li class="auth-buttons">
-        <a class="nav-link text-light" id="login" asp-area="Identity" asp-page="/Account/Login">Iniciar Sesión</a>
-    </li>
-}
+            <a class="nav-link text-light" id="login" asp-area="Identity" asp-page="/Account/Login">Iniciar Sesión</a>
+        </li>
+        <li class="auth-buttons">
+            <a class="nav-link text-light" id="register" asp-area="Identity" asp-page="/Account/Register">Registrarse</a>
+        </li>
+    }
 </ul>
+
+@if (!SignInManager.IsSignedIn(User))
+{
+    <div class="alert alert-danger" role="alert">
+        Ocurrió un error al intentar acceder al perfil del usuario. Por favor, <a href="@Url.Action("Login", "Account", new { area = "Identity" })" class="alert-link">inicia sesión</a> para acceder a tu perfil.
+    </div>
+}
