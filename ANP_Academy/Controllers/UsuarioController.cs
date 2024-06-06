@@ -57,20 +57,47 @@ namespace ANP_Academy.Controllers
                 return NotFound();
             }
 
+            var oldUserName = user.UserName;
+
+            // Verificar si el nuevo nombre de usuario ya está en uso
+            if (model.UserName != oldUserName)
+            {
+                var existingUser = await _userManager.FindByNameAsync(model.UserName);
+                if (existingUser != null)
+                {
+                    TempData["UsernameInUse"] = "El nombre de usuario ya está en uso. Por favor, elija otro.";
+                    return View(model);
+                }
+            }
+
             user.Nombre = model.Nombre;
             user.PrimApellido = model.PrimApellido;
+            user.SegApellido = model.SegApellido;
+            user.PhoneNumber = model.PhoneNumber;
+            user.UserName = model.UserName;
 
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
             {
                 // Guardar cambios en el DbContext
                 await _dbContext.SaveChangesAsync();
+
+                // Cerrar sesión si el nombre de usuario ha cambiado
+                if (oldUserName != user.UserName)
+                {
+                    await _signInManager.SignOutAsync();
+                    TempData["Message"] = "Su nombre de usuario ha sido actualizado. Por favor, inicie sesión nuevamente.";
+                    return RedirectToAction("Index", "Home");
+                }
+
                 return RedirectToAction("Index");
             }
+
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
+
             return View(model);
         }
 
@@ -96,19 +123,19 @@ namespace ANP_Academy.Controllers
             return RedirectToAction("Index");
         }
 
-
         public IActionResult Signup()
-         {
+        {
             return View();
-         }
+        }
 
-         public IActionResult CuentaCreada()
-         {
+        public IActionResult CuentaCreada()
+        {
             return View();
-         }
+        }
+
         public IActionResult Login()
         {
             return View();
-        }        
+        }
     }
 }
