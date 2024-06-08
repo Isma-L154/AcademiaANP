@@ -1,9 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ANP_Academy.DAL.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ANP_Academy.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
+        private readonly UserManager<Usuario> _userManager;
+        public AdminController(UserManager<Usuario> userManager)
+        {
+            _userManager = userManager;
+        }
+
+
         public IActionResult ControlSuscrip()
         {
             return View();
@@ -23,9 +37,10 @@ namespace ANP_Academy.Controllers
             return View();
         }
 
-        public IActionResult GestionUsuarios()
+        public async Task<IActionResult> GestionUsuarios()
         {
-            return View();
+            var usuarios = await _userManager.Users.ToListAsync();
+            return View(usuarios);
         }
 
         public IActionResult EditarUsuario()
