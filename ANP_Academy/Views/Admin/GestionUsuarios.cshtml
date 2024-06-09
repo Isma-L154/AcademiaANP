@@ -50,7 +50,8 @@
                             <td>@(usuario.Activo == true ? "Activo" : "Inactivo")</td>
                             <td>
                                 <a href="@Url.Action("EditarUsuario", "Admin", new { id = usuario.Id })" class="boton-editar">Editar</a>
-                                <a class="boton-desactivar">Desactivar</a>
+                             
+                                <button id="BotonCambio" class="boton-estado" data-id="@usuario.Id" data-url="@Url.Action("CambioEstado", "Admin")" data-estado="@usuario.Activo">Desactivar</button>
                             </td>
                         </tr>
                     }
@@ -59,3 +60,6 @@
         </div>
     </section>
 </main>
+
+
+<script src="~/js/Admin/GestUsuarios.js"></script>

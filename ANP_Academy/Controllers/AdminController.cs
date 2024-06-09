@@ -36,13 +36,11 @@ namespace ANP_Academy.Controllers
         {
             return View();
         }
-
         public async Task<IActionResult> GestionUsuarios()
         {
             var usuarios = await _userManager.Users.ToListAsync();
             return View(usuarios);
         }
-
         public IActionResult EditarUsuario()
         {
             return View();
@@ -78,6 +76,29 @@ namespace ANP_Academy.Controllers
             return View();
         }
 
+        //Metodo Activar/Desactivar Usuario
+        [HttpPost]
+        public async Task<IActionResult> CambioEstado(string id)
+        {
 
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null){
+                return NotFound();
+            }
+            
+            if (user.Activo == true){
+                user.Activo = false;
+            }else{
+                user.Activo = true;
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("GestionUsuarios");
+            }
+            return View("GestionUsuarios", await _userManager.Users.ToListAsync());
+        }
     }
 }
