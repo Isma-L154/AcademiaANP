@@ -17,6 +17,55 @@ namespace ANP_Academy.Controllers
             _userManager = userManager;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DesactivarUsuario(string id)
+        {
+            var usuario = await _userManager.FindByIdAsync(id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            usuario.Activo = false;
+            var result = await _userManager.UpdateAsync(usuario);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("GestionUsuarios");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return RedirectToAction("GestionUsuarios");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ActivarUsuario(string id)
+        {
+            var usuario = await _userManager.FindByIdAsync(id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            usuario.Activo = true;
+            var result = await _userManager.UpdateAsync(usuario);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("GestionUsuarios");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return RedirectToAction("GestionUsuarios");
+        }
 
         public IActionResult ControlSuscrip()
         {

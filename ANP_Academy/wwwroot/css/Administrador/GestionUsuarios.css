@@ -34,19 +34,20 @@ img {
     height: auto;
 }
 
+.boton-desactivar, .boton-activar, .boton-editar {
+    padding: 5px 10px; /* Reducir padding */
+    font-size: 14px; /* Reducir tamaño de fuente */
+    margin: 2px 2px; /* Reducir margen */
+    display: inline-block;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
 .boton-desactivar {
     background-color: #E32A07;
     color: white;
     border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
 }
 
     .boton-desactivar:hover {
@@ -57,15 +58,6 @@ img {
     background-color: #4CAF50;
     color: white;
     border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
 }
 
     .boton-activar:hover {
@@ -76,15 +68,6 @@ img {
     background-color: #5B2B29;
     color: white;
     border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
 }
 
     .boton-editar:hover {
@@ -138,7 +121,7 @@ img {
 
 /* Estilo para el botón Crear Usuario */
 .boton-crear {
-    background-color: #5B2B29; /* Utiliza el mismo color que el botón editar para la consistencia */
+    background-color: #5B2B29; 
     color: white;
     border: none;
     padding: 10px 20px;
@@ -153,16 +136,16 @@ img {
 }
 
     .boton-crear:hover {
-        background-color: #2C0B0B; /* Oscurece un poco para el efecto hover */
+        background-color: #2C0B0B; 
     }
 
-/* Asegúrate de que el contenedor del filtro tenga un ancho máximo para permitir el alineamiento correcto */
+
 .filtro {
     flex: 1;
-    max-width: calc(100% - 150px); /* 150px es un ejemplo, ajusta según el ancho de tu botón Crear */
+    max-width: calc(100% - 150px); 
 }
 
-/* Ajusta el margen o el ancho del botón de búsqueda si es necesario para alinear con el botón crear */
+
 .boton-buscar {
-    margin-right: 10px; /* Asegúrate de que el margen derecho no empuje el botón fuera de alineación */
+    margin-right: 10px; 
 }

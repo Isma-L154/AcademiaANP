@@ -50,7 +50,20 @@
                             <td>@(usuario.Activo == true ? "Activo" : "Inactivo")</td>
                             <td>
                                 <a href="@Url.Action("EditarUsuario", "Admin", new { id = usuario.Id })" class="boton-editar">Editar</a>
-                                <a class="boton-desactivar">Desactivar</a>
+                                @if (usuario.Activo == true)
+                                {
+                                    <form asp-action="DesactivarUsuario" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@usuario.Id" />
+                                        <button type="submit" class="boton-desactivar" onclick="return confirm('¿Estás seguro de que deseas desactivar este usuario?');">Desactivar</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form asp-action="ActivarUsuario" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@usuario.Id" />
+                                        <button type="submit" class="boton-activar" onclick="return confirm('¿Estás seguro de que deseas activar este usuario?');">Activar</button>
+                                    </form>
+                                }
                             </td>
                         </tr>
                     }
