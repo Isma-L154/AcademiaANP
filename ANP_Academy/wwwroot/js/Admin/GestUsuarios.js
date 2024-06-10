@@ -17,3 +17,23 @@ $(document).ready(function () {
     });
 });
 
+//Funcion para poder realizar busquedas en especifico
+document.getElementById('BotonBuscar').addEventListener('click', function (event) {
+    event.preventDefault();
+    var textoBusqueda = document.getElementById('InputTexto').value.toLowerCase();
+    var filas = document.querySelectorAll('#TablaUsuarios tbody tr');
+
+    filas.forEach(function (fila) {
+        var coincide = false;
+        fila.querySelectorAll('td').forEach(function (celda) {
+            if (celda.textContent.toLowerCase().indexOf(textoBusqueda) > -1) {
+                coincide = true;
+            }
+        });
+        if (coincide) {
+            fila.style.display = '';
+        } else {
+            fila.style.display = 'none';
+        }
+    });
+});
