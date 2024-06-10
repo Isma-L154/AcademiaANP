@@ -1,21 +1,19 @@
-﻿var botonEstado = document.getElementById("BotonCambio")
-//Metodo para poder desactivar o activar los Usuarios 
+﻿
+//Metodo para poder desactivar o activar los Usuarios
 $(document).ready(function () {
     $(".boton-estado").click(function (e) {
-        e.preventDefault(); 
-        var userId = $(this).data("id"); 
+        e.preventDefault();
+        var userId = $(this).data("id");
         var url = $(this).data("url");
-        var estado = $(this).data("estado");
 
-        $.post(url, {id: userId })
-            .done(function () {
-                alert("Estado cambiado con exito");
-             })
-             .fail(function() {
-                 alert("Fallo al cambiar el estado del usuario");
-             });
+        $.post(url, { id: userId})
+            .done(function (nuevoEstado) {
+                alert("Estado cambiado con éxito");
+                location.reload();
+            })
+            .fail(function () {
+                alert("Fallo al cambiar el estado del usuario");
+            });
     });
 });
-
-
 

@@ -50,8 +50,16 @@
                             <td>@(usuario.Activo == true ? "Activo" : "Inactivo")</td>
                             <td>
                                 <a href="@Url.Action("EditarUsuario", "Admin", new { id = usuario.Id })" class="boton-editar">Editar</a>
-                             
-                                <button id="BotonCambio" class="boton-estado" data-id="@usuario.Id" data-url="@Url.Action("CambioEstado", "Admin")" data-estado="@usuario.Activo">Desactivar</button>
+                                <!--TODO Put a WARNING pop-up that tells the admin if he is sure to change the status of the user-->
+                                @if (usuario.Activo == true)
+                                {
+                                    <button class="boton-estado" data-id="@usuario.Id" data-url="@Url.Action("CambioEstado", "Admin")" data-estado="@usuario.Activo">Desactivar</button>
+                                }
+                                else
+                                {
+                                    <button class="boton-estado" style="color:white; background-color:green" data-id="@usuario.Id" data-url="@Url.Action("CambioEstado", "Admin")" data-estado="@usuario.Activo">Activar</button>
+                                }
+                                
                             </td>
                         </tr>
                     }
