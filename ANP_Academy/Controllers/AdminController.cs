@@ -1,10 +1,14 @@
 ﻿using ANP_Academy.DAL.Models;
+using ANP_Academy.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+
+
 
 namespace ANP_Academy.Controllers
 {
@@ -12,7 +16,7 @@ namespace ANP_Academy.Controllers
     public class AdminController : Controller
     {
         private readonly UserManager<Usuario> _userManager;
-        public AdminController(UserManager<Usuario> userManager)
+        public AdminController(UserManager<Usuario> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
         }
@@ -89,7 +93,21 @@ namespace ANP_Academy.Controllers
         public async Task<IActionResult> GestionUsuarios()
         {
             var usuarios = await _userManager.Users.ToListAsync();
-            return View(usuarios);
+            var userRoles = new List<UserRoleViewModel>();
+
+            foreach (var user in usuarios)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                var role = roles.FirstOrDefault(); // Assuming a user has only one role
+
+                userRoles.Add(new UserRoleViewModel
+                {
+                    Usuario = user,
+                    Role = role
+                });
+            }
+
+            return View(userRoles);
         }
 
         public IActionResult EditarUsuario()

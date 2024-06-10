@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ANP_Academy.DAL.Models.Usuario>
+﻿@model IEnumerable<ANP_Academy.ViewModels.UserRoleViewModel>
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -39,28 +39,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var usuario in Model)
+                    @foreach (var item in Model)
                     {
                         <tr>
-                            <td>@usuario.Id</td>
-                            <td>@usuario.Nombre @usuario.PrimApellido @usuario.SegApellido</td>
-                            <td>@usuario.Email</td>
-                            <td>@usuario.PhoneNumber</td>
-                            <td> <!-- Aquí puedes agregar la lógica para mostrar el rol del usuario si lo tienes disponible --> </td>
-                            <td>@(usuario.Activo == true ? "Activo" : "Inactivo")</td>
+                            <td>@item.Usuario.Id</td>
+                            <td>@item.Usuario.Nombre @item.Usuario.PrimApellido @item.Usuario.SegApellido</td>
+                            <td>@item.Usuario.Email</td>
+                            <td>@item.Usuario.PhoneNumber</td>
+                            <td>@item.Role</td>
+                            <td>@(item.Usuario.Activo == true ? "Activo" : "Inactivo")</td>
                             <td>
-                                <a href="@Url.Action("EditarUsuario", "Admin", new { id = usuario.Id })" class="boton-editar">Editar</a>
-                                @if (usuario.Activo == true)
+                                <a href="@Url.Action("EditarUsuario", "Admin", new { id = item.Usuario.Id })" class="boton-editar">Editar</a>
+                                @if (item.Usuario.Activo == true)
                                 {
                                     <form asp-action="DesactivarUsuario" method="post" class="d-inline">
-                                        <input type="hidden" name="id" value="@usuario.Id" />
+                                        <input type="hidden" name="id" value="@item.Usuario.Id" />
                                         <button type="submit" class="boton-desactivar" onclick="return confirm('¿Estás seguro de que deseas desactivar este usuario?');">Desactivar</button>
                                     </form>
                                 }
                                 else
                                 {
                                     <form asp-action="ActivarUsuario" method="post" class="d-inline">
-                                        <input type="hidden" name="id" value="@usuario.Id" />
+                                        <input type="hidden" name="id" value="@item.Usuario.Id" />
                                         <button type="submit" class="boton-activar" onclick="return confirm('¿Estás seguro de que deseas activar este usuario?');">Activar</button>
                                     </form>
                                 }
