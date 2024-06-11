@@ -1,69 +1,56 @@
-﻿@{
+﻿@model IEnumerable<ANP_Academy.DAL.Models.Inventario>
+
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<link rel="stylesheet" href="~/css/Administrador/GestionUsuarios.css" asp-append-version="true" />
 
-<main>
-    <section id="gestion">
-        <h2 style="text-align: center;">Gestión de inventario</h2>
-        <div class="filtro-y-crear">
-            <div class="filtro">
-                <form>
-                    <select name="filtro" aria-label="Buscar por" class="filtro-dropdown">
-                        <option value="" disabled selected>Buscar por...</option>
-                        <option value="id">Código</option>
-                        <option value="descripcion">Descripción</option>
-                        <option value="proveedor">Proveedor</option>
-                        <option value="fecha_pedido">Fecha de Pedido</option>
-                        <option value="fecha_recepcion">Fecha de Recepción</option>
-                        <option value="fecha_caducidad">Fecha de Caducidad</option>
-                        <option value="estado">Estado</option>
-                        <option value="ubicacion">Ubicación</option>
-                    </select>
-                    <input type="text" name="valor" aria-label="Valor de búsqueda" placeholder="Escribe aquí...">
-                    <button type="submit" class="boton-buscar"><i class="fas fa-search"></i></button>
-                </form>
-            </div>
-            <div class="crear-usuario">
-                <a href="@Url.Action("CrearInventario", "Admin")" class="boton-crear">Crear objeto</a>
-            </div>
-        </div>
-        <div class="tabla">
-            <table>
-                <tr>
-                    <th>Código</th>
-                    <th>Descripción</th>
-                    <th>Categoría</th>
-                    <th>Cantidad en Stock</th>
-                    <th>Unidad de medida</th>
-                    <th>Precio por unidad</th>
-                    <th>Proveedor</th>
-                    <th>Fecha de Pedido</th>
-                    <th>Fecha de Recepción</th>
-                    <th>Fecha de Caducidad</th>
-                    <th>Estado</th>
-                    <th>Ubicación</th>
-                    <th>Acciones</th>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Costillas de cerdo St. Louis</td>
-                    <td>Carnes</td>
-                    <td>4</td>
-                    <td>kilogramos</td>
-                    <td>₡5000</td>
-                    <td>Carnes La Buena</td>
-                    <td>027/03/2024</td>
-                    <td>027/03/2024</td>
-                    <td>08/04/2024</td>
-                    <td>Disponible</td>
-                    <td>Congelador 1</td>
-                    <td>
-                        <a href="@Url.Action("EditarInventario", "Admin")" class="boton-editar">Editar</a>
-                        <a class="boton-desactivar">Eliminar</a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </section>
-</main>
+<h2>Gestión de Inventario</h2>
+
+<p>
+    <a href="@Url.Action("CrearInventario")">Crear Nuevo Inventario</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Descripción</th>
+            <th>Categoría</th>
+            <th>Cantidad</th>
+            <th>Unidad</th>
+            <th>Precio</th>
+            <th>Proveedor</th>
+            <th>Fecha Pedido</th>
+            <th>Fecha Recepción</th>
+            <th>Fecha Caducidad</th>
+            <th>Estado</th>
+            <th>Ubicación</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Descripcion</td>
+                <td>@item.IdCategoriaNavigation?.Nombre</td>
+                <td>@item.Cantidad</td>
+                <td>@item.Unidad</td>
+                <td>@item.Precio</td>
+                <td>@item.IdProveedorNavigation?.Nombre</td>
+                <td>@item.FechaPedido.ToString("dd/MM/yyyy")</td>
+                <td>@item.FechaRecepcion.ToString("dd/MM/yyyy")</td>
+                <td>@item.FechaCaducidad?.ToString("dd/MM/yyyy")</td>
+                <td>@(item.Estado.HasValue && item.Estado.Value ? "Disponible" : "No Disponible")</td>
+                <td>@item.IdUbicacionNavigation?.Nombre</td>
+                <td>
+                    <a href="@Url.Action("EditarInventario", new { id = item.Id })">Editar</a> |
+                    <form action="@Url.Action("EliminarInventario", new { id = item.Id })" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-link" onclick="return confirm('¿Estás seguro de que deseas eliminar este inventario?');">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

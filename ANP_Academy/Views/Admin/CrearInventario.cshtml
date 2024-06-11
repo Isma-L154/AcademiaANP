@@ -1,4 +1,6 @@
-﻿@{
+﻿@model ANP_Academy.DAL.Models.Inventario
+
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -8,81 +10,70 @@
     <section id="gestion">
         <h2 style="text-align: center;">Crear Inventario</h2>
         <div class="formulario-edicion">
-            <form action="@Url.Action("GestionInventario", "Admin")" method="post">
-                <div class="campo-formulario">
-                    <label for="codigo">Código:</label>
-                    <input type="text" id="codigo" name="codigo" required />
-                </div>
+            @using (Html.BeginForm("CrearInventario", "Admin", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
                 <div class="campo-formulario">
                     <label for="descripcion">Descripción:</label>
-                    <input type="text" id="descripcion" name="descripcion" required />
+                    @Html.TextBoxFor(model => model.Descripcion, new { @class = "form-control", id = "descripcion", required = "required" })
                 </div>
-                <div class="campo-formulario">
-                    <label for="categoria">Categoría:</label>
-                    <select id="categoria" name="categoria" required>
-                        <option value="">Selecciona una categoría</option>
-                        <option value="Carnes">Carnes</option>
-                        <option value="Vegetales">Vegetales</option>
-                        <option value="Especias">Especias</option>
-                        <option value="Equipamiento">Equipamiento</option>
-                        <option value="Utensilios">Utensilios</option>
-                        <option value="Otro">Otro</option>
-                    </select>
-                </div>
+
                 <div class="campo-formulario">
                     <label for="cantidad">Cantidad en Stock:</label>
-                    <input type="number" id="cantidad" name="cantidad" required />
+                    @Html.TextBoxFor(model => model.Cantidad, new { @class = "form-control", id = "cantidad", type = "number", required = "required" })
                 </div>
+
                 <div class="campo-formulario">
-                    <label for="unidad_medida">Unidad de Medida:</label>
-                    <select id="unidad_medida" name="unidad_medida" required>
-                        <option value="">Selecciona una unidad</option>
-                        <option value="Kilogramos">Kilogramos</option>
-                        <option value="Gramos">Gramos</option>
-                        <option value="Litros">Litros</option>
-                        <option value="Unidades">Unidades</option>
-                    </select>
+                    <label for="unidad">Unidad de Medida:</label>
+                    @Html.DropDownListFor(model => model.Unidad, new SelectList(new List<string> { "Kilogramos", "Gramos", "Onzas", "Libras", "Litros", "Galones", "Mililitros", "Otro" }), "Selecciona una categoría", new { @class = "form-control", id = "idCategoria", required = "required" })
                 </div>
+
                 <div class="campo-formulario">
-                    <label for="precio_unidad">Precio por Unidad:</label>
-                    <input type="number" id="precio_unidad" name="precio_unidad" required />
+                    <label for="precio">Precio por Unidad:</label>
+                    @Html.TextBoxFor(model => model.Precio, new { @class = "form-control", id = "precio", type = "number", required = "required" })
                 </div>
+
                 <div class="campo-formulario">
-                    <label for="proveedor">Proveedor:</label>
-                    <input type="text" id="proveedor" name="proveedor" required />
+                    <label for="idCategoria">Categoría:</label>
+                    @Html.DropDownListFor(model => model.IdCategoria, new SelectList(new List<string> { "Carnes", "Vegetales", "Especias", "Equipamiento", "Utensilios", "Otro" }), "Selecciona una categoría", new { @class = "form-control", id = "idCategoria", required = "required" })
                 </div>
+
                 <div class="campo-formulario">
-                    <label for="fecha_pedido">Fecha de Pedido:</label>
-                    <input type="date" id="fecha_pedido" name="fecha_pedido" required />
+                    <label for="idProveedor">Proveedor:</label>
+                    @Html.TextBoxFor(model => model.IdProveedor, new { @class = "form-control", id = "idProveedor", required = "required" })
                 </div>
+
                 <div class="campo-formulario">
-                    <label for="fecha_recepcion">Fecha de Recepción:</label>
-                    <input type="date" id="fecha_recepcion" name="fecha_recepcion" required />
+                    <label for="fechaPedido">Fecha de Pedido:</label>
+                    @Html.TextBoxFor(model => model.FechaPedido, "{0:yyyy-MM-dd}", new { @class = "form-control", id = "fechaPedido", type = "date", required = "required" })
                 </div>
+
                 <div class="campo-formulario">
-                    <label for="fecha_caducidad">Fecha de Caducidad:</label>
-                    <input type="date" id="fecha_caducidad" name="fecha_caducidad" required />
+                    <label for="fechaRecepcion">Fecha de Recepción:</label>
+                    @Html.TextBoxFor(model => model.FechaRecepcion, "{0:yyyy-MM-dd}", new { @class = "form-control", id = "fechaRecepcion", type = "date", required = "required" })
                 </div>
+
+                <div class="campo-formulario">
+                    <label for="fechaCaducidad">Fecha de Caducidad:</label>
+                    @Html.TextBoxFor(model => model.FechaCaducidad, "{0:yyyy-MM-dd}", new { @class = "form-control", id = "fechaCaducidad", type = "date" })
+                </div>
+
                 <div class="campo-formulario">
                     <label for="estado">Estado:</label>
-                    <select id="estado" name="estado" required>
-                        <option value="">Selecciona un estado</option>
-                        <option value="Disponible">Disponible</option>
-                        <option value="Bajo en stock">Bajo en stock</option>
-                        <option value="En pedido">En pedido</option>
-                        <option value="Descontinuado">Descontinuado</option>
-                    </select>
+                    @Html.DropDownListFor(model => model.Estado, new SelectList(new List<string> { "Disponible", "Bajo en stock", "En pedido", "Descontinuado" }), "Selecciona un estado", new { @class = "form-control", id = "estado", required = "required" })
                 </div>
+
                 <div class="campo-formulario">
-                    <label for="ubicacion">Ubicación:</label>
-                    <input type="text" id="ubicacion" name="ubicacion" required />
+                    <label for="idUbicacion">Ubicación:</label>
+                    @Html.TextBoxFor(model => model.IdUbicacion, new { @class = "form-control", id = "idUbicacion", required = "required" })
                 </div>
+
                 <div class="botones-formulario">
                     <a href="@Url.Action("GestionInventario", "Admin")" class="boton-atras">Atrás</a>
-                    <button type="submit" class="boton-activar
-">Crear</button>
+                    <button type="submit" class="boton-activar">Crear</button>
                 </div>
-            </form>
+            }
         </div>
     </section>
 </main>

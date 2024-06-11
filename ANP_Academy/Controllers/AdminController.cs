@@ -4,9 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 
 
@@ -16,9 +13,15 @@ namespace ANP_Academy.Controllers
     public class AdminController : Controller
     {
         private readonly UserManager<Usuario> _userManager;
-        public AdminController(UserManager<Usuario> userManager, RoleManager<IdentityRole> roleManager)
+        private readonly AnpdesarrolloContext _dbContext;
+        public AdminController(
+            UserManager<Usuario> userManager,
+            RoleManager<IdentityRole> roleManager,
+            AnpdesarrolloContext dbContext)
         {
             _userManager = userManager;
+            this._dbContext = dbContext;
+            _dbContext = dbContext;
         }
 
         [HttpPost]
@@ -110,6 +113,8 @@ namespace ANP_Academy.Controllers
             return View(userRoles);
         }
 
+
+
         public IActionResult EditarUsuario()
         {
             return View();
@@ -120,9 +125,10 @@ namespace ANP_Academy.Controllers
             return View();
         }
 
-        public IActionResult GestionInventario()
+        public async Task<IActionResult> GestionInventario()
         {
-            return View();
+            var inventarios = await _dbContext.Inventarios.ToListAsync();
+            return View(inventarios); 
         }
 
         public IActionResult CrearInventario()
@@ -130,6 +136,36 @@ namespace ANP_Academy.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CrearInventario(Inventario inventario)
+        {
+            
+                _dbContext.Add(inventario);
+                await _dbContext.SaveChangesAsync();
+                return RedirectToAction(nameof(GestionInventario));
+            
+        }
+
+        public IActionResult EliminarInventario()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EliminarInventario(int id)
+        {
+            var inventario = await _dbContext.Inventarios.FindAsync(id);
+
+            if (inventario == null)
+            {
+                return NotFound();
+            }
+
+            _dbContext.Inventarios.Remove(inventario);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction(nameof(GestionInventario));
+        }
         public IActionResult EditarInventario()
         {
             return View();
