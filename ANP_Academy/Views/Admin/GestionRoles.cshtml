@@ -1,0 +1,39 @@
+﻿@model IEnumerable<ANP_Academy.ViewModel.RoleUpdateViewModel>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/css/Administrador/GestionUsuarios.css" asp-append-version="true" />
+
+<main>
+    <section id="gestion">
+        <h2 style="text-align: center;">Gestión de Roles</h2>
+        <div class="tabla">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Identificador</th>
+                        <th>Nombre</th>
+                        <th>Correo electrónico</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Usuario.Id</td>
+                            <td>@item.Usuario.Nombre @item.Usuario.PrimApellido @item.Usuario.SegApellido</td>
+                            <td>@item.Usuario.Email</td>
+                            <td>@item.Role</td>
+                            <td>
+                                <a href="@Url.Action("EditarRol", "Admin", new { id = item.Usuario.Id })" class="boton-editar">Actualizar Rol</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>

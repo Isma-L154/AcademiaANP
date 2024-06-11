@@ -1,43 +1,62 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿@model ANP_Academy.DAL.Models.Usuario
 
 <link rel="stylesheet" href="~/css/Administrador/EditarUsuario.css" asp-append-version="true" />
 
 <main>
     <section id="gestion">
-        <h2 style="text-align: center;">Editar Usuario</h2>
+        <h2 class="center-text">Editar Usuario</h2>
+
+        @if (TempData["UsernameInUse"] != null)
+        {
+            <div class="alert alert-danger">
+                @TempData["UsernameInUse"]
+            </div>
+        }
+
         <div class="formulario-edicion">
-            <form action="@Url.Action("GestionUsuarios", "Admin")" method="post">
+            <form asp-action="EditarUsuario" method="post">
                 <div class="campo-formulario">
-                    <label for="identificador">Identificador:</label>
-                    <input type="text" id="identificador" name="identificador" placeholder="1" readonly />
+                    <label asp-for="UserName">Usuario</label>
+                    <input asp-for="UserName" class="form-control" required />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
                 </div>
                 <div class="campo-formulario">
-                    <label for="nombre">Nombre:</label>
-                    <input type="text" id="nombre" name="nombre" placeholder="Usuario1"  />
+                    <label asp-for="Email">Correo Electrónico</label>
+                    <input asp-for="Email" class="form-control" type="email" required readonly />
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="campo-formulario">
-                    <label for="correo">Correo electrónico:</label>
-                    <input type="email" id="correo" name="correo" placeholder="usuario1@gmail.com	"  />
+                    <label asp-for="Nombre">Nombre</label>
+                    <input asp-for="Nombre" class="form-control" required />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
                 </div>
                 <div class="campo-formulario">
-                    <label for="telefono">Teléfono:</label>
-                    <input type="text" id="telefono" name="telefono" placeholder="8451-7845	"  />
+                    <label asp-for="PrimApellido">Primer Apellido</label>
+                    <input asp-for="PrimApellido" class="form-control" required />
+                    <span asp-validation-for="PrimApellido" class="text-danger"></span>
                 </div>
                 <div class="campo-formulario">
-                    <label for="rol">Rol:</label>
-                    <select id="rol" name="rol" placeholder="Estudiante" >
-                        <option value="Estudiante">Estudiante</option>
-                        <option value="Profesor">Profesor</option>
-                        <option value="Administrador">Administrador</option>
-                    </select>
+                    <label asp-for="SegApellido">Segundo Apellido</label>
+                    <input asp-for="SegApellido" class="form-control" />
+                    <span asp-validation-for="SegApellido" class="text-danger"></span>
                 </div>
+                <div class="campo-formulario">
+                    <label asp-for="PhoneNumber">Teléfono</label>
+                    <input asp-for="PhoneNumber" class="form-control" required pattern="\d{8,}" title="El número de teléfono debe tener al menos 8 caracteres numéricos." />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+
                 <div class="botones-formulario">
-                    <button type="submit" class="boton-atras">Atrás</button>
-                    <button type="submit" class="boton-verde">Actualizar</button>
+                    <button type="submit" class="boton-verde">Guardar Cambios</button>
+                    <button type="button" class="boton-atras" onclick="history.back()">Atrás</button>
                 </div>
             </form>
         </div>
     </section>
 </main>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

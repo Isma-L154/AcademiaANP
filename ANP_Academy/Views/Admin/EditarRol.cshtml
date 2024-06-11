@@ -1,0 +1,47 @@
+﻿@model ANP_Academy.ViewModel.RoleUpdateViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Administrador/EditarUsuario.css" asp-append-version="true" />
+
+<main>
+    <section id="gestion">
+        <h2 style="text-align: center;">Editar Rol del Usuario</h2>
+        <div class="formulario-edicion">
+            <form asp-action="ActualizarRol" method="post">
+                <div class="campo-formulario">
+                    <label for="identificador">Identificador:</label>
+                    <input type="text" id="identificador" name="Usuario.Id" value="@Model.Usuario.Id" readonly />
+                </div>
+                <div class="campo-formulario">
+                    <label for="correo">Correo electrónico:</label>
+                    <input type="email" id="correo" name="Usuario.Email" value="@Model.Usuario.Email" readonly />
+                </div>
+                <div class="campo-formulario">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="Usuario.Nombre" value="@Model.Usuario.Nombre" readonly />
+                </div>
+                <div class="campo-formulario">
+                    <label for="primApellido">Primer Apellido:</label>
+                    <input type="text" id="primApellido" name="Usuario.PrimApellido" value="@Model.Usuario.PrimApellido" readonly />
+                </div>
+                <div class="campo-formulario">
+                    <label for="segApellido">Segundo Apellido:</label>
+                    <input type="text" id="segApellido" name="Usuario.SegApellido" value="@Model.Usuario.SegApellido" readonly />
+                </div>
+                <div class="campo-formulario">
+                    <label for="rol">Rol:</label>
+                    <select asp-for="SelectedRoleId" asp-items="Model.Roles" class="form-control"></select>
+                    <span asp-validation-for="SelectedRoleId" class="text-danger"></span>
+                </div>
+                <div class="botones-formulario">
+                    <button type="button" onclick="history.back()" class="boton-atras">Atrás</button>
+                    <button type="submit" class="boton-verde">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+
