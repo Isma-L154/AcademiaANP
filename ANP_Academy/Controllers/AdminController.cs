@@ -166,10 +166,41 @@ namespace ANP_Academy.Controllers
 
             return RedirectToAction(nameof(GestionInventario));
         }
-        public IActionResult EditarInventario()
+        // En el controlador (AdminController)
+        public async Task<IActionResult> EditarInventario(int id)
         {
-            return View();
+            var inventario = await _dbContext.Inventarios.FindAsync(id);
+            if (inventario == null)
+            {
+                return NotFound();
+            }
+
+            // Obtener todas las categorías para el dropdown
+            ViewBag.Categorias = await _dbContext.Categorias.ToListAsync();
+
+            // Pasamos el inventario a la vista
+            return View(inventario);
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> EditarInventario(Inventario inventario)
+        {
+            if (!ModelState.IsValid)
+            {
+                // Si hay un error en el modelo, devolver la misma vista con los datos actuales
+                return View(inventario);
+            }
+
+            // Actualizar el inventario en la base de datos
+            _dbContext.Update(inventario);
+            await _dbContext.SaveChangesAsync();
+
+            // Redirigir a la gestión de inventario después de actualizar
+            return RedirectToAction(nameof(GestionInventario));
+        }
+
+
 
         public IActionResult MostrarContabilidad()
         {

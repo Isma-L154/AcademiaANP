@@ -12,7 +12,6 @@
         <div class="formulario-edicion">
             @using (Html.BeginForm("CrearInventario", "Admin", FormMethod.Post))
             {
-                @Html.AntiForgeryToken()
 
                 <div class="campo-formulario">
                     <label for="descripcion">Descripción:</label>
@@ -61,7 +60,7 @@
 
                 <div class="campo-formulario">
                     <label for="estado">Estado:</label>
-                    @Html.DropDownListFor(model => model.Estado, new SelectList(new List<string> { "Disponible", "Bajo en stock", "En pedido", "Descontinuado" }), "Selecciona un estado", new { @class = "form-control", id = "estado", required = "required" })
+                    @Html.DropDownListFor(model => model.Estado, new SelectList(new List<string> { "Disponible", "No Disponible" }), "Selecciona un estado", new { @class = "form-control", id = "estado", required = "required" })
                 </div>
 
                 <div class="campo-formulario">

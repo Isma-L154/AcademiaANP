@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ANP_Academy.DAL.Models;
 
@@ -26,10 +27,13 @@ public partial class Inventario
 
     public string Unidad { get; set; } = null!;
 
+    [Column("Id_Categoria")]
     public int? IdCategoria { get; set; }
 
+    [Column("Id_Proveedor")]
     public int? IdProveedor { get; set; }
 
+    [Column("Id_Ubicacion")]
     public int? IdUbicacion { get; set; }
 
     public virtual Categoria? IdCategoriaNavigation { get; set; }
