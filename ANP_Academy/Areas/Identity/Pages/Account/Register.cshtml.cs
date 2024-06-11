@@ -140,7 +140,7 @@ namespace ANP_Academy.Areas.Identity.Pages.Account
 
                     //Linea par aque lo que se ingrese entre como un tipo de rol de cliente
 
-                    var ResultRole = await _userManager.AddToRoleAsync(user, "cliente");
+                    var ResultRole = await _userManager.AddToRoleAsync(user, "Cliente");
                      await _signInManager.SignInAsync(user, isPersistent: false);
                      return LocalRedirect(returnUrl);
 
