@@ -17,8 +17,8 @@
                         <option value="nombre">Nombre</option>
                         <option value="correo">Correo Electrónico</option>
                     </select>
-                    <input type="text" name="valor" aria-label="Valor de búsqueda" placeholder="Escribe aquí...">
-                    <button type="submit" class="boton-buscar"><i class="fas fa-search"></i></button>
+                    <input id="InputTexto" type="text" name="valor" aria-label="Valor de búsqueda" placeholder="Escribe aquí...">
+                    <button id="BotonBuscar" type="submit" class="boton-buscar"><i class="fas fa-search"></i></button>
                 </form>
             </div>
             <div class="crear-usuario">
@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="tabla">
-            <table>
+            <table id="TablaUsuarios">
                 <thead>
                     <tr>
                         <th>Identificador</th>
@@ -72,3 +72,6 @@
         </div>
     </section>
 </main>
+
+
+<script src="~/js/Admin/GestUsuarios.js"></script>
