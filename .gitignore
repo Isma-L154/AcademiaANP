@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+ANP_Academy/appsettings.json
+ANP_Academy/Program.cs

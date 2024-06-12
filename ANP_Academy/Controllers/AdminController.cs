@@ -1,6 +1,5 @@
 ﻿using ANP_Academy.DAL.Models;
 using ANP_Academy.ViewModel;
-using ANP_Academy.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
