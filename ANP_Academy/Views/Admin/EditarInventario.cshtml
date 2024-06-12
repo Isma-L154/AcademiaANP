@@ -1,5 +1,14 @@
-﻿@{
+﻿@model ANP_Academy.DAL.Models.Inventario
+
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var categorias = ViewBag.Categorias as List<ANP_Academy.DAL.Models.Categoria>;
+    var proveedores = ViewBag.Proveedores as List<ANP_Academy.DAL.Models.Proveedor>;
+    var ubicaciones = ViewBag.Ubicaciones as List<ANP_Academy.DAL.Models.Ubicacion>;
+
+    List<SelectListItem> estados = new List<SelectListItem>();
+    estados.Add(new SelectListItem { Text = "Disponible", Value = "true" });
+    estados.Add(new SelectListItem { Text = "No Disponible", Value = "false" });
 }
 
 <link rel="stylesheet" href="~/css/Administrador/EditarUsuario.css" asp-append-version="true" />
@@ -8,78 +17,93 @@
     <section id="gestion">
         <h2 style="text-align: center;">Editar Inventario</h2>
         <div class="formulario-edicion">
-            <form action="@Url.Action("GestionInventario", "Admin")" method="post">
+            <form asp-action="EditarInventario" method="post">
+                @Html.HiddenFor(model => model.Id)
+
                 <div class="campo-formulario">
                     <label for="codigo">Código:</label>
-                    <input type="text" id="codigo" name="codigo" placeholder="1" readonly/>
+                    <input type="text" id="codigo" name="Id" value="@Model.Id" readonly />
                 </div>
+
                 <div class="campo-formulario">
                     <label for="descripcion">Descripción:</label>
-                    <input type="text" id="descripcion" name="descripcion" placeholder="Costillas de cerdo St. Louis" />
+                    <input type="text" id="descripcion" name="Descripcion" value="@Model.Descripcion" />
                 </div>
+
                 <div class="campo-formulario">
                     <label for="categoria">Categoría:</label>
-                    <select id="categoria" name="categoria"  >
-                        <option value="Carnes">Carnes</option>
-                        <option value="Vegetales">Vegetales</option>
-                        <option value="Especias">Especias</option>
-                        <option value="Equipamiento">Equipamiento</option>
-                        <option value="Utensilios">Utensilios</option>
-                        <option value="Otro">Otro</option>
+                    <select id="categoria" name="IdCategoria">
+                        <option value="">Seleccione una categoría</option>
+                        @if (categorias != null)
+                        {
+                            foreach (var categoria in categorias)
+                            {
+                                <option value="@categoria.IdCategoria">
+                                    @categoria.Nombre
+                                </option>
+                            }
+                        }
                     </select>
                 </div>
+
                 <div class="campo-formulario">
                     <label for="cantidad">Cantidad en Stock:</label>
-                    <input type="number" id="cantidad" name="cantidad" placeholder="4" />
+                    <input type="number" id="cantidad" name="Cantidad" value="@Model.Cantidad" />
                 </div>
+
                 <div class="campo-formulario">
                     <label for="unidad_medida">Unidad de Medida:</label>
-                    <select id="unidad_medida" name="unidad_medida"  >
-                        <option value="Kilogramos">Kilogramos</option>
-                        <option value="Gramos">Gramos</option>
-                        <option value="Litros">Litros</option>
-                        <option value="Unidades">Unidades</option>
+                    <select id="unidad_medida" name="Unidad">
+                        <option value="">Seleccione una unidad de medida</option>
+                        @foreach (var unidad in new List<string> { "Kilogramos", "Gramos", "Onzas", "Libras", "Litros", "Galones", "Mililitros", "Otro" })
+                        {
+                            <option value="@unidad">@unidad</option>
+                        }
                     </select>
                 </div>
+
                 <div class="campo-formulario">
                     <label for="precio_unidad">Precio por Unidad:</label>
-                    <input type="number" id="precio_unidad" name="precio_unidad" placeholder="5000" />
+                    <input type="number" id="precio_unidad" name="Precio" value="@Model.Precio" />
                 </div>
+
                 <div class="campo-formulario">
                     <label for="proveedor">Proveedor:</label>
-                    <input type="text" id="proveedor" name="proveedor" placeholder="Carnes La Buena" />
+                    <input type="text" id="provedor" name="Proveedor" value="@Model.IdProveedor" />
                 </div>
+
                 <div class="campo-formulario">
                     <label for="fecha_pedido">Fecha de Pedido:</label>
-                    <input type="date" id="fecha_pedido" name="fecha_pedido" value="2024-03-27" />
+                    <input type="date" id="fecha_pedido" name="FechaPedido" value="@Model.FechaPedido.ToString("yyyy-MM-dd")" />
                 </div>
+
                 <div class="campo-formulario">
                     <label for="fecha_recepcion">Fecha de Recepción:</label>
-                    <input type="date" id="fecha_recepcion" name="fecha_recepcion" value="2024-03-27" />
+                    <input type="date" id="fecha_recepcion" name="FechaRecepcion" value="@Model.FechaRecepcion.ToString("yyyy-MM-dd")" />
                 </div>
+
                 <div class="campo-formulario">
                     <label for="fecha_caducidad">Fecha de Caducidad:</label>
-                    <input type="date" id="fecha_caducidad" name="fecha_caducidad" value="2024-04-08" />
+                    <input type="date" id="fecha_caducidad" name="FechaCaducidad" value="@Model.FechaCaducidad?.ToString("yyyy-MM-dd")" />
                 </div>
+
                 <div class="campo-formulario">
                     <label for="estado">Estado:</label>
-                    <select id="estado" name="estado"  >
-                        <option value="Disponible">Disponible</option>
-                        <option value="Bajo en stock">Bajo en stock</option>
-                        <option value="En pedido">En pedido</option>
-                        <option value="Descontinuado">Descontinuado</option>
-                    </select>
+                    @Html.DropDownListFor(model => model.Estado, estados, "Selecciona un estado", new { @class = "form-control", id = "estado", required = "required" })
                 </div>
+
                 <div class="campo-formulario">
-                    <label for="ubicacion">Ubicación:</label>
-                    <input type="text" id="ubicacion" name="ubicacion" placeholder="Congelador 1" />
+                    <label for="ubicacion">Ubicacion:</label>
+                    <input type="text" id="ubicacion" name="Ubicacion" value="@Model.IdUbicacionNavigation" />
                 </div>
+
                 <div class="botones-formulario">
-                    <button type="submit" class="boton-atras">Atrás</button>
+                    <a href="@Url.Action("GestionInventario")" class="boton-atras">Atrás</a>
                     <button type="submit" class="boton-verde">Actualizar</button>
                 </div>
             </form>
         </div>
     </section>
 </main>
+
 
