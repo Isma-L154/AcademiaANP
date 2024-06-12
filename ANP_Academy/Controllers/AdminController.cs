@@ -1,10 +1,12 @@
 ﻿using ANP_Academy.DAL.Models;
 using ANP_Academy.ViewModel;
+using ANP_Academy.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -264,19 +266,88 @@ namespace ANP_Academy.Controllers
             return View();
         }
 
-        public IActionResult GestionInventario()
+        public async Task<IActionResult> GestionInventario()
+        {
+            var inventarios = await _dbContext.Inventarios
+                .Include(i => i.IdCategoriaNavigation)
+                .Include(i => i.IdProveedorNavigation)
+                .Include(i => i.IdUbicacionNavigation)
+                .ToListAsync();
+            return View(inventarios);
+        }
+
+        public async Task<IActionResult> CrearInventario()
+        {
+            ViewBag.Categorias = await _dbContext.Categorias.ToListAsync();
+            ViewBag.Proveedores = await _dbContext.Proveedores.ToListAsync();
+            ViewBag.Ubicaciones = await _dbContext.Ubicacions.ToListAsync();
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CrearInventario(Inventario inventario)
+        {
+            if (ModelState.IsValid)
+            {
+                _dbContext.Add(inventario);
+                await _dbContext.SaveChangesAsync();
+                return RedirectToAction(nameof(GestionInventario));
+            }
+            return View(inventario);
+        }
+
+        public async Task<IActionResult> EditarInventario(int id)
+        {
+            var inventario = await _dbContext.Inventarios.FindAsync(id);
+            if (inventario == null)
+            {
+                return NotFound();
+            }
+            ViewBag.Categorias = await _dbContext.Categorias.ToListAsync();
+            ViewBag.Proveedores = await _dbContext.Proveedores.ToListAsync();
+            ViewBag.Ubicaciones = await _dbContext.Ubicacions.ToListAsync();
+
+            ViewBag.CategoriasSeleccionada = inventario.IdCategoria;
+            ViewBag.ProveedoresSeleccionada = inventario.IdProveedor;
+            ViewBag.UbicacionesSeleccionada = inventario.IdUbicacion;
+
+            return View(inventario);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditarInventario(Inventario inventario)
+        {
+            if (ModelState.IsValid)
+            {
+                _dbContext.Update(inventario);
+                await _dbContext.SaveChangesAsync();
+                return RedirectToAction(nameof(GestionInventario));
+            }
+            ViewBag.Categorias = await _dbContext.Categorias.ToListAsync();
+            ViewBag.Proveedores = await _dbContext.Proveedores.ToListAsync();
+            ViewBag.Ubicaciones = await _dbContext.Ubicacions.ToListAsync();
+            return View(inventario);
+        }
+
+        public IActionResult EliminarInventario()
         {
             return View();
         }
 
-        public IActionResult CrearInventario()
+        [HttpPost]
+        public async Task<IActionResult> EliminarInventario(int id)
         {
-            return View();
-        }
+            var inventario = await _dbContext.Inventarios.FindAsync(id);
 
-        public IActionResult EditarInventario()
-        {
-            return View();
+            if (inventario == null)
+            {
+                return NotFound();
+            }
+
+            _dbContext.Inventarios.Remove(inventario);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction(nameof(GestionInventario));
         }
 
         public IActionResult MostrarContabilidad()
