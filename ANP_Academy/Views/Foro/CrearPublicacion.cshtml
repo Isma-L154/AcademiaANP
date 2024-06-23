@@ -1,27 +1,27 @@
-﻿<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Publicación</title>
-    <link rel="stylesheet" href="~/css/Foro/CrearPublicacion.css" asp-append-version="true" />
-</head>
-<body>
+﻿@model ANP_Academy.DAL.Models.Publicacion
+
+<link rel="stylesheet" href="~/css/Foro/CrearPublicacion.css" asp-append-version="true" />
     <h2>Crear Publicación</h2>
     <div class="content-form">
-        <form action="#" method="post" enctype="multipart/form-data">
+
+    <form asp-action="CrearPublicacion">
             <div class="form-group">
-                <label for="comment">Comentario:</label><br>
-                <textarea id="comment" name="comment" rows="4" placeholder="Escribe tu comentario aquí..." required style="width: 100%;"></textarea>
+            <label asp-for="Descripcion" class="control-label"></label>
+            <input asp-for="Descripcion" class="form-control" />
+            <span asp-validation-for="Descripcion" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label for="media">Adjuntar multimedia:</label><br>
+            <label for="media">Adjuntar multimedia:</label><br> <!--Multimedia que va null por el momento-->
                 <input type="file" id="media" name="media" accept="image/*, video/*">
                 <label for="media" class="custom-file-upload">Seleccionar archivo</label>
             </div>
-            <input type="submit" value="Publicar" class="btn-danger">
+        
+            <div class="form-group">
+            <input type="submit" value="CrearPublicacion" class="btn btn-danger" />
+            </div>
+
             <a href="~/Foro/Index" class="btn btn-primary btn-block">Atrás</a>
         </form>
+
     </div>
-</body>
-</html>

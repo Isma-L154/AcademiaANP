@@ -16,9 +16,9 @@ public partial class Publicacion
 
     public int? IdComentario { get; set; }
 
-    public string? IdUser { get; set; }
+    public string? CodigoUsuarioId { get; set; }
 
-    public virtual Comentario? IdComentarioNavigation { get; set; }
+    public  Comentario? IdComentarioNavigation { get; set; }
 
-    public virtual Usuario? IdUserPrimary { get; set; }
+    public  Usuario? CodigoUsuario { get; set; }
 }

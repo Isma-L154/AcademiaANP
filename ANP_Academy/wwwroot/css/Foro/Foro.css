@@ -154,3 +154,8 @@ h2 {
         .reply-form button:hover {
             background-color: #5b2b29;
         }
+
+.other, .user {
+    display: inline-block;
+    margin-right: 10px; 
+}

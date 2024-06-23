@@ -15,6 +15,11 @@ public partial class AnpdesarrolloContext : DbContext
         : base(options)
     {
     }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+        optionsBuilder.UseSqlServer();
+    }
 
     public virtual DbSet<Categoria> Categorias { get; set; }
 
@@ -159,7 +164,7 @@ public partial class AnpdesarrolloContext : DbContext
             entity.Property(e => e.Descripcion).IsUnicode(false);
             entity.Property(e => e.FechaPublicacion).HasColumnName("Fecha_Publicacion");
             entity.Property(e => e.IdComentario).HasColumnName("Id_Comentario");
-            entity.Property(e => e.IdUser)
+            entity.Property(e => e.CodigoUsuarioId)
                 .HasMaxLength(450)
                 .HasColumnName("Id_User");
 
