@@ -1,43 +1,36 @@
-﻿<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comentarios del Usuario</title>
-    <link rel="stylesheet" href="~/css/Foro/MisPublicaciones.css" asp-append-version="true" />
-</head>
-<body>
+﻿@model IEnumerable<ANP_Academy.DAL.Models.Publicacion>
+@{
+    var userId = ViewData["UserId"] as string;
+}
+
+<link rel="stylesheet" href="~/css/Foro/MisPublicaciones.css" asp-append-version="true" />
+
+
     <div class="container">
         <h2>Mis Publicaciones</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Comentario</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Este es el primer comentario en el foro.</td>
-                    <td>
-                        <a href="~/Foro/EditarPublicacion" class="button">Editar</a>
-                        <button class="button" onclick="confirmarEliminar()">Eliminar</button>
-                    </td>
-                </tr>
-
-                <!-- Agrega más filas según tus suscripciones -->
-            </tbody>
-        </table>
+        @foreach (var publicacion in Model)
+        {
+        if (!string.IsNullOrEmpty(userId) && publicacion.CodigoUsuarioId == userId)
+        {
+            <div class="comment">
+                <div class="user"> @Html.DisplayFor(modelItem => publicacion.CodigoUsuario.Nombre)</div>
+                <div class="other"> @Html.DisplayFor(modelItem => publicacion.FechaPublicacion)</div>
+                <div class="content"> @Html.DisplayFor(modelItem => publicacion.Descripcion)</div>
+                <div class="attachments">
+                    <!--TODO Multimedia-->
+                    <span class="attachment"> <img src="https://via.placeholder.com/100" alt="Imagen adjunta"></span>
+                </div>
+               
+                <div class="reply-form">
+                    <form id="FormDelete" asp-action="Delete" method="post">
+                        <input id="IdPublicacion" name="IdPublicacion" type="hidden" asp-for="@publicacion.IdPublicacion" />
+                        <button type="button" id="deleteBtn" class="btn btn-danger">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        }
+      }
     </div>
 
-    <script>
-        function confirmarEliminar() {
-            if (confirm("¿Estás seguro de que quieres eliminar tu suscripción?")) {
-                // Aquí puedes agregar la lógica para eliminar la suscripción
-                // Por ejemplo, podrías enviar una solicitud al servidor para realizar la eliminación
-                window.location.href = "/Home/Index"; // Redirigir a la página de eliminación
-            }
-        }
-    </script>
-</body>
-</html>
+<script src="~/js/Foro/MisPublicaciones.js"></script>
+

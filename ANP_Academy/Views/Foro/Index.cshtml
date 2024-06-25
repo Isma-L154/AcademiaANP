@@ -12,16 +12,16 @@
         @foreach (var publicacion in Model)
         {
             <div class="comment">
-                <div class="user"> @Html.DisplayFor(modelItem => publicacion.CodigoUsuarioId)</div> <!--Obtener el usuario y la fecha de creacion-->
+                <div class="user"> @Html.DisplayFor(modelItem => publicacion.CodigoUsuario.Nombre)</div> 
                 <div class="other"> @Html.DisplayFor(modelItem => publicacion.FechaPublicacion)</div>
-                <div class="content"> @Html.DisplayFor(modelItem => publicacion.Descripcion)</div> <!--Descripcion-->
+                <div class="content"> @Html.DisplayFor(modelItem => publicacion.Descripcion)</div> 
                 <div class="attachments">
-                    <!--Multimedia-->
-                    <span><i class="fa-regular fa-flag fa-xl" style="color: #df0c0c;"></i> <img src="https://via.placeholder.com/100" alt="Imagen adjunta"></span>
+                    <!--TODO Multimedia-->
+                <span class="attachment"> <img src="https://via.placeholder.com/100" alt="Imagen adjunta"></span>
                 </div>
 
-                <!-- Botón para reportar comentario -->
-                <button class="report-btn" onclick="toggleReportForm('report-form-1')">Reportar</button> <!--Cambiar boton por un icono-->
+               
+            <button class="report-btn" onclick="toggleReportForm(this)"><i class="fa-regular fa-flag fa-xl" style="color: #df0c0c;"></i></button> <!--Cambiar boton por un icono-->
                 <!-- Formulario para reportar comentario -->
                 <div id="report-form-1" class="report-form">
                     <label for="report-reason-1">Motivo del reporte:</label>
@@ -44,8 +44,8 @@
 
     <script>
         // Función para alternar la visibilidad del formulario de reporte
-        function toggleReportForm(id) {
-            var form = document.getElementById(id);
+        function toggleReportForm(button) {
+        var form = button.nextElementSibling;
             if (form.style.display === "none") {
                 form.style.display = "block";
             } else {

@@ -18,14 +18,16 @@ namespace ANP_Academy.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var anpdesarrolloContext = _context.Publicaciones.Include(p => p.IdComentarioNavigation);
+            var anpdesarrolloContext = _context.Publicaciones.Include(p => p.CodigoUsuario);
             return View(await anpdesarrolloContext.ToListAsync());
         }
-
-
-        public IActionResult MisPublicaciones()
+        public async Task<IActionResult> MisPublicaciones()
         {
-            return View();
+            var anpdesarrolloContext = _context.Publicaciones.Include(p => p.CodigoUsuario);
+            var identidadUsuario = User.Identity as ClaimsIdentity;
+            string userId = identidadUsuario.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            ViewData["UserId"] = userId;
+            return View(await anpdesarrolloContext.ToListAsync());
         }
 
 
@@ -60,6 +62,19 @@ namespace ANP_Academy.Controllers
         }
 
 
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var publicacion = await _context.Publicaciones.FindAsync(id);
+            if (publicacion != null)
+            {
+                _context.Publicaciones.Remove(publicacion);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
         public IActionResult EditarPublicacion() 
         {

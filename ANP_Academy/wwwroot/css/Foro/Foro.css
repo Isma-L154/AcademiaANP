@@ -73,11 +73,9 @@ h2 {
     }
 
 .report-btn {
-    background-color: #e32a07;
-    color: #fff;
+    background-color: white;
     border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
+    padding: 5px 10px;  
     cursor: pointer;
     transition: background-color 0.3s ease;
     position: absolute;
