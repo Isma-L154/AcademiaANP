@@ -1,11 +1,4 @@
-﻿.description {
-    padding: 20px;
-    border: 2px solid;
-    font-size: 1.2rem; /* Aumenta el tamaño del texto */
-    margin-bottom: 20px; /* Agrega un margen inferior */
-}
-
-.card {
+﻿.card {
     transition: transform 0.2s, box-shadow 0.2s;
     padding: 20px; /* Aumenta el padding interno */
     margin-bottom: 20px;
@@ -26,14 +19,6 @@
     font-size: 1.2rem; /* Aumenta el tamaño del texto */
 }
 
-.btn-group .btn {
-    margin-right: 5px;
-}
-
-    .btn-group .btn:last-child {
-        margin-right: 0;
-    }
-
 .modal-header {
     background-color: #2c0b0b;
     color: white;
@@ -43,12 +28,12 @@
     border-top: 1px solid #007bff;
 }
 
-.btn-success {
+.btn-danger {
     background-color: #E32A07;
     border-color: #E32A07;
 }
 
-    .btn-success:hover {
+    .btn-danger:hover {
         background-color: #2c0b0b;
         border-color: #2c0b0b;
     }
@@ -62,3 +47,16 @@
         background-color: #cc2906;
         border-color: #cc2906;
     }
+
+/* Estilo adicional para centrar el botón y hacerlo más grande */
+.btn-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.btn-lg {
+    padding: 5px 10px;
+    font-size: 1.12rem;
+}

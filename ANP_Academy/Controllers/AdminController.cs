@@ -381,10 +381,6 @@ namespace ANP_Academy.Controllers
             return View(await _dbContext.Suscripciones.ToListAsync());
         }
 
-        //public async Task<IActionResult> Index()
-        //{
-        //    return View(await _dbContext.Suscripciones.ToListAsync());
-        //}
 
         // GET: Suscripciones/Details/5
         public async Task<IActionResult> DetailsPlanes(int? id)
@@ -483,7 +479,8 @@ namespace ANP_Academy.Controllers
                 return NotFound();
             }
 
-            _dbContext.Suscripciones.Remove(suscripcion);
+            suscripcion.IsDeleted = true; // Marcar como eliminado lógicamente
+            _dbContext.Suscripciones.Update(suscripcion);
             var result = await _dbContext.SaveChangesAsync();
 
             if (result > 0)
@@ -494,6 +491,31 @@ namespace ANP_Academy.Controllers
             ModelState.AddModelError(string.Empty, "Error al eliminar la suscripción");
             return RedirectToAction("GestionPlanes");
         }
+
+        // POST: Suscripciones/Reactivate
+        [HttpPost]
+        public async Task<IActionResult> ReactivatePlanes(int id)
+        {
+            var suscripcion = await _dbContext.Suscripciones.FindAsync(id);
+            if (suscripcion == null)
+            {
+                return NotFound();
+            }
+
+            suscripcion.IsDeleted = false; // Reactivar la suscripción
+            _dbContext.Suscripciones.Update(suscripcion);
+            var result = await _dbContext.SaveChangesAsync();
+
+            if (result > 0)
+            {
+                return RedirectToAction("GestionPlanes");
+            }
+
+            ModelState.AddModelError(string.Empty, "Error al reactivar la suscripción");
+            return RedirectToAction("GestionPlanes");
+        }
+
+
 
         private bool SuscripcionExists(int id)
         {
