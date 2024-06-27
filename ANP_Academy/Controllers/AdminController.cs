@@ -359,5 +359,134 @@ namespace ANP_Academy.Controllers
             return View();
         }
 
+        public async Task<IActionResult> GestionPlanes()
+        {
+            return View(await _dbContext.Suscripciones.ToListAsync());
+        }
+
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _dbContext.Suscripciones.ToListAsync());
+        //}
+
+        // GET: Suscripciones/Details/5
+        public async Task<IActionResult> DetailsPlanes(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var suscripcion = await _dbContext.Suscripciones
+                .FirstOrDefaultAsync(m => m.IdSuscripcion == id);
+            if (suscripcion == null)
+            {
+                return NotFound();
+            }
+
+            return View(suscripcion);
+        }
+
+        // GET: Suscripciones/Create
+        public IActionResult CreatePlanes()
+        {
+            return View();
+        }
+
+        // POST: Suscripciones/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreatePlanes([Bind("IdSuscripcion,Nombre,Precio")] Suscripcion suscripcion)
+        {
+            if (ModelState.IsValid)
+            {
+                _dbContext.Add(suscripcion);
+                await _dbContext.SaveChangesAsync();
+                return RedirectToAction(nameof(GestionPlanes));
+            }
+            return View(suscripcion);
+        }
+
+        // GET: Suscripciones/Edit/5
+        public async Task<IActionResult> EditPlanes(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var suscripcion = await _dbContext.Suscripciones.FindAsync(id);
+            if (suscripcion == null)
+            {
+                return NotFound();
+            }
+            return View(suscripcion);
+        }
+
+        // POST: Suscripciones/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPlanes(int id, [Bind("IdSuscripcion,Nombre,Precio")] Suscripcion suscripcion)
+        {
+            if (id != suscripcion.IdSuscripcion)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _dbContext.Update(suscripcion);
+                    await _dbContext.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!SuscripcionExists(suscripcion.IdSuscripcion))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(GestionPlanes));
+            }
+            return View(suscripcion);
+        }
+
+        // GET: Suscripciones/Delete/5
+        [HttpPost]
+        public async Task<IActionResult> DeletePlanes(int id)
+        {
+            var suscripcion = await _dbContext.Suscripciones.FindAsync(id);
+            if (suscripcion == null)
+            {
+                return NotFound();
+            }
+
+            _dbContext.Suscripciones.Remove(suscripcion);
+            var result = await _dbContext.SaveChangesAsync();
+
+            if (result > 0)
+            {
+                return RedirectToAction("GestionPlanes");
+            }
+
+            ModelState.AddModelError(string.Empty, "Error al eliminar la suscripción");
+            return RedirectToAction("GestionPlanes");
+        }
+
+        private bool SuscripcionExists(int id)
+        {
+            return _dbContext.Suscripciones.Any(e => e.IdSuscripcion == id);
+        }
+
+        public IActionResult MisSuscripciones()
+        {
+            return View();
+        }
+
     }
 }
