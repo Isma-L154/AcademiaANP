@@ -14,6 +14,8 @@ public partial class Suscripcion
 
     public decimal Precio { get; set; }
 
+    public bool IsDeleted { get; set; }
+
     public virtual ICollection<Facturacion> Facturacions { get; set; } = new List<Facturacion>();
 
     public virtual ICollection<Pago> Pagos { get; set; } = new List<Pago>();

@@ -18,8 +18,12 @@ namespace ANP_Academy.Controllers
         // GET: Suscripciones
         public async Task<IActionResult> Index()
         {
-            return View(await _dbContext.Suscripciones.ToListAsync());
+            var suscripciones = await _dbContext.Suscripciones
+                .Where(s => !s.IsDeleted) // Filtrar las suscripciones no eliminadas
+                .ToListAsync();
+            return View(suscripciones);
         }
+
 
         public IActionResult MisSuscripciones()
         {

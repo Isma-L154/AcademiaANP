@@ -9,6 +9,7 @@
     transition: transform 0.2s, box-shadow 0.2s;
     padding: 20px; /* Aumenta el padding interno */
     margin-bottom: 20px;
+    min-height: 250px; /* Ajusta esta altura según sea necesario */
 }
 
     .card:hover {
