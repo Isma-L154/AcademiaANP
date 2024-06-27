@@ -1,6 +1,8 @@
-﻿$(document).ready(function () {
-    $('#deleteBtn').click(function () {
-        var id = $('#IdPublicacion').val(); 
+﻿
+//This function is for a validation of the user, so they can confirm if they want to delete the post
+$(document).ready(function () {
+    $('#deleteForm').on('submit', function (e) {
+        e.preventDefault();
         bootbox.confirm({
             message: "Seguro que quieres eliminar esta publicacion?",
             buttons: {
@@ -15,14 +17,10 @@
             },
             callback: function (result) {
                 if (result) {
-                    $('#IdPublicacion').val(id);
-                    $('#FormDelete').submit();
+                    e.target.submit();
                     toastr.success('Eliminado correctamente');
                 } else {
                     toastr.error('Ocurrio un error al eliminar la publicacion');
-                   function e (xhr, status, error) {
-                        console.log(xhr.responseText);
-                    }
                 }
             }
         });

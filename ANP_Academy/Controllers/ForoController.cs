@@ -64,21 +64,77 @@ namespace ANP_Academy.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int IdPublicacion)
         {
-            var publicacion = await _context.Publicaciones.FindAsync(id);
+            var publicacion = await _context.Publicaciones.FindAsync(IdPublicacion);
             if (publicacion != null)
             {
                 _context.Publicaciones.Remove(publicacion);
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(MisPublicaciones));
         }
 
-        public IActionResult EditarPublicacion() 
+
+
+        //GET: EditarPublicaciones/{ID}
+        public async Task<IActionResult> EditarPublicacion(int? id) 
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var publicacion = await _context.Publicaciones.FindAsync(id);
+            if (publicacion == null)
+            {
+                return NotFound();
+            }
+            return View(publicacion);
+
         }
+
+        //POST: EditarPublicaciones/{ID}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Editar(int IdPublicacion, [Bind("IdPublicacion,Descripcion,IdUser")] Publicacion publicacion)
+        {
+            if (IdPublicacion != publicacion.IdPublicacion)
+            {
+                return NotFound();
+            }
+            //TODO Resolve BUG with the date
+            var identidad = User.Identity as ClaimsIdentity;
+            string idUsuarioLoggeado = identidad.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value; 
+            publicacion.CodigoUsuarioId = idUsuarioLoggeado;
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(publicacion);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!PublicacionExiste(publicacion.IdPublicacion))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(MisPublicaciones));
+            }
+            return RedirectToAction(nameof(MisPublicaciones));
+        }
+
+        private bool PublicacionExiste(int id)
+        {
+            return _context.Publicaciones.Any(e => e.IdPublicacion == id);
+        }
+
     }
 }

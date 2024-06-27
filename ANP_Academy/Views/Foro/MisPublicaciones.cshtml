@@ -17,14 +17,16 @@
                 <div class="other"> @Html.DisplayFor(modelItem => publicacion.FechaPublicacion)</div>
                 <div class="content"> @Html.DisplayFor(modelItem => publicacion.Descripcion)</div>
                 <div class="attachments">
-                    <!--TODO Multimedia-->
+                    <!--TODO Put the Image or videos of the user-->
                     <span class="attachment"> <img src="https://via.placeholder.com/100" alt="Imagen adjunta"></span>
                 </div>
-               
+
+                <!--Put a <p> or something that helps to tell the users that they don't have any posts-->
                 <div class="reply-form">
-                    <form id="FormDelete" asp-action="Delete" method="post">
-                        <input id="IdPublicacion" name="IdPublicacion" type="hidden" asp-for="@publicacion.IdPublicacion" />
-                        <button type="button" id="deleteBtn" class="btn btn-danger">Eliminar</button>
+                    <form id="deleteForm" asp-action="Delete">
+                        <input type="hidden" name="IdPublicacion" asp-for="@publicacion.IdPublicacion"/>
+                        <a class="button" asp-action="EditarPublicacion" asp-route-id="@publicacion.IdPublicacion">Editar</a>
+                        <input type="submit" value="Eliminar" class="button" /> 
                     </form>
                 </div>
             </div>
