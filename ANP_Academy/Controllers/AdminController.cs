@@ -297,18 +297,20 @@ namespace ANP_Academy.Controllers
 
         public async Task<IActionResult> EditarInventario(int id)
         {
-            var inventario = await _dbContext.Inventarios.FindAsync(id);
+            var inventario = await _dbContext.Inventarios
+                .Include(i => i.IdCategoriaNavigation)
+                .Include(i => i.IdProveedorNavigation)
+                .Include(i => i.IdUbicacionNavigation)
+                .FirstOrDefaultAsync(i => i.Id == id);
+
             if (inventario == null)
             {
                 return NotFound();
             }
+
             ViewBag.Categorias = await _dbContext.Categorias.ToListAsync();
             ViewBag.Proveedores = await _dbContext.Proveedores.ToListAsync();
             ViewBag.Ubicaciones = await _dbContext.Ubicacions.ToListAsync();
-
-            ViewBag.CategoriasSeleccionada = inventario.IdCategoria;
-            ViewBag.ProveedoresSeleccionada = inventario.IdProveedor;
-            ViewBag.UbicacionesSeleccionada = inventario.IdUbicacion;
 
             return View(inventario);
         }
@@ -318,10 +320,25 @@ namespace ANP_Academy.Controllers
         {
             if (ModelState.IsValid)
             {
-                _dbContext.Update(inventario);
-                await _dbContext.SaveChangesAsync();
-                return RedirectToAction(nameof(GestionInventario));
+                try
+                {
+                    _dbContext.Update(inventario);
+                    await _dbContext.SaveChangesAsync();
+                    return RedirectToAction(nameof(GestionInventario));
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_dbContext.Inventarios.Any(e => e.Id == inventario.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
             }
+
             ViewBag.Categorias = await _dbContext.Categorias.ToListAsync();
             ViewBag.Proveedores = await _dbContext.Proveedores.ToListAsync();
             ViewBag.Ubicaciones = await _dbContext.Ubicacions.ToListAsync();
