@@ -1,13 +1,12 @@
 ﻿@model ANP_Academy.DAL.Models.Suscripcion
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles del Plan";
 }
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <link rel="stylesheet" href="~/css/Administrador/DetailsPlanes.css" asp-append-version="true" />
-
 
 <div class="container mt-4">
     <h1 class="text-center">Detalles de la Suscripción</h1>
@@ -18,6 +17,7 @@
                 <div class="card-body">
                     <h5 class="card-title">@Html.DisplayFor(model => model.Nombre)</h5>
                     <p class="card-text">Precio: <span class="font-weight-bold">@Html.DisplayFor(model => model.Precio) CRC</span></p>
+                    <p class="card-text">Duración: <span class="font-weight-bold">@Html.DisplayFor(model => model.Duracion) meses</span></p>
                     <div class="d-flex justify-content-between align-items-center mt-4">
                         <div class="btn-group">
                             <a asp-action="EditPlanes" asp-route-id="@Model.IdSuscripcion" class="btn btn-sm btn-outline-secondary" title="Editar">
@@ -60,6 +60,4 @@
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
-
-
 <script src="~/js/Admin/GestionPlanes.js"></script>

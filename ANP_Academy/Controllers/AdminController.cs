@@ -400,16 +400,16 @@ namespace ANP_Academy.Controllers
             return View(suscripcion);
         }
 
+
         // GET: Suscripciones/Create
         public IActionResult CreatePlanes()
         {
             return View();
         }
 
-        // POST: Suscripciones/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePlanes([Bind("IdSuscripcion,Nombre,Precio")] Suscripcion suscripcion)
+        public async Task<IActionResult> CreatePlanes([Bind("IdSuscripcion,Nombre,Precio,Duracion")] Suscripcion suscripcion)
         {
             if (ModelState.IsValid)
             {
@@ -436,10 +436,9 @@ namespace ANP_Academy.Controllers
             return View(suscripcion);
         }
 
-        // POST: Suscripciones/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPlanes(int id, [Bind("IdSuscripcion,Nombre,Precio")] Suscripcion suscripcion)
+        public async Task<IActionResult> EditPlanes(int id, [Bind("IdSuscripcion,Nombre,Precio,Duracion")] Suscripcion suscripcion)
         {
             if (id != suscripcion.IdSuscripcion)
             {
@@ -468,6 +467,7 @@ namespace ANP_Academy.Controllers
             }
             return View(suscripcion);
         }
+
 
         // GET: Suscripciones/Delete/5
         [HttpPost]

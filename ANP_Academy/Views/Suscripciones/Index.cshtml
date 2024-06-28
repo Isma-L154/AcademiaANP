@@ -14,9 +14,13 @@
         <div class="col-12">
             <div class="description">
                 <h3>Descripción General</h3>
-                <p>Aquí puedes encontrar diferentes planes de suscripción que ofrecemos. 
-                    Acceso completo a material exclusivo, actualizaciones regulares. Posiblidad de cancelar en cualquier momento sin compromisos a largo plazo. Selecciona el plan que mejor se adapte a tus necesidades y disfruta de nuestros servicios exclusivos.</p>
+                <p>
+                    Aquí puedes encontrar diferentes planes de suscripción que ofrecemos.
+                    Acceso completo a material exclusivo, actualizaciones regulares. Posibilidad de cancelar en cualquier momento sin compromisos a largo plazo. Selecciona el plan que mejor se adapte a tus necesidades y disfruta de nuestros servicios exclusivos.
+                </p>
             </div>
+        </div>
+    </div>
 
     <div class="row">
         @foreach (var item in Model)
@@ -26,6 +30,7 @@
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">@Html.DisplayFor(modelItem => item.Nombre)</h5>
                         <p class="card-text">Precio: <span class="font-weight-bold">@Html.DisplayFor(modelItem => item.Precio) CRC</span></p>
+                        <p class="card-text">Duración: <span class="font-weight-bold">@Html.DisplayFor(modelItem => item.Duracion) meses</span></p>
                         <div class="btn-center mt-auto">
                             <button class="btn btn-danger btn-lg" onclick="showModal('@item.IdSuscripcion')">Adquirir Plan</button>
                         </div>
