@@ -1,0 +1,18 @@
+﻿@model ANP_Academy.DAL.Models.Solicitudes
+
+@{
+    ViewData["Title"] = "Ver Imagen del Comprobante";
+}
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+<div class="container mt-4">
+    <h1 class="text-center">Imagen del Comprobante</h1>
+    <div class="text-center">
+        <img src="@Url.Action("VerComprobante", new { id = Model.IdSolicitud })" alt="Comprobante" class="img-fluid" />
+    </div>
+    <div class="text-center mt-4">
+        <a asp-action="EstadoSuscripciones" class="btn btn-secondary btn-lg">Volver a Estado de Suscripciones</a>
+    </div>
+</div>

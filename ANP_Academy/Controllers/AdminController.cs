@@ -522,6 +522,44 @@ namespace ANP_Academy.Controllers
             return _dbContext.Suscripciones.Any(e => e.IdSuscripcion == id);
         }
 
+        public async Task<IActionResult> EstadoSuscripciones()
+        {
+            var solicitudes = await _dbContext.Solicitudes
+                .Include(s => s.User)
+                .Include(s => s.SuscripcionEntity)
+                .ToListAsync();
+
+            return View(solicitudes);
+        }
+
+
+        public async Task<IActionResult> VerComprobante(int id)
+        {
+            var solicitud = await _dbContext.Solicitudes.FindAsync(id);
+            if (solicitud == null || solicitud.Comprobante == null)
+            {
+                return NotFound();
+            }
+
+            return File(solicitud.Comprobante, "image/jpeg"); 
+        }
+
+
+        public async Task<IActionResult> VerImagen(int id)
+        {
+            var solicitud = await _dbContext.Solicitudes
+                .Include(s => s.User)
+                .Include(s => s.SuscripcionEntity)
+                .FirstOrDefaultAsync(m => m.IdSolicitud == id);
+            if (solicitud == null)
+            {
+                return NotFound();
+            }
+
+            return View(solicitud);
+        }
+
+
         public IActionResult MisSuscripciones()
         {
             return View();
