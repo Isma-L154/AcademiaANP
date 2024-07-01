@@ -31,33 +31,16 @@ namespace ANP_Academy.DAL.Models
         public virtual DbSet<Suscripcion> Suscripciones { get; set; }
         public virtual DbSet<Ubicacion> Ubicacions { get; set; }
         public virtual DbSet<Solicitudes> Solicitudes { get; set; }
-    public virtual DbSet<Proveedor> Proveedores { get; set; }
+        public virtual DbSet<PublicacionComentario> PublicacionComentarios { get; set; }
 
-    public virtual DbSet<Publicacion> Publicaciones { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Categoria>(entity =>
+            {
+                entity.HasKey(e => e.IdCategoria).HasName("PK__Categori__CB90334986A82F6B");
 
-
-    public virtual DbSet<Suscripcion> Suscripciones { get; set; }
-
-    public virtual DbSet<Ubicacion> Ubicacions { get; set; }
-    public virtual DbSet<Proveedor> Proveedores { get; set; }
-
-    public virtual DbSet<Publicacion> Publicaciones { get; set; }
-
-
-    public virtual DbSet<Suscripcion> Suscripciones { get; set; }
-
-    public virtual DbSet<Ubicacion> Ubicacions { get; set; }
-
-            entity.Property(e => e.IdComentario).HasColumnName("Id_Comentario");
-            entity.Property(e => e.ContenidoComentario)
-                .IsUnicode(false)
-                .HasColumnName("Comentario");
-            entity.Property(e => e.FechaComentario)
-                .HasColumnType("datetime")
-                .HasColumnName("Fecha_comentario");
-        });
-        modelBuilder.Entity<PublicacionComentario>()
-            .HasKey(pc => new { pc.PublicacionId, pc.ComentarioId });
+                entity.Property(e => e.IdCategoria).HasColumnName("Id_Categoria");
+                entity.Property(e => e.Nombre)
                     .HasMaxLength(256)
                     .IsUnicode(false);
             });
@@ -66,14 +49,18 @@ namespace ANP_Academy.DAL.Models
             {
                 entity.HasKey(e => e.IdComentario).HasName("PK__Comentar__5B4FE56FFC9D54DE");
 
-            entity.Property(e => e.IdComentario).HasColumnName("Id_Comentario");
-            entity.Property(e => e.Comentario1)
-                .IsUnicode(false)
-                .HasColumnName("Comentario");
-            entity.Property(e => e.FechaComentario)
-                .HasColumnType("datetime")
-                .HasColumnName("Fecha_comentario");
-        });
+                entity.Property(e => e.IdComentario).HasColumnName("Id_Comentario");
+                entity.Property(e => e.ContenidoComentario)
+                    .IsUnicode(false)
+                    .HasColumnName("Comentario");
+                entity.Property(e => e.FechaComentario)
+                    .HasColumnType("datetime")
+                    .HasColumnName("Fecha_comentario");
+            });
+
+            modelBuilder.Entity<PublicacionComentario>()
+                       .HasKey(pc => new { pc.PublicacionId, pc.ComentarioId });
+
 
             modelBuilder.Entity<Facturacion>(entity =>
             {
@@ -154,14 +141,18 @@ namespace ANP_Academy.DAL.Models
                 entity.HasOne(d => d.IdSuscripcionNavigation).WithMany(p => p.Pagos)
                     .HasForeignKey(d => d.IdSuscripcion)
                     .HasConstraintName("FK__Pagos__Id_Suscri__1BC821DD");
-            entity.Property(e => e.IdPublicacion).HasColumnName("Id_Publicacion");
-            entity.Property(e => e.Descripcion).IsUnicode(false);
-            entity.Property(e => e.FechaPublicacion).HasColumnName("Fecha_Publicacion");
-            entity.Property(e => e.CodigoUsuarioId)
-                .HasMaxLength(450)
-                .HasColumnName("Id_User");
+            });
+            
+            modelBuilder.Entity<Proveedor>(entity =>
+            {
+                entity.HasKey(e => e.IdProveedor).HasName("PK__Proveedo__477B858ED514B108");
+
+                entity.Property(e => e.IdProveedor).HasColumnName("Id_Proveedor");
                 entity.Property(e => e.Nombre)
-        });
+                    .HasMaxLength(256)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<Publicacion>(entity =>
             {
                 entity.HasKey(e => e.IdPublicacion).HasName("PK__Publicac__BE87075764D95DCC");
@@ -169,14 +160,9 @@ namespace ANP_Academy.DAL.Models
             entity.Property(e => e.IdPublicacion).HasColumnName("Id_Publicacion");
             entity.Property(e => e.Descripcion).IsUnicode(false);
             entity.Property(e => e.FechaPublicacion).HasColumnName("Fecha_Publicacion");
-            entity.Property(e => e.IdComentario).HasColumnName("Id_Comentario");
             entity.Property(e => e.CodigoUsuarioId)
                 .HasMaxLength(450)
                 .HasColumnName("Id_User");
-
-            entity.HasOne(d => d.IdComentarioNavigation).WithMany(p => p.Publicaciones)
-                .HasForeignKey(d => d.IdComentario)
-                .HasConstraintName("FK__Publicaci__Id_Co__14270015");
         });
 
             modelBuilder.Entity<Solicitudes>(entity =>

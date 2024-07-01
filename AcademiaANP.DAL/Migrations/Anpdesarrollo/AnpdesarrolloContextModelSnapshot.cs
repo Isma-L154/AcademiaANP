@@ -40,7 +40,7 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.HasKey("IdCategoria")
                         .HasName("PK__Categori__CB90334986A82F6B");
 
-                    b.ToTable("Categorias");
+                    b.ToTable("Categorias", (string)null);
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Comentario", b =>
@@ -70,7 +70,7 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 
                     b.HasIndex("CodigoUsuarioId");
 
-                    b.ToTable("Comentarios");
+                    b.ToTable("Comentarios", (string)null);
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Facturacion", b =>
@@ -228,7 +228,7 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 
                     b.HasIndex("IdUserNavigationId");
 
-                    b.ToTable("Pagos");
+                    b.ToTable("Pagos", (string)null);
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Proveedor", b =>
@@ -249,7 +249,7 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.HasKey("IdProveedor")
                         .HasName("PK__Proveedo__477B858ED514B108");
 
-                    b.ToTable("Proveedores");
+                    b.ToTable("Proveedores", (string)null);
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Publicacion", b =>
@@ -282,7 +282,7 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 
                     b.HasIndex("CodigoUsuarioId");
 
-                    b.ToTable("Publicaciones");
+                    b.ToTable("Publicaciones", (string)null);
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.PublicacionComentario", b =>
@@ -297,7 +297,7 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 
                     b.HasIndex("ComentarioId");
 
-                    b.ToTable("PublicacionComentarios");
+                    b.ToTable("PublicacionComentarios", (string)null);
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Suscripcion", b =>
@@ -327,7 +327,7 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.HasKey("IdSuscripcion")
                         .HasName("PK__Suscripc__C0583DB0622B2151");
 
-                    b.ToTable("Suscripciones");
+                    b.ToTable("Suscripciones", (string)null);
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Ubicacion", b =>
@@ -425,7 +425,7 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 
                     b.HasIndex("SuscripcionId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Comentario", b =>
