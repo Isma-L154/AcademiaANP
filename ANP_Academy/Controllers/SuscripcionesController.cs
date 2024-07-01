@@ -3,16 +3,20 @@ using ANP_Academy.DAL.Models;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using System;
+using System.IO;
 
 namespace ANP_Academy.Controllers
 {
     public class SuscripcionesController : Controller
     {
         private readonly AnpdesarrolloContext _dbContext;
+        private readonly UserManager<Usuario> _userManager;
 
-        public SuscripcionesController(AnpdesarrolloContext dbContext)
+        public SuscripcionesController(AnpdesarrolloContext dbContext, UserManager<Usuario> userManager)
         {
             _dbContext = dbContext;
+            _userManager = userManager;
         }
 
         // GET: Suscripciones
@@ -24,6 +28,48 @@ namespace ANP_Academy.Controllers
             return View(suscripciones);
         }
 
+        public async Task<IActionResult> AdquirirSuscripcion(int id)
+        {
+            var suscripcion = await _dbContext.Suscripciones
+                .FirstOrDefaultAsync(s => s.IdSuscripcion == id);
+
+            if (suscripcion == null)
+            {
+                return NotFound("La suscripción no fue encontrada.");
+            }
+
+            return View(suscripcion);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AdjuntarComprobante(int IdSuscripcion, string UserId, IFormFile Comprobante)
+        {
+            if (Comprobante == null || Comprobante.Length == 0)
+            {
+                ModelState.AddModelError("", "Debe adjuntar un comprobante.");
+                return RedirectToAction("Index");
+            }
+
+            byte[] comprobanteData;
+            using (var memoryStream = new MemoryStream())
+            {
+                await Comprobante.CopyToAsync(memoryStream);
+                comprobanteData = memoryStream.ToArray();
+            }
+
+            var solicitud = new Solicitudes
+            {
+                Id = UserId,
+                IdSuscripcion = IdSuscripcion,
+                Comprobante = comprobanteData,
+                FechaSolicitud = DateTime.Now
+            };
+
+            _dbContext.Solicitudes.Add(solicitud);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
 
         public IActionResult MisSuscripciones()
         {
@@ -31,4 +77,3 @@ namespace ANP_Academy.Controllers
         }
     }
 }
-

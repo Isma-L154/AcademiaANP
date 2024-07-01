@@ -1,4 +1,3 @@
-
 using ANP_Academy.DAL.Models;
 using ANP_Academy.Models;
 using Microsoft.AspNetCore.Identity;
@@ -17,15 +16,13 @@ namespace ANP_Academy
 
             builder.Services.AddDbContext<AnpdesarrolloContext>(options => options.UseSqlServer(connectionString));
 
-
             //Config of the Identity Conecction
             builder.Services.AddDbContext<IdentityContext>(options => options.UseSqlServer(connectionString));
 
-            builder.Services.AddIdentity<Usuario ,IdentityRole >(options => options.SignIn.RequireConfirmedAccount = false)
-            .AddEntityFrameworkStores<IdentityContext>()
-            .AddDefaultUI();
-
-
+            builder.Services.AddIdentity<Usuario, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddEntityFrameworkStores<IdentityContext>()
+                .AddDefaultUI()
+                .AddDefaultTokenProviders(); // Add default token providers for password reset, email confirmation, etc.
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -48,6 +45,7 @@ namespace ANP_Academy
 
             app.UseRouting();
 
+            app.UseAuthentication(); // Ensure this is added before UseAuthorization
             app.UseAuthorization();
 
             app.MapControllerRoute(
