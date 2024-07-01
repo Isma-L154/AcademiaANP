@@ -4,6 +4,7 @@ using ANP_Academy.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 {
     [DbContext(typeof(AnpdesarrolloContext))]
-    partial class AnpdesarrolloContextModelSnapshot : ModelSnapshot
+    [Migration("20240629034059_AgregarSolicitudes")]
+    partial class AgregarSolicitudes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -287,8 +290,7 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                 {
                     b.Property<int>("IdSolicitud")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("Id_Solicitud");
+                        .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdSolicitud"));
 
@@ -296,28 +298,23 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<bool?>("Estado")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime?>("FechaFinal")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("FechaInicio")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("FechaSolicitud")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Id")
                         .IsRequired()
-                        .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("IdSuscripcion")
                         .HasColumnType("int");
 
-                    b.HasKey("IdSolicitud")
-                        .HasName("PK__Solicitudes__123456789");
+                    b.HasKey("IdSolicitud");
 
                     b.HasIndex("Id");
 
@@ -538,14 +535,14 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.HasOne("ANP_Academy.DAL.Models.Usuario", "User")
                         .WithMany("Solicitudes")
                         .HasForeignKey("Id")
-                        .IsRequired()
-                        .HasConstraintName("FK_Solicitudes_Usuarios");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ANP_Academy.DAL.Models.Suscripcion", "SuscripcionEntity")
                         .WithMany("Solicitudes")
                         .HasForeignKey("IdSuscripcion")
-                        .IsRequired()
-                        .HasConstraintName("FK_Solicitudes_Suscripciones");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("SuscripcionEntity");
 
