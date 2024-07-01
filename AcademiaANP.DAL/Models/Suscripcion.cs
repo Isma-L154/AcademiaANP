@@ -23,5 +23,4 @@ public partial class Suscripcion
     public virtual ICollection<Pago> Pagos { get; set; } = new List<Pago>();
 
     public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
-    public virtual ICollection<Solicitudes> Solicitudes { get; set; } = new List<Solicitudes>();
 }

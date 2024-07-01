@@ -28,8 +28,6 @@ namespace ANP_Academy.DAL.Models{
         public int? SuscripcionId { get; set; }
         public Suscripcion? Suscripcion { get; set; }
 
-        public virtual ICollection<Solicitudes> Solicitudes { get; set; } = new List<Solicitudes>();
-
-
+       
     }
 }
