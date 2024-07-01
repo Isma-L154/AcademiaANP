@@ -4,6 +4,7 @@ using ANP_Academy.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 {
     [DbContext(typeof(AnpdesarrolloContext))]
-    partial class AnpdesarrolloContextModelSnapshot : ModelSnapshot
+    [Migration("20240701012552_Comentarios")]
+    partial class Comentarios
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,9 +55,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdComentario"));
 
-                    b.Property<string>("CodigoUsuarioId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("ContenidoComentario")
                         .IsRequired()
                         .IsUnicode(false)
@@ -67,8 +67,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 
                     b.HasKey("IdComentario")
                         .HasName("PK__Comentar__5B4FE56FFC9D54DE");
-
-                    b.HasIndex("CodigoUsuarioId");
 
                     b.ToTable("Comentarios");
                 });
@@ -426,15 +424,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.HasIndex("SuscripcionId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("ANP_Academy.DAL.Models.Comentario", b =>
-                {
-                    b.HasOne("ANP_Academy.DAL.Models.Usuario", "CodigoUsuario")
-                        .WithMany()
-                        .HasForeignKey("CodigoUsuarioId");
-
-                    b.Navigation("CodigoUsuario");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Facturacion", b =>

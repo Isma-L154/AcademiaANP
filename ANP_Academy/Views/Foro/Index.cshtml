@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ANP_Academy.DAL.Models.Publicacion>
+﻿@model ANP_Academy.ViewModel.PublicacionComentarioViewModel
 
 <link rel="stylesheet" href="~/css/Foro/Foro.css" asp-append-version="true" />
 
@@ -9,7 +9,7 @@
         <button class="button" onclick="window.location.href='/Foro/MisPublicaciones';">Mis Publicaciones</button>
 
         <!-- Primer comentario -->
-        @foreach (var publicacion in Model)
+        @foreach (var publicacion in Model.Publicaciones)
         {
             <div class="comment">
                 <div class="user"> @Html.DisplayFor(modelItem => publicacion.CodigoUsuario.Nombre)</div> 
@@ -35,8 +35,29 @@
 
                 <!--Poner otro foreach para los comentarios de esta publicacion-->
                 <div class="reply-form">
-                    <textarea placeholder="Escribe tu comentario aquí..."></textarea>
-                    <button>Responder</button>
+                <form asp-action="CrearComentario" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <input type="hidden" name="IdPublicacion" asp-for="@publicacion.IdPublicacion" />
+                        <input name="ContenidoComentario" asp-for="NuevoComentario.ContenidoComentario" class="form-control" placeholder="Ingrese su comentario" />
+                        <span asp-validation-for="NuevoComentario.ContenidoComentario" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit">Comentar</button>
+                    </div>
+                </form>
+                @foreach (var pc in Model.ComentariosPubli.Where(pc => pc.PublicacionId == publicacion.IdPublicacion))
+                {
+                    var comentario = Model.Comentarios.FirstOrDefault(c => c.IdComentario == pc.ComentarioId);
+                    if (comentario != null)
+                    {
+                        <div class="comentario">
+                            <p>Usuario: @comentario.CodigoUsuario.Nombre</p>
+                            <p>Comentario: @comentario.ContenidoComentario</p>
+                            <p>Fecha: @comentario.FechaComentario.ToShortDateString()</p>
+                        </div>
+                    }
+                }
                 </div>
             </div>
         }

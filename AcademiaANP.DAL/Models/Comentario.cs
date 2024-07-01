@@ -9,10 +9,9 @@ public partial class Comentario
 {
     [Key]
     public int IdComentario { get; set; }
-
-    public string Comentario1 { get; set; } = null!;
-
+    public string? ContenidoComentario { get; set; }
     public DateTime FechaComentario { get; set; }
-
-    public virtual ICollection<Publicacion> Publicaciones { get; set; } = new List<Publicacion>();
+    public string? CodigoUsuarioId { get; set; }
+    public virtual ICollection<PublicacionComentario> PublicacionComentario { get; set; } = new List<PublicacionComentario>();
+    public Usuario? CodigoUsuario { get; set; }
 }

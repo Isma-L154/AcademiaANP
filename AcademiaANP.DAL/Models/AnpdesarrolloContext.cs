@@ -22,23 +22,15 @@ public partial class AnpdesarrolloContext : DbContext
     }
 
     public virtual DbSet<Categoria> Categorias { get; set; }
-
     public virtual DbSet<Comentario> Comentarios { get; set; }
-
     public virtual DbSet<Facturacion> Facturacions { get; set; }
-
     public virtual DbSet<Inventario> Inventarios { get; set; }
-
     public virtual DbSet<Pago> Pagos { get; set; }
-
     public virtual DbSet<Proveedor> Proveedores { get; set; }
-
     public virtual DbSet<Publicacion> Publicaciones { get; set; }
-
-
     public virtual DbSet<Suscripcion> Suscripciones { get; set; }
-
     public virtual DbSet<Ubicacion> Ubicacions { get; set; }
+    public virtual DbSet<PublicacionComentario> PublicacionComentarios { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -57,13 +49,15 @@ public partial class AnpdesarrolloContext : DbContext
             entity.HasKey(e => e.IdComentario).HasName("PK__Comentar__5B4FE56FFC9D54DE");
 
             entity.Property(e => e.IdComentario).HasColumnName("Id_Comentario");
-            entity.Property(e => e.Comentario1)
+            entity.Property(e => e.ContenidoComentario)
                 .IsUnicode(false)
                 .HasColumnName("Comentario");
             entity.Property(e => e.FechaComentario)
                 .HasColumnType("datetime")
                 .HasColumnName("Fecha_comentario");
         });
+        modelBuilder.Entity<PublicacionComentario>()
+            .HasKey(pc => new { pc.PublicacionId, pc.ComentarioId });
 
         modelBuilder.Entity<Facturacion>(entity =>
         {
@@ -163,14 +157,10 @@ public partial class AnpdesarrolloContext : DbContext
             entity.Property(e => e.IdPublicacion).HasColumnName("Id_Publicacion");
             entity.Property(e => e.Descripcion).IsUnicode(false);
             entity.Property(e => e.FechaPublicacion).HasColumnName("Fecha_Publicacion");
-            entity.Property(e => e.IdComentario).HasColumnName("Id_Comentario");
             entity.Property(e => e.CodigoUsuarioId)
                 .HasMaxLength(450)
                 .HasColumnName("Id_User");
 
-            entity.HasOne(d => d.IdComentarioNavigation).WithMany(p => p.Publicaciones)
-                .HasForeignKey(d => d.IdComentario)
-                .HasConstraintName("FK__Publicaci__Id_Co__14270015");
         });
 
         modelBuilder.Entity<Suscripcion>(entity =>

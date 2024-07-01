@@ -1,4 +1,5 @@
 ﻿using ANP_Academy.DAL.Models;
+using ANP_Academy.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,9 +19,22 @@ namespace ANP_Academy.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var anpdesarrolloContext = _context.Publicaciones.Include(p => p.CodigoUsuario);
-            return View(await anpdesarrolloContext.ToListAsync());
+            var publicaciones = await _context.Publicaciones.Include(p => p.CodigoUsuario).ToListAsync();
+            var comentarios = await _context.Comentarios.ToListAsync();
+            var ComentarioPubli = await _context.PublicacionComentarios.ToListAsync();
+
+            var viewModel = new PublicacionComentarioViewModel
+            {
+                Publicaciones = publicaciones,
+                Comentarios = comentarios,
+                ComentariosPubli = ComentarioPubli
+            };
+
+            return View(viewModel);
         }
+
+
+        [Authorize]
         public async Task<IActionResult> MisPublicaciones()
         {
             var anpdesarrolloContext = _context.Publicaciones.Include(p => p.CodigoUsuario);
@@ -136,5 +150,39 @@ namespace ANP_Academy.Controllers
             return _context.Publicaciones.Any(e => e.IdPublicacion == id);
         }
 
+        //POST CrearComentario
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> CrearComentario([Bind("ContenidoComentario")] Comentario comentario , int IdPublicacion)
+        {
+            var identidad = User.Identity as ClaimsIdentity;
+            string idUsuarioLoggeado = identidad.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            if (idUsuarioLoggeado == null)
+            {
+                return Unauthorized();
+            }
+
+            comentario.CodigoUsuarioId = idUsuarioLoggeado;
+            comentario.FechaComentario  = DateTime.Now;
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(comentario);
+                await _context.SaveChangesAsync();
+                
+                var PublicacionComentario = new PublicacionComentario
+                {
+                    PublicacionId = IdPublicacion,
+                    ComentarioId = comentario.IdComentario
+                };
+
+                _context.Add(PublicacionComentario);
+                await _context.SaveChangesAsync();
+                
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

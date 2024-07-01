@@ -129,7 +129,7 @@ namespace ANP_Academy.Controllers
             foreach (var user in usuarios)
             {
                 var roles = await _userManager.GetRolesAsync(user);
-                var role = roles.FirstOrDefault(); // Assuming a user has only one role
+                var role = roles.FirstOrDefault(); 
 
                 userRoles.Add(new UserRoleViewModel
                 {
