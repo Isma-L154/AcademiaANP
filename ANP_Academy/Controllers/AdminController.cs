@@ -10,7 +10,10 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Mail;
+using System.Net;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ANP_Academy.Controllers
 {
@@ -20,12 +23,14 @@ namespace ANP_Academy.Controllers
         private readonly UserManager<Usuario> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly AnpdesarrolloContext _dbContext;
+        private readonly IConfiguration _configuration;
 
-        public AdminController(UserManager<Usuario> userManager, RoleManager<IdentityRole> roleManager, AnpdesarrolloContext dbContext)
+        public AdminController(UserManager<Usuario> userManager, RoleManager<IdentityRole> roleManager, AnpdesarrolloContext dbContext, IConfiguration configuration)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _dbContext = dbContext;
+            _configuration = configuration;
         }
 
         public async Task<IActionResult> GestionRoles()
@@ -618,6 +623,71 @@ namespace ANP_Academy.Controllers
             _dbContext.Update(solicitud);
             await _dbContext.SaveChangesAsync();
 
+            // Enviar correo electrónico 
+            string destinatario = user.Email;  
+            string asunto = "Solicitud Aprobada";
+            string mensaje = $@"
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+        }}
+       
+        .content {{
+            padding: 20px;
+        }}
+        .footer {{
+            margin-top: 20px;
+            padding: 10px;
+            text-align: center;
+            font-size: 12px;
+            color: #777777;
+        }}
+        .btn {{
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }}
+        .btn:hover {{
+            background-color: #0056b3;
+        }}
+    </style>
+</head>
+<body>
+
+    <div class='content'>
+        <h1>Estimado(a), {user.Nombre} {user.PrimApellido} {user.SegApellido},</h1>
+        <p>Tu suscripción a la <strong>Academia Nacional de Parrilleros Rodrigo Morales</strong> ha sido aprobada de manera exitosa.</p>
+        <p>Tu suscripción estará activa hasta el día: <strong>{solicitud.FechaFinal:dd/MM/yyyy}</strong>.</p>
+        <p>Gracias por ser parte de <strong>ANP Academy</strong>.</p>
+    </div>
+
+    <div class='footer'>
+        <p>ANP Academy - Todos los derechos reservados.</p>
+    </div>
+</body>
+</html>
+";
+
+
+            try
+            {
+                SendEmail(destinatario, asunto, mensaje);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al enviar el correo: " + ex.Message);
+            }
+
             return RedirectToAction("ControlSuscrip");
         }
 
@@ -636,5 +706,35 @@ namespace ANP_Academy.Controllers
 
             return RedirectToAction("ControlSuscrip");
         }
+
+        public void SendEmail(string destinatario, string asunto, string mensaje)
+        {
+            var emailSettings = _configuration.GetSection("EmailSettings");
+
+            string CuentaEmail = emailSettings["CuentaEmail"];
+            string PasswordEmail = emailSettings["PasswordEmail"];
+            string Host = emailSettings["Host"];
+            int Port = int.Parse(emailSettings["Port"]);
+
+            MailMessage msg = new MailMessage();
+            msg.To.Add(new MailAddress(destinatario));
+            msg.From = new MailAddress(CuentaEmail);
+            msg.Subject = asunto;
+            msg.Body = mensaje;
+            msg.IsBodyHtml = true;  
+
+            SmtpClient client = new SmtpClient
+            {
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(CuentaEmail, PasswordEmail),
+                Port = Port,
+                Host = Host,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                EnableSsl = true
+            };
+
+            client.Send(msg);
+        }
+
     }
 }
