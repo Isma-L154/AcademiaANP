@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.IO;
+using ANP_Academy.ViewModel;
+
 
 namespace ANP_Academy.Controllers
 {
@@ -71,9 +73,25 @@ namespace ANP_Academy.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult MisSuscripciones()
+        public async Task<IActionResult> MisSuscripciones()
         {
-            return View();
+            string userId = _userManager.GetUserId(User);
+            var suscripcionesUsuario = await _dbContext.Solicitudes
+                .Include(s => s.SuscripcionEntity)
+                .Where(s => s.User.Id == userId)
+                .ToListAsync();
+
+            var suscripcionesPendientes = suscripcionesUsuario.Where(s => s.FechaInicio == null && s.FechaFinal == null && s.Estado == null).ToList();
+            var suscripcionesAprobadas = suscripcionesUsuario.Where(s => s.FechaInicio != null && s.FechaFinal != null && s.Estado == true).ToList();
+            var suscripcionesRechazadas = suscripcionesUsuario.Where(s => s.FechaInicio == null && s.FechaFinal == null && s.Estado == false).ToList();
+
+            return View(new MisSuscripcionesViewModel
+            {
+                SuscripcionesPendientes = suscripcionesPendientes,
+                SuscripcionesAprobadas = suscripcionesAprobadas,
+                SuscripcionesRechazadas = suscripcionesRechazadas
+            });
         }
+
     }
 }

@@ -47,3 +47,11 @@ th {
     .button:hover {
         background-color: #5b2b29;
     }
+
+.no-data {
+    text-align: center;
+    color: #888;
+    margin: 20px 0;
+    font-style: italic;
+}
+

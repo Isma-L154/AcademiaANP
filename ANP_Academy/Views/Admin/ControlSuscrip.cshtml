@@ -1,50 +1,58 @@
-﻿@{
+﻿@model IEnumerable<ANP_Academy.ViewModel.SolicitudesViewModel>
 
-}
 <link rel="stylesheet" href="~/css/Administrador/GestionSuscrip.css" asp-append-version="true" />
 
-<main>
-    <section id="gestion">
-        <h2 style="text-align: center;">Gestión de Suscripciones y Pagos</h2>
-        <div class="tabla">
-            <table>
+<h2 style="text-align: center;">Gestión de Suscripciones y Pagos</h2>
+
+@if (!Model.Any())
+{
+    <p>No se encontraron suscripciones en esta categoría.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>ID Solicitud</th>
+                <th>Id Usuario</th>
+                <th>Tipo de Suscripción</th>
+                <th>Comprobante</th>
+                <th>Fecha de Solicitud</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
                 <tr>
-                    <th>Usuarios</th>
-                    <th>Suscripciones</th>
-                    <th>Pagos</th>
-                    <th></th> 
-                </tr>
-                <tr>
-                    <td>Usuario1</td>
-                    <td>Suscripción A</td>
-                    <td><img src="https://theorytest.org.uk/wp-content/uploads/2021/01/no-loading-sign.png" alt="Ejemplo de pago"></td>
-                    <td><button class="boton-verde"><i class="fas fa-check"></i> Confirmar</button>
-                        <button class="boton-denegar"><i class="fa-solid fa-x"></i> Denegar</button>
+                    <td>@item.IdSolicitud</td>
+                    <td>@item.UserId.Substring(0, 8)...</td>
+                    <td>@item.NombreSuscripcion</td>
+                    <td>
+                        <a href="data:image/png;base64,@Convert.ToBase64String(item.Comprobante)" target="_blank">
+                            <img src="data:image/png;base64,@Convert.ToBase64String(item.Comprobante)" alt="Comprobante" style="width: 100px; height: auto; cursor: pointer;">
+                        </a>
+                    </td>
+                    <td>@item.FechaSolicitud.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <form asp-action="AprobarSolicitud" asp-controller="Admin" method="post">
+                            <input type="hidden" name="idSolicitud" value="@item.IdSolicitud" />
+                            <input type="hidden" name="userId" value="@item.UserId" />
+                            <input type="hidden" name="idSuscripcion" value="@item.IdSuscripcion" />
+                            <button type="submit" class="btn btn-success">Aprobar</button>
+                        </form>
+                        <button class="btn btn-danger" onclick="rechazarSolicitud('@item.IdSolicitud')">Rechazar</button>
                     </td>
                 </tr>
-                <tr>
-                    <td>Usuario2</td>
-                    <td>Suscripción B</td>
-                    <td><img src="https://theorytest.org.uk/wp-content/uploads/2021/01/no-loading-sign.png" alt="Ejemplo de pago"></td> 
-                    <td><button class="boton-verde"><i class="fas fa-check"></i> Confirmar</button>
-                        <button class="boton-denegar"><i class="fa-solid fa-x"></i> Denegar</button>
-                    </td>
-                    
-                </tr>
-                <tr>
-                    <td>Usuario3</td>
-                    <td>Suscripción C</td>
-                    <td><img src="https://theorytest.org.uk/wp-content/uploads/2021/01/no-loading-sign.png" alt="Ejemplo de pago"></td> 
-                    <td><button class="boton-verde"><i class="fas fa-check"></i> Confirmar</button>
-                        <button class="boton-denegar"><i class="fa-solid fa-x"></i> Denegar</button>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </section>
-</main>
+            }
+        </tbody>
+    </table>
+}
 
-
-
-
-
+<script>
+    function rechazarSolicitud(idSolicitud) {
+        if (confirm('¿Estás seguro de que deseas rechazar esta solicitud?')) {
+            window.location.href = '@Url.Action("RechazarSolicitud", "AdminController", new { id = "" })' + idSolicitud;
+        }
+    }
+</script>

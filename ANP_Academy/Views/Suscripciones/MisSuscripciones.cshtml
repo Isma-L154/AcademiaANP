@@ -1,43 +1,126 @@
-﻿<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mis Suscripciones</title>
-    <link rel="stylesheet" href="~/css/Suscripciones/MisSuscripciones.css" asp-append-version="true" />
-</head>
-<body>
-    <div class="container">
-        <h2>Mis Suscripciones</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Tipo de Suscripción</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Suscripción Mensual</td>
-                    <td>
-                        <a href="~/Suscripciones/Index" class="button">Actualizar</a>
-                        <button class="button" onclick="confirmarEliminar()">Eliminar</button>
-                    </td>
-                </tr>
+﻿@model ANP_Academy.ViewModel.MisSuscripcionesViewModel
 
-                <!-- Agrega más filas según tus suscripciones -->
-            </tbody>
-        </table>
-    </div>
+<link rel="stylesheet" href="~/css/Suscripciones/MisSuscripciones.css" asp-append-version="true" />
 
-    <script>
-        function confirmarEliminar() {
-            if (confirm("¿Estás seguro de que quieres eliminar tu suscripción?")) {
-                // Aquí puedes agregar la lógica para eliminar la suscripción
-                // Por ejemplo, podrías enviar una solicitud al servidor para realizar la eliminación
-                window.location.href = "/Home/Index"; // Redirigir a la página de eliminación
-            }
+<div class="container">
+    <h2>Mis Suscripciones</h2>
+
+    <section>
+        <h3>Solicitudes Pendientes</h3>
+        @if (!Model.SuscripcionesPendientes.Any())
+        {
+            <p class="no-data">No se encontraron suscripciones en esta categoría.</p>
         }
-    </script>
-</body>
-</html>
+        else
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id Solicitud</th>
+                        <th>Tipo de Suscripción</th>
+                        <th>Fecha de solicitud</th>
+                        <th>Fecha de inicio</th>
+                        <th>Fecha final</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.SuscripcionesPendientes)
+                    {
+                        <tr>
+                            <td>@item.IdSolicitud</td>
+                            <td>@item.SuscripcionEntity.Nombre</td>
+                            <td>@item.FechaSolicitud.ToString("dd/MM/yyyy")</td>
+                            <td>@(item.FechaInicio.HasValue ? item.FechaInicio.Value.ToString("dd/MM/yyyy") : "Pendiente de aprobación")</td>
+                            <td>@(item.FechaFinal.HasValue ? item.FechaFinal.Value.ToString("dd/MM/yyyy") : "Pendiente de aprobación")</td>
+                            <td>@(item.Estado.HasValue ? (item.Estado.Value ? "Activa" : "Inactiva") : "Pendiente")</td>
+                            <td>
+                                <button class="button" onclick="confirmarEliminar()">Cancelar solicitud</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </section>
+
+    <section>
+        <h3>Suscripciones Aprobadas</h3>
+        @if (!Model.SuscripcionesAprobadas.Any())
+        {
+            <p class="no-data">No se encontraron suscripciones en esta categoría.</p>
+        }
+        else
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id Solicitud</th>
+                        <th>Tipo de Suscripción</th>
+                        <th>Fecha de solicitud</th>
+                        <th>Fecha de inicio</th>
+                        <th>Fecha final</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.SuscripcionesAprobadas)
+                    {
+                        <tr>
+                            <td>@item.IdSolicitud</td>
+                            <td>@item.SuscripcionEntity.Nombre</td>
+                            <td>@item.FechaSolicitud.ToString("dd/MM/yyyy")</td>
+                            <td>@(item.FechaInicio.HasValue ? item.FechaInicio.Value.ToString("dd/MM/yyyy") : "Contactar a servicio al cliente.")</td>
+                            <td>@(item.FechaFinal.HasValue ? item.FechaFinal.Value.ToString("dd/MM/yyyy") : "Contactar a servicio al cliente.")</td>
+                            <td>@(item.Estado.HasValue ? (item.Estado.Value ? "Activa" : "Inactiva") : "Pendiente")</td>
+                            <td>
+                                <button class="button" onclick="confirmarEliminar()">Cancelar suscripción</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </section>
+
+    <section>
+        <h3>Suscripciones Rechazadas</h3>
+        @if (!Model.SuscripcionesRechazadas.Any())
+        {
+            <p class="no-data">No se encontraron suscripciones en esta categoría.</p>
+        }
+        else
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id Solicitud</th>
+                        <th>Tipo de Suscripción</th>
+                        <th>Fecha de solicitud</th>
+                        <th>Fecha de inicio</th>
+                        <th>Fecha final</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.SuscripcionesRechazadas)
+                    {
+                        <tr>
+                            <td>@item.IdSolicitud</td>
+                            <td>@item.SuscripcionEntity.Nombre</td>
+                            <td>@item.FechaSolicitud.ToString("dd/MM/yyyy")</td>
+                            <td>@(item.FechaInicio.HasValue ? item.FechaInicio.Value.ToString("dd/MM/yyyy") : "Contactar a servicio al cliente.")</td>
+                            <td>@(item.FechaFinal.HasValue ? item.FechaFinal.Value.ToString("dd/MM/yyyy") : "Contactar a servicio al cliente.")</td>
+                            <td>@(item.Estado.HasValue ? (item.Estado.Value ? "Activa" : "Rechazada") : "Pendiente")</td>
+                            <td>
+                                <button class="button" onclick="confirmarEliminar()">Cancelar suscripción</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </section>
+</div>

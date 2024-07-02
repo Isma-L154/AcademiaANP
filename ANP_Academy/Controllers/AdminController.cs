@@ -1,4 +1,5 @@
 ﻿using ANP_Academy.DAL.Models;
+using ANP_Academy.Models;
 using ANP_Academy.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -241,10 +243,6 @@ namespace ANP_Academy.Controllers
             return RedirectToAction("GestionUsuarios");
         }
 
-        public IActionResult ControlSuscrip()
-        {
-            return View();
-        }
         public IActionResult GestionForo()
         {
             return View();
@@ -559,11 +557,84 @@ namespace ANP_Academy.Controllers
             return View(solicitud);
         }
 
-
-        public IActionResult MisSuscripciones()
+        public async Task<IActionResult> ControlSuscrip()
         {
-            return View();
+            var solicitudes = await _dbContext.Solicitudes
+                .Include(s => s.User)
+                .Include(s => s.SuscripcionEntity)
+                .Where(s => s.FechaInicio == null && s.FechaFinal == null && s.Estado == null)
+                .Select(s => new SolicitudesViewModel
+                {
+                    IdSolicitud = s.IdSolicitud,
+                    UserId = s.User.Id,
+                    IdSuscripcion = s.IdSuscripcion,
+                    NombreSuscripcion = s.SuscripcionEntity.Nombre,
+                    Comprobante = s.Comprobante,
+                    FechaSolicitud = s.FechaSolicitud
+                }).ToListAsync();
+
+            return View(solicitudes);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AprobarSolicitud(int idSolicitud, string userId, int idSuscripcion)
+        {
+            var solicitud = await _dbContext.Solicitudes.FindAsync(idSolicitud);
+            if (solicitud == null)
+            {
+                return NotFound();
+            }
+
+            var suscripcion = await _dbContext.Suscripciones.FindAsync(idSuscripcion);
+            if (suscripcion == null)
+            {
+                return NotFound();
+            }
+
+            // Establece fechas de inicio y finalización
+            solicitud.FechaInicio = DateTime.Now;
+            solicitud.FechaFinal = DateTime.Now.AddMonths(suscripcion.Duracion);
+
+            // Actualizar el estado
+            solicitud.Estado = true;
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Remover roles actuales
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, currentRoles);
+
+            // Agregar nuevo rol
+            var result = await _userManager.AddToRoleAsync(user, "Estudiante");
+            if (!result.Succeeded)
+            {
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
+
+            _dbContext.Update(solicitud);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction("ControlSuscrip");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RechazarSolicitud(int idSolicitud)
+        {
+            var solicitud = await _dbContext.Solicitudes.FindAsync(idSolicitud);
+            if (solicitud == null)
+            {
+                return NotFound();
+            }
+
+            solicitud.Estado = false;
+            _dbContext.Update(solicitud);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction("ControlSuscrip");
+        }
     }
 }
