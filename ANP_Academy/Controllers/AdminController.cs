@@ -652,7 +652,7 @@ namespace ANP_Academy.Controllers
             padding: 10px 20px;
             font-size: 16px;
             color: white;
-            background-color: #007bff;
+            background-color: #07AA20;
             text-decoration: none;
             border-radius: 5px;
             margin-top: 20px;
@@ -669,6 +669,7 @@ namespace ANP_Academy.Controllers
         <p>Tu suscripción a la <strong>Academia Nacional de Parrilleros Rodrigo Morales</strong> ha sido aprobada de manera exitosa.</p>
         <p>Tu suscripción estará activa hasta el día: <strong>{solicitud.FechaFinal:dd/MM/yyyy}</strong>.</p>
         <p>Gracias por ser parte de <strong>ANP Academy</strong>.</p>
+        <a href='https://www.youtube.com/' class='btn'>Visita nuestro sitio web</a>
     </div>
 
     <div class='footer'>
