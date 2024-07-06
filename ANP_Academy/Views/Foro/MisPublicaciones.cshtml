@@ -7,31 +7,44 @@
 
 
     <div class="container">
-        <h2>Mis Publicaciones</h2>
+    <h2>Mis Publicaciones</h2>
+    
+    @if (!Model.Any(p => p.CodigoUsuarioId == userId))
+    {
+        <div class="no-publications">
+            <div class="no-publications-container">
+                <img class="no-publications-image" src="~/Img/RobotError.webp" alt="No Publications">
+                <h2 class="no-publications-title">No tienes publicaciones</h2>
+                <p class="no-publications-message">Parece que aún no has publicado nada. ¡Empieza a compartir tus ideas y experiencias con otros!</p>
+                <button class="button" onclick="window.location.href='/Foro/CrearPublicacion';">Crear mi primera publicación</button>
+            </div>
+        </div>
+    }
         @foreach (var publicacion in Model)
         {
         if (!string.IsNullOrEmpty(userId) && publicacion.CodigoUsuarioId == userId)
-        {
-            <div class="comment">
-                <div class="user"> @Html.DisplayFor(modelItem => publicacion.CodigoUsuario.Nombre)</div>
-                <div class="other"> @Html.DisplayFor(modelItem => publicacion.FechaPublicacion)</div>
-                <div class="content"> @Html.DisplayFor(modelItem => publicacion.Descripcion)</div>
-                <div class="attachments">
-                    <!--TODO Put the Image or videos of the user-->
-                    <span class="attachment"> <img src="https://via.placeholder.com/100" alt="Imagen adjunta"></span>
-                </div>
+            {
+                <div class="comment">
+                    <div class="user"> @Html.DisplayFor(modelItem => publicacion.Titulo)</div>
+                    <div class="user"> @Html.DisplayFor(modelItem => publicacion.CodigoUsuario.Nombre)</div>
+                    <div class="other"> @Html.DisplayFor(modelItem => publicacion.FechaPublicacion)</div>
+                    <div class="content"> @Html.DisplayFor(modelItem => publicacion.Descripcion)</div>
+                    <div class="attachments">
+                        <!--TODO Put the Image or videos of the user-->
+                        <span class="attachment"> <img src="https://via.placeholder.com/100" alt="Imagen adjunta"></span>
+                    </div>
 
-                <!--Put a <p> or something that helps to tell the users that they don't have any posts-->
-                <div class="reply-form">
-                    <form id="deleteForm" asp-action="Delete">
-                        <input type="hidden" name="IdPublicacion" asp-for="@publicacion.IdPublicacion"/>
-                        <a class="button" asp-action="EditarPublicacion" asp-route-id="@publicacion.IdPublicacion">Editar</a>
-                        <input type="submit" value="Eliminar" class="button" /> 
-                    </form>
+                    <div class="reply-form">
+                        <form id="deleteForm" asp-action="Delete">
+                            <input type="hidden" name="IdPublicacion" asp-for="@publicacion.IdPublicacion" />
+                            <a class="button" asp-action="EditarPublicacion" asp-route-id="@publicacion.IdPublicacion">Editar</a>
+                            <input type="submit" value="Eliminar" class="button" />
+                        </form>
+                    </div>
                 </div>
-            </div>
+            }
         }
-      }
+    
     </div>
 
 <script src="~/js/Foro/MisPublicaciones.js"></script>

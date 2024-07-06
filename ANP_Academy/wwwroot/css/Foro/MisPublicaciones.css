@@ -45,11 +45,64 @@ th {
     cursor: pointer;
     margin-top: 10px;
     transition: background-color 0.3s ease;
-    text-decoration: none; /* Agregado para que los botones se vean como enlaces */
-    display: inline-block; /* Agregado para que los botones se vean como enlaces */
-    margin-right: 5px; /* Espacio entre los botones */
+    text-decoration: none; 
+    display: inline-block; 
+    margin-right: 5px; 
 }
 
     .button:hover {
         background-color: #5b2b29;
+        color: #fff;
+    }
+
+
+.no-publications {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    background-color: #f9f9f9;
+}
+
+.no-publications-container {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.no-publications-image {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px;
+}
+
+.no-publications-title {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.no-publications-message {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.no-publications-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+    .no-publications-button:hover {
+        background-color: #0056b3;
     }

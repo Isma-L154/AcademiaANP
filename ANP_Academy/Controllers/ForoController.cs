@@ -57,7 +57,7 @@ namespace ANP_Academy.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> CrearPublicacion([Bind("IdPublicacion,Descripcion,FechaPublicacion,IdComentario,IdUser")] Publicacion publicacion)
+        public async Task<IActionResult> CrearPublicacion([Bind("IdPublicacion,Descripcion,FechaPublicacion,IdComentario,IdUser, Titulo")] Publicacion publicacion)
         {
             var identidad = User.Identity as ClaimsIdentity;
             string idUsuarioLoggeado = identidad.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
@@ -81,8 +81,19 @@ namespace ANP_Academy.Controllers
         public async Task<IActionResult> Delete(int IdPublicacion)
         {
             var publicacion = await _context.Publicaciones.FindAsync(IdPublicacion);
+            //Aca se seleccionan los comentarios relacionados a la publicacion para que tambien se eliminen de la tabla
+            var comentariosRelacionados = _context.PublicacionComentarios
+                    .Where(pc => pc.PublicacionId == IdPublicacion)
+                    .Select(pc => pc.ComentarioId)
+                    .ToList();
+
+            var comentarios = _context.Comentarios
+                .Where(c => comentariosRelacionados.Contains(c.IdComentario))
+                .ToList(); 
+            
             if (publicacion != null)
             {
+                _context.Comentarios.RemoveRange(comentarios);
                 _context.Publicaciones.Remove(publicacion);
             }
 
@@ -111,22 +122,22 @@ namespace ANP_Academy.Controllers
         //POST: EditarPublicaciones/{ID}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Editar(int IdPublicacion, [Bind("IdPublicacion,Descripcion,IdUser")] Publicacion publicacion)
+        public async Task<IActionResult> Editar(int IdPublicacion, [Bind("IdPublicacion,Descripcion,Titulo")] Publicacion publicacion)
         {
             if (IdPublicacion != publicacion.IdPublicacion)
             {
                 return NotFound();
             }
-            //TODO Resolve BUG with the date
-            var identidad = User.Identity as ClaimsIdentity;
-            string idUsuarioLoggeado = identidad.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value; 
-            publicacion.CodigoUsuarioId = idUsuarioLoggeado;
+            var PubliOriginal = await _context.Publicaciones.FindAsync(IdPublicacion);
+            PubliOriginal.Titulo = publicacion.Titulo;
+            PubliOriginal.Descripcion = publicacion.Descripcion;
+
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(publicacion);
+                    _context.Update(PubliOriginal);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

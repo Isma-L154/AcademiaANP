@@ -1,4 +1,6 @@
-﻿@model ANP_Academy.ViewModel.PublicacionComentarioViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Usuario> SignInManager
+@model ANP_Academy.ViewModel.PublicacionComentarioViewModel
 
 <link rel="stylesheet" href="~/css/Foro/Foro.css" asp-append-version="true" />
 
@@ -6,12 +8,20 @@
     <div class="container">
         <h2>Foro de Discusión</h2>
         <button class="button" onclick="window.location.href='/Foro/CrearPublicacion';">Crear Publicación</button>
-        <button class="button" onclick="window.location.href='/Foro/MisPublicaciones';">Mis Publicaciones</button>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        if (User.IsInRole("Cliente"))
+        {
+            <button class="button" onclick="window.location.href='/Foro/MisPublicaciones';">Mis Publicaciones</button>
+        }
+    }
+    
 
         <!-- Primer comentario -->
         @foreach (var publicacion in Model.Publicaciones)
         {
             <div class="comment">
+                <div class="user"> @Html.DisplayFor(modelItem => publicacion.Titulo)</div>
                 <div class="user"> @Html.DisplayFor(modelItem => publicacion.CodigoUsuario.Nombre)</div> 
                 <div class="other"> @Html.DisplayFor(modelItem => publicacion.FechaPublicacion)</div>
                 <div class="content"> @Html.DisplayFor(modelItem => publicacion.Descripcion)</div> 
@@ -21,7 +31,7 @@
                 </div>
 
                
-            <button class="report-btn" onclick="toggleReportForm(this)"><i class="fa-regular fa-flag fa-xl" style="color: #df0c0c;"></i></button> <!--Cambiar boton por un icono-->
+            <button class="report-btn" onclick="toggleReportForm(this)"><i class="fa-regular fa-flag fa-xl" style="color: #df0c0c;"></i></button> 
                 <!-- Formulario para reportar comentario -->
                 <div id="report-form-1" class="report-form">
                     <label for="report-reason-1">Motivo del reporte:</label>
@@ -33,26 +43,27 @@
                     <button>Enviar reporte</button>
                 </div>
 
-                <!--Poner otro foreach para los comentarios de esta publicacion-->
+                <!--Formulario para publicar un comentario -->
                 <div class="reply-form">
                 <form asp-action="CrearComentario" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <input type="hidden" name="IdPublicacion" asp-for="@publicacion.IdPublicacion" />
-                        <input name="ContenidoComentario" asp-for="NuevoComentario.ContenidoComentario" class="form-control" placeholder="Ingrese su comentario" />
+                        <input id="TextInput_@publicacion.IdPublicacion" name="ContenidoComentario" asp-for="NuevoComentario.ContenidoComentario" class="form-control" placeholder="Ingrese su comentario" oninput="VerficarTexto('@publicacion.IdPublicacion')" />
                         <span asp-validation-for="NuevoComentario.ContenidoComentario" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <button type="submit">Comentar</button>
+                        <button class="btn btn-primary" id="ButtonSubmit_@publicacion.IdPublicacion" type="submit" disabled>Comentar</button>
                     </div>
                 </form>
+                <!--Mostrar los comentarios que estan asociados a la publicacion-->
                 @foreach (var pc in Model.ComentariosPubli.Where(pc => pc.PublicacionId == publicacion.IdPublicacion))
                 {
                     var comentario = Model.Comentarios.FirstOrDefault(c => c.IdComentario == pc.ComentarioId);
                     if (comentario != null)
                     {
                         <div class="comentario">
-                            <p>Usuario: @comentario.CodigoUsuario.Nombre</p>
+                            <p>Usuario: @comentario.CodigoUsuarioId</p>
                             <p>Comentario: @comentario.ContenidoComentario</p>
                             <p>Fecha: @comentario.FechaComentario.ToShortDateString()</p>
                         </div>
@@ -62,16 +73,5 @@
             </div>
         }
     </div>
-
-    <script>
-        // Función para alternar la visibilidad del formulario de reporte
-        function toggleReportForm(button) {
-        var form = button.nextElementSibling;
-            if (form.style.display === "none") {
-                form.style.display = "block";
-            } else {
-                form.style.display = "none";
-            }
-        }
-    </script>
+<script src="~/js/Foro/Index.js"></script>
 

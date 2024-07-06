@@ -18,11 +18,18 @@ $(document).ready(function () {
             callback: function (result) {
                 if (result) {
                     e.target.submit();
-                    toastr.success('Eliminado correctamente');
-                } else {
-                    toastr.error('Ocurrio un error al eliminar la publicacion');
+                    sessionStorage.setItem('toastrMessage', 'Eliminado correctamente');
                 }
             }
         });
     });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    var toastrMessage = sessionStorage.getItem('toastrMessage');
+    if (toastrMessage) {
+        toastr.success(toastrMessage);
+        sessionStorage.removeItem('toastrMessage'); // Quitar el Toastr almacenado
+    }
+});
+

@@ -15,6 +15,7 @@ namespace ANP_Academy
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             builder.Services.AddDbContext<AnpdesarrolloContext>(options => options.UseSqlServer(connectionString));
+            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             //Config of the Identity Conecction
             builder.Services.AddDbContext<IdentityContext>(options => options.UseSqlServer(connectionString));
