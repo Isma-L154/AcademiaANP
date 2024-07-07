@@ -40,27 +40,35 @@
                             <a href="javascript:void(0);" class="btn btn-default stat-item">
                                 <i class="fa fa-thumbs-up icon"></i> 228
                             </a>
-                            <button onclick="toggleReportForm(this)" class="btn btn-default stat-item">
+                            <button onclick="toggleModal('reportModal_@publicacion.IdPublicacion')" class="btn btn-default stat-item">
                                 <i class="fa-regular fa-flag fa-xl" style="color: #df0c0c;"></i>
                             </button>
-                            <!-- Formulario para reportar comentario -->
-                            <form id="FormReport" asp-action="CreateReporte" method="post">
-                                <div id="report-form" class="report-form" style="display: none;">
-                                    <input type="hidden" name="IdPublicacion" asp-for="@publicacion.IdPublicacion" />
-                                    <label for="Motivo">Motivo del reporte:</label>
-                                    <select name="Motivo" id="Motivo">
-                                        <option value="Spam">Spam</option>
-                                        <option value="Inapropiado">Contenido inapropiado</option>
-                                        <option value="Otros">Otros</option>
-                                    </select>
-                                    <label for="Explicacion">Explicación:</label>
-                                    <textarea name="Explicacion" id="Explicacion" rows="4" cols="50" placeholder="Ingrese una explicación..."></textarea>
-                                    <button type="submit">Enviar reporte</button>
+
+                            <!-- Modal/Formulario para reportar comentario -->
+                            <div id="reportModal_@publicacion.IdPublicacion" class="modal">
+                                <div class="modal-content">
+                                    <span class="close" onclick="toggleModal('reportModal')">&times;</span>
+                                    <form id="FormReport" asp-action="CreateReporte" method="post">
+                                        <div id="report-form" class="report-form">
+                                            <input type="hidden" name="IdPublicacion" asp-for="@publicacion.IdPublicacion" />
+                                            <label for="Motivo">Motivo del reporte:</label>
+                                            <select name="Motivo" id="Motivo">
+                                                <option value="Spam">Spam</option>
+                                                <option value="Inapropiado">Contenido inapropiado</option>
+                                                <option value="Otros">Otros</option>
+                                            </select>
+                                            <label for="Explicacion">Explicación:</label>
+                                            <textarea name="Explicacion" id="Explicacion" rows="4" cols="50" placeholder="Ingrese una explicación..."></textarea>
+                                            <button type="submit">Enviar reporte</button>
+                                        </div>
+                                    </form>
                                 </div>
-                            </form>
+                            </div>
+
                         </div>
                     </div>
                     <div class="post-footer">
+                        <!--Formulario para Crear un Comentario a una Publicacion-->
                         <form asp-action="CrearComentario" method="post">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="input-group">
@@ -102,8 +110,5 @@
         </div>
     }
 </div>
-
-
-
 <script src="~/js/Foro/Index.js"></script>
 

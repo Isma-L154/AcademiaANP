@@ -71,57 +71,6 @@ h2 {
         max-height: 100px;
         border-radius: 5px;
     }
-
-.report-btn {
-    background-color: white;
-    border: none;
-    padding: 5px 10px;  
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    position: absolute;
-    top: 5px;
-    right: 5px;
-}
-
-.report-form {
-    display: none;
-    position: absolute;
-    top: 35px;
-    right: 0;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    z-index: 1;
-}
-
-    .report-form label {
-        display: block;
-        margin-bottom: 5px;
-    }
-
-    .report-form select {
-        width: 100%;
-        padding: 5px;
-        border-radius: 3px;
-        border: 1px solid #ddd;
-    }
-
-    .report-form button {
-        margin-top: 5px;
-        background-color: #2c0b0b;
-        color: #fff;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 3px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-        .report-form button:hover {
-            background-color: #5b2b29;
-        }
-
 .reply-form {
     margin-top: 20px;
     padding: 10px;
@@ -184,11 +133,7 @@ h2 {
         padding: 50px 15px 15px;
         text-align: center;
     }
-/* End Component: Profile Widget */
-/********************************************************************
-*********************************************************************
-*********************************************************************/
-/* Component: Mini Profile Widget */
+
 .mini-profile-widget .image-container .avatar {
     width: 180px;
     height: 180px;
@@ -616,3 +561,91 @@ h2 {
         width: 100%;
         height: 100%;
     }
+ /*MODAL*/
+/* Estilo para el modal */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4); 
+}
+
+/* Estilos para el contenido del modal */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4); 
+}
+
+.modal-content {
+    background-color: #fefefe; 
+    margin: 15% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; 
+    max-width: 600px; 
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Estilos para el botón de cerrar */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+    }
+
+/* Estilos para los elementos dentro del formulario */
+.modal-content label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.modal-content select,
+.modal-content textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    resize: vertical; 
+}
+
+.modal-content button[type="submit"] {
+    background-color: #dc3545;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+    .modal-content button[type="submit"]:hover {
+        background-color: #5b2b29;
+    }
+
+

@@ -10,28 +10,35 @@ function VerficarTexto(IdPublicacion) {
         ButtonSubmit.disabled = true;
     }
 };
-//Funcion para Mostar el formulario de "Reportar"
-function toggleReportForm(button) {
-    var form = button.nextElementSibling.querySelector('.report-form');
-    if (form.style.display === "none" || form.style.display === "") {
-        form.style.display = "block";
+
+// Función para mostrar u ocultar el modal por su ID
+function toggleModal(modalId) {
+    var modal = document.getElementById(modalId);
+    if (modal.style.display === 'block') {
+        modal.style.display = 'none'; 
     } else {
-        form.style.display = "none";
+        modal.style.display = 'block'; 
     }
 }
-
+// Cerrar el modal si se hace clic fuera de él
+window.onclick = function (event) {
+    var modals = document.getElementsByClassName('modal');
+    for (var i = 0; i < modals.length; i++) {
+        if (event.target == modals[i]) {
+            modals[i].style.display = 'none';
+        }
+    }
+}
 //Funcion para que muestre un mensaje al usuario de que se envio correctamente
 $(document).ready(function () {
     $('#FormReport').on('submit', function (e) {
         e.preventDefault();
-        e.target.submit();
+         e.target.submit();
         sessionStorage.setItem('toastrMessage', 'Reporte Enviado');
     });
-});
-document.addEventListener('DOMContentLoaded', function () {
     var toastrMessage = sessionStorage.getItem('toastrMessage');
     if (toastrMessage) {
         toastr.success(toastrMessage);
-        sessionStorage.removeItem('toastrMessage'); 
+        sessionStorage.removeItem('toastrMessage');
     }
 });
