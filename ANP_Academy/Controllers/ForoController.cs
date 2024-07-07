@@ -195,5 +195,28 @@ namespace ANP_Academy.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        //POST para ingresar un reporte de una publicacion
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateReporte([Bind("ReporteId,Motivo,Explicacion,CodigoUsuarioId,PublicacionId")] PublicacionesReportadas publicacionesReportadas, int IdPublicacion)
+        {
+            var identidad = User.Identity as ClaimsIdentity;
+            string idUsuarioLoggeado = identidad.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            if (idUsuarioLoggeado == null)
+            {
+                return Unauthorized();
+            }
+            publicacionesReportadas.CodigoUsuarioId = idUsuarioLoggeado;
+            publicacionesReportadas.PublicacionId = IdPublicacion;
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(publicacionesReportadas);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(publicacionesReportadas);
+        }
     }
 }

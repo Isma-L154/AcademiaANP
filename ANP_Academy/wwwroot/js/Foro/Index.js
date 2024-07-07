@@ -10,12 +10,28 @@ function VerficarTexto(IdPublicacion) {
         ButtonSubmit.disabled = true;
     }
 };
-//Funicon para Mostar el formulario de "Reportar"
+//Funcion para Mostar el formulario de "Reportar"
 function toggleReportForm(button) {
-    var form = button.nextElementSibling;
-    if (form.style.display === "none") {
+    var form = button.nextElementSibling.querySelector('.report-form');
+    if (form.style.display === "none" || form.style.display === "") {
         form.style.display = "block";
     } else {
         form.style.display = "none";
     }
 }
+
+//Funcion para que muestre un mensaje al usuario de que se envio correctamente
+$(document).ready(function () {
+    $('#FormReport').on('submit', function (e) {
+        e.preventDefault();
+        e.target.submit();
+        sessionStorage.setItem('toastrMessage', 'Reporte Enviado');
+    });
+});
+document.addEventListener('DOMContentLoaded', function () {
+    var toastrMessage = sessionStorage.getItem('toastrMessage');
+    if (toastrMessage) {
+        toastr.success(toastrMessage);
+        sessionStorage.removeItem('toastrMessage'); 
+    }
+});

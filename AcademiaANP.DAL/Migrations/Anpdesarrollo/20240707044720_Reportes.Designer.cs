@@ -4,6 +4,7 @@ using ANP_Academy.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 {
     [DbContext(typeof(AnpdesarrolloContext))]
-    partial class AnpdesarrolloContextModelSnapshot : ModelSnapshot
+    [Migration("20240707044720_Reportes")]
+    partial class Reportes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.HasKey("IdCategoria")
                         .HasName("PK__Categori__CB90334986A82F6B");
 
-                    b.ToTable("Categorias", (string)null);
+                    b.ToTable("Categorias");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Comentario", b =>
@@ -69,7 +72,7 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 
                     b.HasIndex("CodigoUsuarioId");
 
-                    b.ToTable("Comentarios", (string)null);
+                    b.ToTable("Comentarios");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Facturacion", b =>
@@ -227,7 +230,7 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 
                     b.HasIndex("IdUserNavigationId");
 
-                    b.ToTable("Pagos", (string)null);
+                    b.ToTable("Pagos");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Proveedor", b =>
@@ -248,7 +251,7 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.HasKey("IdProveedor")
                         .HasName("PK__Proveedo__477B858ED514B108");
 
-                    b.ToTable("Proveedores", (string)null);
+                    b.ToTable("Proveedores");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Publicacion", b =>
@@ -281,7 +284,7 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 
                     b.HasIndex("CodigoUsuarioId");
 
-                    b.ToTable("Publicaciones", (string)null);
+                    b.ToTable("Publicaciones");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.PublicacionComentario", b =>
@@ -296,7 +299,7 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 
                     b.HasIndex("ComentarioId");
 
-                    b.ToTable("PublicacionComentarios", (string)null);
+                    b.ToTable("PublicacionComentarios");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.PublicacionesReportadas", b =>
@@ -326,7 +329,7 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 
                     b.HasIndex("PublicacionId");
 
-                    b.ToTable("PublicacionesReportadas", (string)null);
+                    b.ToTable("PublicacionesReportadas");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Solicitudes", b =>
@@ -369,7 +372,7 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 
                     b.HasIndex("IdSuscripcion");
 
-                    b.ToTable("Solicitudes", (string)null);
+                    b.ToTable("Solicitudes");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Suscripcion", b =>
@@ -399,7 +402,7 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.HasKey("IdSuscripcion")
                         .HasName("PK__Suscripc__C0583DB0622B2151");
 
-                    b.ToTable("Suscripciones", (string)null);
+                    b.ToTable("Suscripciones");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Ubicacion", b =>
@@ -497,7 +500,7 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 
                     b.HasIndex("SuscripcionId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Comentario", b =>

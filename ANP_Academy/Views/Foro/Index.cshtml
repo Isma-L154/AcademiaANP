@@ -3,75 +3,107 @@
 @model ANP_Academy.ViewModel.PublicacionComentarioViewModel
 
 <link rel="stylesheet" href="~/css/Foro/Foro.css" asp-append-version="true" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
 
-    <div class="container">
-        <h2>Foro de Discusión</h2>
-        <button class="button" onclick="window.location.href='/Foro/CrearPublicacion';">Crear Publicación</button>
-    @if (SignInManager.IsSignedIn(User))
-    {
+<div class="container">
+    <button class="button" onclick="window.location.href='/Foro/CrearPublicacion';">Crear Publicación</button>
+    @if (SignInManager.IsSignedIn(User)){
         if (User.IsInRole("Cliente"))
         {
             <button class="button" onclick="window.location.href='/Foro/MisPublicaciones';">Mis Publicaciones</button>
         }
     }
-    
-
-        <!-- Primer comentario -->
-        @foreach (var publicacion in Model.Publicaciones)
-        {
-            <div class="comment">
-                <div class="user"> @Html.DisplayFor(modelItem => publicacion.Titulo)</div>
-                <div class="user"> @Html.DisplayFor(modelItem => publicacion.CodigoUsuario.Nombre)</div> 
-                <div class="other"> @Html.DisplayFor(modelItem => publicacion.FechaPublicacion)</div>
-                <div class="content"> @Html.DisplayFor(modelItem => publicacion.Descripcion)</div> 
-                <div class="attachments">
-                    <!--TODO Multimedia-->
-                <span class="attachment"> <img src="https://via.placeholder.com/100" alt="Imagen adjunta"></span>
-                </div>
-
-               
-            <button class="report-btn" onclick="toggleReportForm(this)"><i class="fa-regular fa-flag fa-xl" style="color: #df0c0c;"></i></button> 
-                <!-- Formulario para reportar comentario -->
-                <div id="report-form-1" class="report-form">
-                    <label for="report-reason-1">Motivo del reporte:</label>
-                    <select name="report-reason-1" id="report-reason-1">
-                        <option value="spam">Spam</option>
-                        <option value="inapropiado">Contenido inapropiado</option>
-                        <option value="otros">Otros</option>
-                    </select>
-                    <button>Enviar reporte</button>
-                </div>
-
-                <!--Formulario para publicar un comentario -->
-                <div class="reply-form">
-                <form asp-action="CrearComentario" method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <input type="hidden" name="IdPublicacion" asp-for="@publicacion.IdPublicacion" />
-                        <input id="TextInput_@publicacion.IdPublicacion" name="ContenidoComentario" asp-for="NuevoComentario.ContenidoComentario" class="form-control" placeholder="Ingrese su comentario" oninput="VerficarTexto('@publicacion.IdPublicacion')" />
-                        <span asp-validation-for="NuevoComentario.ContenidoComentario" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <button class="btn btn-primary" id="ButtonSubmit_@publicacion.IdPublicacion" type="submit" disabled>Comentar</button>
-                    </div>
-                </form>
-                <!--Mostrar los comentarios que estan asociados a la publicacion-->
-                @foreach (var pc in Model.ComentariosPubli.Where(pc => pc.PublicacionId == publicacion.IdPublicacion))
-                {
-                    var comentario = Model.Comentarios.FirstOrDefault(c => c.IdComentario == pc.ComentarioId);
-                    if (comentario != null)
-                    {
-                        <div class="comentario">
-                            <p>Usuario: @comentario.CodigoUsuarioId</p>
-                            <p>Comentario: @comentario.ContenidoComentario</p>
-                            <p>Fecha: @comentario.FechaComentario.ToShortDateString()</p>
+    @foreach (var publicacion in Model.Publicaciones)
+    {
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="panel panel-white post">
+                    <div class="post-heading">
+                        <div class="pull-left image">
+                            <img src="https://cdn-icons-png.flaticon.com/512/44/44948.png" class="img-circle avatar" alt="user profile image">
                         </div>
-                    }
-                }
+                        <div class="pull-left meta">
+                            <div class="title h5">
+                                <b>@Html.DisplayFor(modelItem => publicacion.CodigoUsuario.Nombre)</b>
+                                Hizo una publicacion sobre: <b>@Html.DisplayFor(modelItem => publicacion.Titulo)</b>
+                            </div>
+                            <h6 class="text-muted time">@publicacion.FechaPublicacion.ToShortDateString()</h6>
+                        </div>
+                    </div>
+                    <div class="post-image">
+                        <img src="https://dz2cdn1.dzone.com/storage/temp/13989969-400x200" class="image" alt="image post">
+                    </div>
+                    <div class="post-description">
+                        <p>@Html.DisplayFor(modelItem => publicacion.Descripcion)</p>
+                        <div class="stats">
+                            <a href="javascript:void(0);" class="btn btn-default stat-item">
+                                <i class="fa fa-thumbs-up icon"></i> 228
+                            </a>
+                            <button onclick="toggleReportForm(this)" class="btn btn-default stat-item">
+                                <i class="fa-regular fa-flag fa-xl" style="color: #df0c0c;"></i>
+                            </button>
+                            <!-- Formulario para reportar comentario -->
+                            <form id="FormReport" asp-action="CreateReporte" method="post">
+                                <div id="report-form" class="report-form" style="display: none;">
+                                    <input type="hidden" name="IdPublicacion" asp-for="@publicacion.IdPublicacion" />
+                                    <label for="Motivo">Motivo del reporte:</label>
+                                    <select name="Motivo" id="Motivo">
+                                        <option value="Spam">Spam</option>
+                                        <option value="Inapropiado">Contenido inapropiado</option>
+                                        <option value="Otros">Otros</option>
+                                    </select>
+                                    <label for="Explicacion">Explicación:</label>
+                                    <textarea name="Explicacion" id="Explicacion" rows="4" cols="50" placeholder="Ingrese una explicación..."></textarea>
+                                    <button type="submit">Enviar reporte</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="post-footer">
+                        <form asp-action="CrearComentario" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="input-group">
+                                <input type="hidden" name="IdPublicacion" asp-for="@publicacion.IdPublicacion" />
+                                <input id="TextInput_@publicacion.IdPublicacion" name="ContenidoComentario" asp-for="NuevoComentario.ContenidoComentario" class="form-control" placeholder="Ingrese su comentario" oninput="VerficarTexto('@publicacion.IdPublicacion')" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" id="ButtonSubmit_@publicacion.IdPublicacion" type="submit" disabled>
+                                        <i class="fa fa-send"></i> Comentar
+                                    </button>
+                                </span>
+                            </div>
+                            <span asp-validation-for="NuevoComentario.ContenidoComentario" class="text-danger"></span>
+                        </form>
+
+                        <ul class="comments-list">
+                            @foreach (var pc in Model.ComentariosPubli.Where(pc => pc.PublicacionId == publicacion.IdPublicacion))
+                            {
+                                var comentario = Model.Comentarios.FirstOrDefault(c => c.IdComentario == pc.ComentarioId);
+                                if (comentario != null)
+                                {
+                                    <li class="comment">
+                                        <a class="pull-left" href="javascript:void(0);">
+                                            <img class="avatar" src="https://cdn-icons-png.flaticon.com/512/44/44948.png" alt="avatar">
+                                        </a>
+                                        <div class="comment-body">
+                                            <div class="comment-heading">
+                                                <h4 class="user">@comentario.CodigoUsuarioId</h4>
+                                                <h5 class="time">@comentario.FechaComentario.ToShortTimeString()</h5>
+                                            </div>
+                                            <p>@comentario.ContenidoComentario</p>
+                                        </div>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
                 </div>
             </div>
-        }
-    </div>
+        </div>
+    }
+</div>
+
+
+
 <script src="~/js/Foro/Index.js"></script>
 
