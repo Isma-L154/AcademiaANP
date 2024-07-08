@@ -2,13 +2,9 @@
 
 namespace ANP_Academy.ViewModel
 {
-    public class PublicacionComentarioViewModel
+    public class MisPublicacionesViewModel
     {
         public IEnumerable<Publicacion> Publicaciones { get; set; }
-        public IEnumerable<Comentario> Comentarios { get; set; }
-        public Comentario NuevoComentario { get; set; }
-        public IEnumerable<PublicacionComentario> ComentariosPubli { get; set; }
-
         public int PageNumber { get; set; }
         public int TotalPages { get; set; }
 

@@ -1,9 +1,11 @@
-﻿using ANP_Academy.DAL.Models;
+﻿using ANP_Academy.DAL.Migrations.Anpdesarrollo;
+using ANP_Academy.DAL.Models;
 using ANP_Academy.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing.Printing;
 using System.Security.Claims;
 
 namespace ANP_Academy.Controllers
@@ -17,17 +19,28 @@ namespace ANP_Academy.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
         {
-            var publicaciones = await _context.Publicaciones.Include(p => p.CodigoUsuario).ToListAsync();
-            var comentarios = await _context.Comentarios.ToListAsync();
+            //Esto se hace para la paginacion
+            var publicaciones = await _context.Publicaciones
+                    .Include(p => p.CodigoUsuario)
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
+            var totalPublicaciones = await _context.Publicaciones.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalPublicaciones / (double)pageSize);
+
+            var comentarios = await _context.Comentarios.Include(c => c.CodigoUsuario).ToListAsync();
             var ComentarioPubli = await _context.PublicacionComentarios.ToListAsync();
 
             var viewModel = new PublicacionComentarioViewModel
             {
                 Publicaciones = publicaciones,
                 Comentarios = comentarios,
-                ComentariosPubli = ComentarioPubli
+                ComentariosPubli = ComentarioPubli,
+                PageNumber = pageNumber,
+                TotalPages = totalPages
             };
 
             return View(viewModel);
@@ -35,13 +48,29 @@ namespace ANP_Academy.Controllers
 
 
         [Authorize]
-        public async Task<IActionResult> MisPublicaciones()
+        public async Task<IActionResult> MisPublicaciones(int pageNumber = 1, int pageSize = 10)
         {
-            var anpdesarrolloContext = _context.Publicaciones.Include(p => p.CodigoUsuario);
+
+            var publicaciones = await _context.Publicaciones
+                     .Include(p => p.CodigoUsuario)
+                     .Skip((pageNumber - 1) * pageSize)
+                     .Take(pageSize)
+                     .ToListAsync();
+            var totalPublicaciones = await _context.Publicaciones.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalPublicaciones / (double)pageSize);
+
             var identidadUsuario = User.Identity as ClaimsIdentity;
             string userId = identidadUsuario.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             ViewData["UserId"] = userId;
-            return View(await anpdesarrolloContext.ToListAsync());
+
+            var viewModel = new MisPublicacionesViewModel
+            {
+                Publicaciones = publicaciones,
+                PageNumber = pageNumber,
+                TotalPages = totalPages
+            };
+
+            return View(viewModel);
         }
 
 
@@ -169,6 +198,7 @@ namespace ANP_Academy.Controllers
         {
             var identidad = User.Identity as ClaimsIdentity;
             string idUsuarioLoggeado = identidad.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            
             if (idUsuarioLoggeado == null)
             {
                 return Unauthorized();

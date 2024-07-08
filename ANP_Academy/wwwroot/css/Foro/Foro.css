@@ -106,6 +106,8 @@ h2 {
     display: inline-block;
     margin-right: 10px; 
 }
+
+
 .profile-widget {
     position: relative;
 }
@@ -561,6 +563,8 @@ h2 {
         width: 100%;
         height: 100%;
     }
+
+
  /*MODAL*/
 /* Estilo para el modal */
 .modal {
@@ -648,4 +652,29 @@ h2 {
         background-color: #5b2b29;
     }
 
+/* Paginación */
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+    .pagination .page-item {
+        margin: 0 5px;
+    }
+
+    .pagination .page-link {
+        color: #007bff;
+    }
+
+    .pagination .page-item.disabled .page-link {
+        color: #6c757d;
+        pointer-events: none;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+    }
 

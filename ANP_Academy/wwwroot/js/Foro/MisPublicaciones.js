@@ -1,13 +1,14 @@
-﻿
-//This function is for a validation of the user, so they can confirm if they want to delete the post
-$(document).ready(function () {
-    $('#deleteForm').on('submit', function (e) {
-        e.preventDefault();
+﻿$(document).ready(function () {
+    $(document).on('submit', '#deleteForm', function (e) {
+        e.preventDefault(); 
+        var form = this; 
+        var idPublicacion = $(form).find('input[name="IdPublicacion"]').val(); // Obtener el Id de la publi
+
         bootbox.confirm({
-            message: "Seguro que quieres eliminar esta publicacion?",
+            message: "¿Seguro que quieres eliminar esta publicación?",
             buttons: {
                 confirm: {
-                    label: 'Si',
+                    label: 'Sí',
                     className: 'btn-success'
                 },
                 cancel: {
@@ -17,19 +18,33 @@ $(document).ready(function () {
             },
             callback: function (result) {
                 if (result) {
-                    e.target.submit();
+                    form.submit(); 
                     sessionStorage.setItem('toastrMessage', 'Eliminado correctamente');
                 }
             }
         });
     });
-});
 
-document.addEventListener('DOMContentLoaded', function () {
     var toastrMessage = sessionStorage.getItem('toastrMessage');
     if (toastrMessage) {
         toastr.success(toastrMessage);
-        sessionStorage.removeItem('toastrMessage'); // Quitar el Toastr almacenado
+        sessionStorage.removeItem('toastrMessage');
     }
+});
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.dropbtn').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var dropdownContent = this.nextElementSibling;
+            dropdownContent.classList.toggle('show');
+        });
+    });
+
+    window.addEventListener('click', function (e) {
+        if (!e.target.matches('.dropbtn')) {
+            document.querySelectorAll('.dropdown-content').forEach(function (dropdown) {
+                dropdown.classList.remove('show');
+            });
+        }
+    });
 });
 

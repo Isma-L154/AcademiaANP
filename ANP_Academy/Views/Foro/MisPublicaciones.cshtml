@@ -1,15 +1,15 @@
-﻿@model IEnumerable<ANP_Academy.DAL.Models.Publicacion>
+﻿@model ANP_Academy.ViewModel.MisPublicacionesViewModel
 @{
     var userId = ViewData["UserId"] as string;
 }
 
 <link rel="stylesheet" href="~/css/Foro/MisPublicaciones.css" asp-append-version="true" />
-
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
     <div class="container">
     <h2>Mis Publicaciones</h2>
     
-    @if (!Model.Any(p => p.CodigoUsuarioId == userId))
+    @if (!Model.Publicaciones.Any(p => p.CodigoUsuarioId == userId))
     {
         <div class="no-publications">
             <div class="no-publications-container">
@@ -20,31 +20,68 @@
             </div>
         </div>
     }
-        @foreach (var publicacion in Model)
+        @foreach (var publicacion in Model.Publicaciones)
         {
         if (!string.IsNullOrEmpty(userId) && publicacion.CodigoUsuarioId == userId)
             {
-                <div class="comment">
-                    <div class="user"> @Html.DisplayFor(modelItem => publicacion.Titulo)</div>
-                    <div class="user"> @Html.DisplayFor(modelItem => publicacion.CodigoUsuario.Nombre)</div>
-                    <div class="other"> @Html.DisplayFor(modelItem => publicacion.FechaPublicacion)</div>
-                    <div class="content"> @Html.DisplayFor(modelItem => publicacion.Descripcion)</div>
-                    <div class="attachments">
-                        <!--TODO Put the Image or videos of the user-->
-                        <span class="attachment"> <img src="https://via.placeholder.com/100" alt="Imagen adjunta"></span>
-                    </div>
-
-                    <div class="reply-form">
-                        <form id="deleteForm" asp-action="Delete">
-                            <input type="hidden" name="IdPublicacion" asp-for="@publicacion.IdPublicacion" />
-                            <a class="button" asp-action="EditarPublicacion" asp-route-id="@publicacion.IdPublicacion">Editar</a>
-                            <input type="submit" value="Eliminar" class="button" />
-                        </form>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="panel panel-white post">
+                        <div class="post-heading">
+                            <div class="pull-left image">
+                                <img src="https://cdn-icons-png.flaticon.com/512/44/44948.png" class="img-circle avatar" alt="user profile image">
+                            </div>
+                            <div class="pull-left meta">
+                                <div class="title h5">
+                                    <b>@Html.DisplayFor(modelItem => publicacion.CodigoUsuario.Nombre)</b>
+                                    Hizo una publicacion sobre: <b>@Html.DisplayFor(modelItem => publicacion.Titulo)</b>
+                                </div>
+                                <h6 class="text-muted time">@publicacion.FechaPublicacion.ToShortDateString()</h6>
+                            </div>
+                            <div class="pull-right">
+                                <div class="dropdown">
+                                    <button class="dropbtn">⋮</button>
+                                    <div class="dropdown-content">
+                                        <a asp-action="EditarPublicacion" asp-route-id="@publicacion.IdPublicacion">Editar</a>
+                                        <form id="deleteForm" asp-action="Delete" method="post" style="display:inline;">
+                                            <input type="hidden" name="IdPublicacion" value="@publicacion.IdPublicacion" />
+                                            <button type="submit" class="button-link">Eliminar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Show the Video or the Image that the user uploaded-->
+                        <div class="post-image">
+                            <img src="https://dz2cdn1.dzone.com/storage/temp/13989969-400x200" class="image" alt="image post">
+                        </div>
+                        <div class="post-description">
+                            <p>@Html.DisplayFor(modelItem => publicacion.Descripcion)</p>
+                            <div class="stats">
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
+
             }
         }
-    
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                <a class="page-link" asp-action="MisPublicaciones" asp-route-pageNumber="@(Model.PageNumber - 1)">Previous</a>
+            </li>
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                    <a class="page-link" asp-action="MisPublicaciones" asp-route-pageNumber="@i">@i</a>
+                </li>
+            }
+            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                <a class="page-link" asp-action="MisPublicaciones" asp-route-pageNumber="@(Model.PageNumber + 1)">Next</a>
+            </li>
+        </ul>
+    </nav>
     </div>
 
 <script src="~/js/Foro/MisPublicaciones.js"></script>
