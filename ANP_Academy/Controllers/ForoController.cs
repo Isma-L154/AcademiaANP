@@ -86,16 +86,40 @@ namespace ANP_Academy.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> CrearPublicacion([Bind("IdPublicacion,Descripcion,FechaPublicacion,IdComentario,IdUser, Titulo")] Publicacion publicacion)
+        public async Task<IActionResult> CrearPublicacion( Publicacion publicacion , IFormFile ArchivoMultimedia)
         {
-            var identidad = User.Identity as ClaimsIdentity;
-            string idUsuarioLoggeado = identidad.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-
-            publicacion.CodigoUsuarioId = idUsuarioLoggeado;
+            string base64String = null;
+            string MultimediaType = null;
+            long MultimediaSize = 0;
+            string MultimediaName = null;
 
             if (ModelState.IsValid)
             {
-                publicacion.FechaPublicacion = DateOnly.FromDateTime(DateTime.Now); // Obtener la fecha actual
+                var identidad = User.Identity as ClaimsIdentity;
+                string idUsuarioLoggeado = identidad.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+                if (idUsuarioLoggeado == null)
+                {
+                    return Unauthorized();
+                }
+                
+                if (ArchivoMultimedia != null && ArchivoMultimedia.Length > 0) {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await ArchivoMultimedia.CopyToAsync(memoryStream);
+                        var fileBytes = memoryStream.ToArray();
+                        base64String = Convert.ToBase64String(fileBytes);
+                    }
+                    MultimediaType = ArchivoMultimedia.ContentType;
+                    MultimediaSize = ArchivoMultimedia.Length;
+                    MultimediaName = ArchivoMultimedia.FileName;
+                }
+
+                publicacion.CodigoUsuarioId = idUsuarioLoggeado;
+                publicacion.FechaPublicacion = DateOnly.FromDateTime(DateTime.Now);
+                publicacion.MultimediaData = base64String;
+                publicacion.MultimediaType = MultimediaType;
+                publicacion.MultimediaSize = MultimediaSize;
+                publicacion.MultimediaName = MultimediaName;
 
                 _context.Add(publicacion);
                 await _context.SaveChangesAsync();

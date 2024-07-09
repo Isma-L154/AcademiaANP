@@ -4,28 +4,28 @@
     <h2>Crear Publicación</h2>
     <div class="content-form">
 
-    <form asp-action="CrearPublicacion">
+    <form asp-action="CrearPublicacion" enctype="multipart/form-data" method="post">
         
         <div class="form-group">
             <label asp-for="Titulo" class="control-label"></label>
             <input asp-for="Titulo" class="form-control" />
             <span asp-validation-for="Titulo" class="text-danger"></span>
         </div>
-            <div class="form-group">
+            
+        <div class="form-group">
             <label asp-for="Descripcion" class="control-label"></label>
             <input asp-for="Descripcion" class="form-control" />
             <span asp-validation-for="Descripcion" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-            <label for="media">Adjuntar multimedia:</label><br> <!--Multimedia que va null por el momento-->
-                <input type="file" id="media" name="media" accept="image/*, video/*">
-                <label for="media" class="custom-file-upload">Seleccionar archivo</label>
-            </div>
+        </div>
+    
+        <div class="form-group">
+            <label for="ArchivoMultimedia">Adjuntar multimedia:</label>
+            <input type="file" id="ArchivoMultimedia" name="ArchivoMultimedia" accept="image/*, video/*">
+        </div>
         
-            <div class="form-group">
+        <div class="form-group">
             <input type="submit" value="CrearPublicacion" class="btn btn-danger" />
-            </div>
+        </div>
 
             <a href="~/Foro/Index" class="btn btn-primary btn-block">Atrás</a>
         </form>
