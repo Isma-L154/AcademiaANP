@@ -33,6 +33,7 @@ namespace ANP_Academy.DAL.Models
         public virtual DbSet<Solicitudes> Solicitudes { get; set; }
         public virtual DbSet<PublicacionComentario> PublicacionComentarios { get; set; }
         public virtual DbSet<PublicacionesReportadas> PublicacionesReportadas { get; set; }
+        public virtual DbSet<Factura> Facturas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

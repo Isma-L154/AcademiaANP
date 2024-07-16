@@ -623,6 +623,18 @@ namespace ANP_Academy.Controllers
             _dbContext.Update(solicitud);
             await _dbContext.SaveChangesAsync();
 
+            var factura = new Factura
+            {
+                Fecha = DateTime.Now,
+                Precio = suscripcion.Precio,
+                IdUser = userId,
+                IdSuscripcion = idSuscripcion,
+                IdSolicitud = idSolicitud
+            };
+
+            _dbContext.Facturas.Add(factura);
+            await _dbContext.SaveChangesAsync();
+
             // Enviar correo electrónico 
             string destinatario = user.Email;  
             string asunto = "Solicitud Aprobada";
