@@ -1,0 +1,48 @@
+﻿@model ANP_Academy.DAL.Models.Clase
+
+@{
+    ViewData["Title"] = "Eliminar Clase";
+}
+
+<h1>Eliminar Clase</h1>
+
+<h3>¿Está seguro que desea eliminar esta clase?</h3>
+<div>
+    <h4>Clase</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Imagen
+        </dt>
+        <dd class="col-sm-10">
+            <img src="@Url.Action("GetImage", "Clase", new { id = Model.IdClase })" alt="Imagen de la clase" style="max-width: 200px; max-height: 200px;" />
+        </dd>
+
+        <dt class="col-sm-2">
+            Título
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Titulo
+        </dd>
+
+        <dt class="col-sm-2">
+            Descripción
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Descripcion
+        </dd>
+
+        <dt class="col-sm-2">
+            URL del Video
+        </dt>
+        <dd class="col-sm-10">
+            <a href="@Model.URLVideo" target="_blank">@Model.URLVideo</a>
+        </dd>
+    </dl>
+
+    <form asp-action="DeleteClasesConfirmed" method="post">
+        <input type="hidden" asp-for="IdClase" />
+        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
+        <a asp-action="GestionClases" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ANP_Academy.DAL.Models.Clase>
+
+@{
+    ViewData["Title"] = "Gestionar Clases";
+}
+
+<h1>Gestionar Clases</h1>
+
+<div class="mb-3">
+    <a asp-action="CreateClases" class="btn btn-success">Crear Clase</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Imagen</th>
+            <th>URL del Video</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var clase in Model)
+        {
+            <tr>
+                <td>@clase.Titulo</td>
+                <td>@clase.Descripcion</td>
+                <td>
+                    <img src="@Url.Action("GetImage", "Clase", new { id = clase.IdClase })" alt="Imagen de la clase" style="max-width: 100px; max-height: 100px;" />
+                </td>
+                <td>
+                    <a href="@clase.URLVideo" target="_blank">@clase.URLVideo</a>
+                </td>
+                <td>
+                    <a asp-action="EditClases" asp-route-id="@clase.IdClase" class="btn btn-primary">Editar</a>
+                    <a asp-action="DetailsClases" asp-route-id="@clase.IdClase" class="btn btn-info">Detalles</a>
+                    <form asp-action="DeleteClases" asp-route-id="@clase.IdClase" method="post" style="display:inline;" onsubmit="return confirm('¿Está seguro que desea eliminar esta clase?');">
+                        <input type="submit" value="Eliminar" class="btn btn-danger" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

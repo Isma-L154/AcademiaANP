@@ -1,0 +1,39 @@
+﻿@model ANP_Academy.DAL.Models.Clase
+
+@{
+    ViewData["Title"] = "Crear Clase";
+}
+
+<h1>Crear Clase</h1>
+
+<form asp-action="CreateClases" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Titulo" class="control-label"></label>
+        <input asp-for="Titulo" class="form-control" />
+        <span asp-validation-for="Titulo" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Descripcion" class="control-label"></label>
+        <input asp-for="Descripcion" class="form-control" />
+        <span asp-validation-for="Descripcion" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Imagen</label>
+        <input type="file" class="form-control" name="imagen" accept=".jpg,.jpeg,.png" />
+        <span asp-validation-for="Imagen" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="URLVideo" class="control-label"></label>
+        <input asp-for="URLVideo" class="form-control" />
+        <span asp-validation-for="URLVideo" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Crear" class="btn btn-primary" />
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
