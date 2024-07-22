@@ -1,9 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
+using ANP_Academy.DAL.Models;
 
 namespace ANP_Academy.Controllers
 {
     public class FacturasController : Controller
     {
+        private readonly AnpdesarrolloContext _dbContext;
+
+        public FacturasController(AnpdesarrolloContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -14,14 +25,34 @@ namespace ANP_Academy.Controllers
             return View();
         }
 
-        public IActionResult VerDetalleFacturaUsuario()
+        public async Task<IActionResult> VerDetalleFacturaUsuario(int id)
         {
-            return View();
+            var factura = await _dbContext.Facturas
+                .Include(f => f.Usuario)
+                .Include(f => f.Suscripcion)
+                .FirstOrDefaultAsync(f => f.IdFactura == id);
+
+            if (factura == null)
+            {
+                return NotFound();
+            }
+
+            return View(factura);
         }
 
-        public IActionResult VerDetalleFacturaAdmin()
+        public async Task<IActionResult> VerDetalleFacturaAdmin(int id)
         {
-            return View();
+            var factura = await _dbContext.Facturas
+                .Include(f => f.Usuario)
+                .Include(f => f.Suscripcion)
+                .FirstOrDefaultAsync(f => f.IdFactura == id);
+
+            if (factura == null)
+            {
+                return NotFound();
+            }
+
+            return View(factura);
         }
     }
 }
