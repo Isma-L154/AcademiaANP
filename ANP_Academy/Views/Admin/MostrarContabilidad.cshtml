@@ -1,4 +1,5 @@
-﻿@{
+﻿@model ANP_Academy.ViewModel.ContabilidadViewModel
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" href="~/css/Administrador/MostrarContabilidad.css" asp-append-version="true" />
@@ -27,33 +28,33 @@
                         <th>Cantidad</th>
                         <th>Recaudación</th>
                     </tr>
-                    <tr>
-                        <td>Mensual</td>
-                        <td>₡5000</td>
-                        <td>40</td>
-                        <td>₡200000</td>
-                    </tr>
-                    <tr>
-                        <td>Trimestral</td>
-                        <td>₡12000</td>
-                        <td>13</td>
-                        <td>₡156000</td>
-                    </tr>
-                    <tr>
-                        <td>Anual</td>
-                        <td>₡55000</td>
-                        <td>5</td>
-                        <td>₡275000</td>
-                    </tr>
+                    @foreach (var suscripcion in Model.Suscripciones)
+                    {
+                        var cantidad = Model.Solicitudes.Count(s => s.IdSuscripcion == suscripcion.IdSuscripcion && s.Estado == true);
+                        var total = suscripcion.Precio * cantidad;
+
+                        <tr>
+                            <td>@suscripcion.Nombre</td>
+                            <td>₡@suscripcion.Precio</td>
+                            <td>@cantidad</td>
+                            <td>₡@total</td>
+                        </tr>
+                    }
 
                 </table>
 
+        </div>
         </div>
         <div class="recaudacion-y-fecha">
             <div class="fecha-corte">
                 <h3>Fecha de corte: 20//04/2024</h3>
             </div>
-            <h3>Recaudación total: ₡631000</h3>
+            @{
+                var totalGeneral = Model.Suscripciones.Sum(s =>
+                Model.Solicitudes.Where(sol => sol.IdSuscripcion == s.IdSuscripcion && sol.Estado == true)
+                .Sum(sol => s.Precio));
+            }
+            <h3>Recaudación total: ₡@totalGeneral</h3>
         </div>
     </section>
 </main>

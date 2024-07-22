@@ -14,6 +14,7 @@ using System.Net.Mail;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Drawing.Printing;
 
 namespace ANP_Academy.Controllers
 {
@@ -184,7 +185,6 @@ namespace ANP_Academy.Controllers
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
             {
-                // Guardar cambios en el DbContext
                 await _dbContext.SaveChangesAsync();
 
                 return RedirectToAction("GestionUsuarios");
@@ -367,11 +367,6 @@ namespace ANP_Academy.Controllers
             await _dbContext.SaveChangesAsync();
 
             return RedirectToAction(nameof(GestionInventario));
-        }
-
-        public IActionResult MostrarContabilidad()
-        {
-            return View();
         }
 
         public IActionResult MostrarFacturas()
@@ -748,6 +743,19 @@ namespace ANP_Academy.Controllers
 
             client.Send(msg);
         }
+        //CONTABILIDAD 
+        //TODO Organize this whole controller in different folders, is disorganize af
+        public IActionResult MostrarContabilidad()
+        {
+            var suscripciones = _dbContext.Suscripciones.ToList();
+            var solicitudes = _dbContext.Solicitudes.ToList();
 
+            var viewModel = new ContabilidadViewModel
+            {
+                Suscripciones = suscripciones,
+                Solicitudes = solicitudes
+            };
+            return View(viewModel);
+        }
     }
 }
