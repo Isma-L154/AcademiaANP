@@ -12,6 +12,11 @@ public class ClaseController : Controller
         _dbContext = dbContext;
     }
 
+    public async Task<IActionResult> Index()
+    {
+        return View(await _dbContext.Clases.ToListAsync());
+    }
+
     // READ: Mostrar todas las clases
     public async Task<IActionResult> GestionClases()
     {

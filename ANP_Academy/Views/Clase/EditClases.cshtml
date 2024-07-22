@@ -3,40 +3,44 @@
 @{
     ViewData["Title"] = "Editar Clase";
 }
+<link rel="stylesheet" href="~/css/Clase/EditClases.css" asp-append-version="true" />
 
 <h1>Editar Clase</h1>
 
-<form asp-action="EditClases" enctype="multipart/form-data">
-    <div class="form-group">
-        <input type="hidden" asp-for="IdClase" />
+<div class="form-container">
+    <form asp-action="EditClases" enctype="multipart/form-data">
+        <div class="form-group">
+            <input type="hidden" asp-for="IdClase" />
 
-        <label asp-for="Titulo" class="control-label"></label>
-        <input asp-for="Titulo" class="form-control" />
-        <span asp-validation-for="Titulo" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Descripcion" class="control-label"></label>
-        <input asp-for="Descripcion" class="form-control" />
-        <span asp-validation-for="Descripcion" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label class="control-label">Imagen actual</label>
-        <div>
-            <img src="@Url.Action("GetImage", "Clase", new { id = Model.IdClase })" alt="Imagen actual" style="max-width: 200px; max-height: 200px;" />
+            <label asp-for="Titulo" class="control-label"></label>
+            <input asp-for="Titulo" class="form-control" />
+            <span asp-validation-for="Titulo" class="text-danger"></span>
         </div>
-        <label class="control-label">Cambiar Imagen (opcional)</label>
-        <input type="file" class="form-control" name="Imagen" accept=".jpg,.jpeg,.png" />
-        <span asp-validation-for="Imagen" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="URLVideo" class="control-label"></label>
-        <input asp-for="URLVideo" class="form-control" />
-        <span asp-validation-for="URLVideo" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <input type="submit" value="Guardar" class="btn btn-primary" />
-    </div>
-</form>
+        <div class="form-group">
+            <label asp-for="Descripcion" class="control-label"></label>
+            <input asp-for="Descripcion" class="form-control" />
+            <span asp-validation-for="Descripcion" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Imagen actual</label>
+            <div>
+                <img src="@Url.Action("GetImage", "Clase", new { id = Model.IdClase })" alt="Imagen actual" class="img-thumbnail" style="max-width: 200px; max-height: 200px;" />
+            </div>
+            <label class="control-label">Cambiar Imagen (opcional)</label>
+            <input type="file" class="form-control-file" name="Imagen" accept=".jpg,.jpeg,.png" />
+            <span asp-validation-for="Imagen" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="URLVideo" class="control-label"></label>
+            <input asp-for="URLVideo" class="form-control" />
+            <span asp-validation-for="URLVideo" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Guardar" class="btn btn-primary" />
+            <a asp-action="GestionClases" class="btn btn-secondary">Ir Atrás</a>
+        </div>
+    </form>
+</div>
 
 @section Scripts {
     @{

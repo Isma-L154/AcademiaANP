@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Gestionar Clases";
 }
+<link rel="stylesheet" href="~/css/Clase/GestionClases.css" asp-append-version="true" />
 
 <h1>Gestionar Clases</h1>
 
@@ -10,36 +11,38 @@
     <a asp-action="CreateClases" class="btn btn-success">Crear Clase</a>
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Título</th>
-            <th>Descripción</th>
-            <th>Imagen</th>
-            <th>URL del Video</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var clase in Model)
-        {
+<div class="table-wrapper">
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="thead-dark">
             <tr>
-                <td>@clase.Titulo</td>
-                <td>@clase.Descripcion</td>
-                <td>
-                    <img src="@Url.Action("GetImage", "Clase", new { id = clase.IdClase })" alt="Imagen de la clase" style="max-width: 100px; max-height: 100px;" />
-                </td>
-                <td>
-                    <a href="@clase.URLVideo" target="_blank">@clase.URLVideo</a>
-                </td>
-                <td>
-                    <a asp-action="EditClases" asp-route-id="@clase.IdClase" class="btn btn-primary">Editar</a>
-                    <a asp-action="DetailsClases" asp-route-id="@clase.IdClase" class="btn btn-info">Detalles</a>
-                    <form asp-action="DeleteClases" asp-route-id="@clase.IdClase" method="post" style="display:inline;" onsubmit="return confirm('¿Está seguro que desea eliminar esta clase?');">
-                        <input type="submit" value="Eliminar" class="btn btn-danger" />
-                    </form>
-                </td>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Imagen</th>
+                <th>URL del Video</th>
+                <th>Acciones</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var clase in Model)
+            {
+                <tr>
+                    <td data-label="Título">@clase.Titulo</td>
+                    <td data-label="Descripción">@clase.Descripcion</td>
+                    <td data-label="Imagen">
+                        <img src="@Url.Action("GetImage", "Clase", new { id = clase.IdClase })" alt="Imagen de la clase" class="img-thumbnail" />
+                    </td>
+                    <td data-label="URL del Video">
+                        <a href="@clase.URLVideo" target="_blank">@clase.URLVideo</a>
+                    </td>
+                    <td data-label="Acciones">
+                        <a asp-action="EditClases" asp-route-id="@clase.IdClase" class="btn btn-primary">Editar</a>
+                        <a asp-action="DetailsClases" asp-route-id="@clase.IdClase" class="btn btn-info">Detalles</a>
+                        <form asp-action="DeleteClases" asp-route-id="@clase.IdClase" method="post" style="display:inline;" onsubmit="return confirm('¿Está seguro que desea eliminar esta clase?');">
+                            <input type="submit" value="Eliminar" class="btn btn-danger" />
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
