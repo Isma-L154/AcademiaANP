@@ -48,6 +48,7 @@
                                 <td>@factura.IdFactura</td>
                                 <td>@factura.IdUser</td>
                                 <td>@factura.Fecha.ToString("dd/MM/yyyy")</td>
+                                <td>@factura.Suscripcion?.Nombre</td>
                                 <td>₡@factura.Precio</td>
                                 <td>
                                     <a href="@Url.Action("VerDetalleFacturaAdmin", "Facturas", new { id = factura.IdFactura })" class="boton-editar">Ver detalle</a>

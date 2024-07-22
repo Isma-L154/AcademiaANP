@@ -28,6 +28,10 @@
                     <input type="text" id="TelefonoUsuario" name="TelefonoUsuario" value="@Model.Usuario?.PhoneNumber" readonly />
                 </div>
                 <div class="campo-formulario">
+                    <label for="TipoSuscripcion">Tipo de Suscripción:</label>
+                    <input type="text" id="TipoSuscripcion" name="TipoSuscripcion" value="@Model.Suscripcion?.Nombre" readonly />
+                </div>
+                <div class="campo-formulario">
                     <label for="fechaCompra">Fecha Compra:</label>
                     <input type="date" id="fechaCompra" name="fechaCompra" value="@Model.Fecha.ToString("yyyy-MM-dd")" readonly />
                 </div>

@@ -3,16 +3,19 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 using ANP_Academy.DAL.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace ANP_Academy.Controllers
 {
     public class FacturasController : Controller
     {
         private readonly AnpdesarrolloContext _dbContext;
+        private readonly UserManager<Usuario> _userManager;
 
-        public FacturasController(AnpdesarrolloContext dbContext)
+        public FacturasController(AnpdesarrolloContext dbContext, UserManager<Usuario> userManager)
         {
             _dbContext = dbContext;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -20,9 +23,25 @@ namespace ANP_Academy.Controllers
             return View();
         }
 
-        public IActionResult VerFacturasUsuario()
+        public async Task<IActionResult> VerFacturasUsuario()
         {
-            return View();
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var facturas = await _dbContext.Facturas
+                .Where(f => f.IdUser == user.Id)
+                .Include(f => f.Suscripcion)
+                .ToListAsync();
+
+            if (facturas == null || facturas.Count == 0)
+            {
+                ViewBag.Message = "No tiene facturas asociadas a su cuenta.";
+            }
+
+            return View(facturas);
         }
 
         public async Task<IActionResult> VerDetalleFacturaUsuario(int id)
