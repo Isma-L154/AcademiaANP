@@ -34,6 +34,7 @@ namespace ANP_Academy.Controllers
             var facturas = await _dbContext.Facturas
                 .Where(f => f.IdUser == user.Id)
                 .Include(f => f.Suscripcion)
+                .Include(f => f.Solicitud)
                 .ToListAsync();
 
             if (facturas == null || facturas.Count == 0)
@@ -49,6 +50,7 @@ namespace ANP_Academy.Controllers
             var factura = await _dbContext.Facturas
                 .Include(f => f.Usuario)
                 .Include(f => f.Suscripcion)
+                .Include(f => f.Solicitud)
                 .FirstOrDefaultAsync(f => f.IdFactura == id);
 
             if (factura == null)
@@ -64,6 +66,7 @@ namespace ANP_Academy.Controllers
             var factura = await _dbContext.Facturas
                 .Include(f => f.Usuario)
                 .Include(f => f.Suscripcion)
+                .Include(f => f.Solicitud)
                 .FirstOrDefaultAsync(f => f.IdFactura == id);
 
             if (factura == null)
