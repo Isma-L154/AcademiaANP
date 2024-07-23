@@ -36,6 +36,14 @@
                     <input type="date" id="fechaCompra" name="fechaCompra" value="@Model.Fecha.ToString("yyyy-MM-dd")" readonly />
                 </div>
                 <div class="campo-formulario">
+                    <label for="fechaInicial">Fecha Inicial:</label>
+                    <input type="date" id="fechaInicial" name="fechaInicial" value="@Model.Solicitud?.FechaInicio?.ToString("yyyy-MM-dd")" readonly />
+                </div>
+                <div class="campo-formulario">
+                    <label for="fechaFinal">Fecha de Finalizacion:</label>
+                    <input type="date" id="fechaFinal" name="fechaFinal" value="@Model.Solicitud?.FechaFinal?.ToString("yyyy-MM-dd")" readonly />
+                </div>
+                <div class="campo-formulario">
                     <label for="precio">Precio:</label>
                     <input type="text" id="precio" name="precio" value="₡@Model.Precio" readonly />
                 </div>

@@ -21,7 +21,10 @@
                         <th>Identificador</th>
                         <th>Fecha Compra</th>
                         <th>Precio</th>
-                        <th>Tipo de Suscripción</th>
+                        <th>Suscripcion</th>
+                        <th>Fecha Inicial</th>
+                        <th>Fecha Final</th>
+
                     </tr>
                     @foreach (var factura in Model)
                     {
@@ -30,6 +33,8 @@
                             <td>@factura.Fecha.ToString("dd/MM/yyyy")</td>
                             <td>₡@factura.Precio</td>
                             <td>@factura.Suscripcion?.Nombre</td>
+                            <td>@factura.Solicitud?.FechaInicio</td>
+                            <td>@factura.Solicitud?.FechaFinal</td>
                             <td>
                                 <a href="@Url.Action("VerDetalleFacturaUsuario", "Facturas", new { id = factura.IdFactura })" class="boton-editar">Ver detalle</a>
                             </td>
