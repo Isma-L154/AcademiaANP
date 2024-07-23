@@ -369,9 +369,31 @@ namespace ANP_Academy.Controllers
             return RedirectToAction(nameof(GestionInventario));
         }
 
-        public IActionResult MostrarFacturas()
+        public async Task<IActionResult> MostrarFacturas(string filtro, string valor)
         {
-            return View();
+            var facturas = from f in _dbContext.Facturas
+                           .Include(f => f.Usuario)
+                           .Include(f => f.Suscripcion)
+                           .Include(f => f.Solicitud)
+                           select f;
+
+            return View(await facturas.ToListAsync());
+        }
+
+        public async Task<IActionResult> VerDetalleFactura(int id)
+        {
+            var factura = await _dbContext.Facturas
+                .Include(f => f.Usuario)
+                .Include(f => f.Suscripcion)
+                .Include(f => f.Solicitud)
+                .FirstOrDefaultAsync(f => f.IdFactura == id);
+
+            if (factura == null)
+            {
+                return NotFound();
+            }
+
+            return View(factura);
         }
 
         public async Task<IActionResult> GestionPlanes()
