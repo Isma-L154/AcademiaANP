@@ -1,12 +1,60 @@
-﻿.card {
-    margin-bottom: 10px; /* Ajusta este valor según tus necesidades */
+﻿body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
 }
 
+.container {
+    padding-top: 20px;
+}
+
+h1.text-center {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.card {
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    margin-bottom: 15px; /* Reduce el margen inferior para menos separación entre tarjetas */
+}
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
 .card-img-top {
-    height: 200px; /* Establece la altura deseada para todas las imágenes */
-    object-fit: cover; /* Ajusta la imagen para cubrir el tamaño del contenedor */
+    border-radius: 8px 8px 0 0;
+    width: 100%;
+    height: 200px; /* Ajuste para asegurar que todas las imágenes tengan la misma altura */
+    object-fit: cover;
 }
 
 .card-title {
-    font-weight: bold;
+    color: #555;
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    color: #777;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+.btn-danger {
+    background-color: #5b2b29;
+    border: none;
+}
+
+    .btn-danger:hover {
+        background-color: #4e2320;
+    }
+
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 15px; /* Reduce el margen inferior para menos separación entre tarjetas en dispositivos móviles */
+    }
 }

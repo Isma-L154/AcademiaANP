@@ -1,0 +1,149 @@
+﻿@model ANP_Academy.ViewModel.RecetaViewModel
+
+@{
+    ViewData["Title"] = "Crear Receta";
+}
+
+<link rel="stylesheet" href="~/css/Recetas/CreateRecetas.css" asp-append-version="true" />
+
+<div id="receta-container">
+    <h1>Crear Receta</h1>
+
+    <form id="createRecetaForm" asp-action="CreateRecetas" enctype="multipart/form-data" method="post">
+        <div class="form-group">
+            <label asp-for="Titulo" class="control-label"></label>
+            <input asp-for="Titulo" class="form-control" />
+            <span asp-validation-for="Titulo" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Descripcion" class="control-label"></label>
+            <input asp-for="Descripcion" class="form-control" />
+            <span asp-validation-for="Descripcion" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Imagen</label>
+            <input asp-for="Imagen" type="file" class="form-control" id="imagenInput" accept=".jpg,.jpeg,.png" />
+            <span asp-validation-for="Imagen" class="text-danger"></span>
+            <div class="progress mt-2">
+                <div class="progress-bar" role="progressbar" style="width: 0%;" id="imagenProgressBar">0%</div>
+            </div>
+            <div class="text-danger mt-2" id="imagenErrorMsg">Error al cargar la imagen. Por favor, inténtelo de nuevo.</div>
+        </div>
+        <div class="form-group">
+            <label asp-for="URLVideo" class="control-label"></label>
+            <input asp-for="URLVideo" class="form-control" />
+            <span asp-validation-for="URLVideo" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="ArchivosNuevos" class="control-label">Agregar Archivos</label>
+            <input asp-for="ArchivosNuevos" type="file" class="form-control" id="archivosInput" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.jpg,.jpeg,.png" multiple />
+            <span asp-validation-for="ArchivosNuevos" class="text-danger"></span>
+            <ul id="archivosList"></ul>
+            <div class="progress mt-2">
+                <div class="progress-bar" role="progressbar" style="width: 0%;" id="archivosProgressBar">0%</div>
+            </div>
+            <div class="text-danger mt-2" id="archivosErrorMsg">Error al cargar los archivos. Por favor, inténtelo de nuevo.</div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Guardar" class="btn btn-primary" />
+            <a asp-action="GestionRecetas" class="btn btn-secondary">Volver a la lista</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function updateProgressBar(progressBar, percentComplete) {
+            progressBar.style.width = percentComplete + '%';
+            progressBar.textContent = Math.floor(percentComplete) + '%';
+            if (percentComplete === 100) {
+                progressBar.classList.add('bg-success');
+            }
+        }
+
+        function simulateProgressBar(progressBar) {
+            var percentComplete = 0;
+            var interval = setInterval(function () {
+                percentComplete += 10;
+                updateProgressBar(progressBar, percentComplete);
+                if (percentComplete >= 100) {
+                    clearInterval(interval);
+                }
+            }, 100);
+        }
+
+        document.getElementById('imagenInput').addEventListener('change', function () {
+            var progressBar = document.getElementById('imagenProgressBar');
+            progressBar.style.width = '0%';
+            progressBar.textContent = '0%';
+            progressBar.classList.remove('bg-success');
+            document.getElementById('imagenErrorMsg').style.display = 'none';
+
+            simulateProgressBar(progressBar);
+        });
+
+        document.getElementById('archivosInput').addEventListener('change', function () {
+            var files = this.files;
+            var archivosList = document.getElementById('archivosList');
+            archivosList.innerHTML = '';
+
+            for (var i = 0; i < files.length; i++) {
+                var li = document.createElement('li');
+                li.textContent = files[i].name;
+                archivosList.appendChild(li);
+            }
+
+            var progressBar = document.getElementById('archivosProgressBar');
+            progressBar.style.width = '0%';
+            progressBar.textContent = '0%';
+            progressBar.classList.remove('bg-success');
+            document.getElementById('archivosErrorMsg').style.display = 'none';
+
+            simulateProgressBar(progressBar);
+        });
+
+        document.getElementById('createRecetaForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            var form = e.target;
+            var formData = new FormData(form);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.upload.addEventListener('progress', function (e) {
+                if (e.lengthComputable) {
+                    var percentComplete = (e.loaded / e.total) * 100;
+                    var imagenProgressBar = document.getElementById('imagenProgressBar');
+                    var archivosProgressBar = document.getElementById('archivosProgressBar');
+                    updateProgressBar(imagenProgressBar, percentComplete);
+                    updateProgressBar(archivosProgressBar, percentComplete);
+                }
+            });
+
+            xhr.addEventListener('error', function () {
+                document.getElementById('imagenErrorMsg').style.display = 'block';
+                document.getElementById('archivosErrorMsg').style.display = 'block';
+            });
+
+            xhr.open('POST', form.action, true);
+            xhr.setRequestHeader('RequestVerificationToken', form.querySelector('input[name="__RequestVerificationToken"]').value);
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    console.log('Carga completa');
+                    window.location.href = '@Url.Action("GestionRecetas")';
+                } else {
+                    console.error('Error durante la carga');
+                    document.getElementById('imagenErrorMsg').style.display = 'block';
+                    document.getElementById('archivosErrorMsg').style.display = 'block';
+                }
+            };
+
+            console.log('Enviando formulario');
+            xhr.send(formData);
+        });
+    </script>
+}

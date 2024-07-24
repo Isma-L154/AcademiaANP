@@ -75,8 +75,6 @@ label {
     cursor: pointer;
 }
 
-
-
 .progress {
     height: 25px;
     background-color: #e9ecef;
@@ -116,3 +114,5 @@ label {
         font-size: 0.875rem;
     }
 }
+
+

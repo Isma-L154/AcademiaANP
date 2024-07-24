@@ -1,99 +1,32 @@
-﻿<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recetas de Parrilla</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/Recetas/Recetas.css" asp-append-version="true" />
-    
-</head>
-<body>
-    <div class="container">
-        <h1 class="text-center mb-4">Recetas de Parrilla</h1>
+﻿@model IEnumerable<ANP_Academy.DAL.Models.Receta>
 
-        <div class="row gx-">
-            <!-- Receta 1: Asado de Tira -->
-            <div class="col-md-4">
-                <div class="card" style="width: 18rem;">
-                    <img src="https://www.tresjotas.com/wp-content/uploads/2020/03/Asado-de-tira-a-la-parrilla.jpg" class="card-img-top" alt="Asado de Tira">
+@{
+    ViewData["Title"] = "Recetas de Parrilla";
+}
+
+<link rel="stylesheet" href="~/css/Recetas/Recetas.css" asp-append-version="true" />
+
+<div class="container">
+    <h1 class="text-center mb-4">Recetas de Parrilla</h1>
+
+    <div class="row">
+        @foreach (var receta in Model)
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <img src="@Url.Action("GetImage", "Recetas", new { id = receta.IdReceta })" class="card-img-top" alt="@receta.Titulo">
                     <div class="card-body">
-                        <h5 class="card-title">Asado de Tira a la Parrilla</h5>
-                        <p class="card-text">Condimentado con sal, pimienta y hierbas secas al gusto. Cocinar a fuego medio durante 15-20 minutos por cada lado.</p>
-                        <a href="~/Recetas/Receta1" class="btn btn-danger">Ver Receta</a>
+                        <h5 class="card-title">@receta.Titulo</h5>
+                        <p class="card-text">@receta.Descripcion</p>
+                        <a asp-action="InfoReceta" asp-route-id="@receta.IdReceta" class="btn btn-danger">Ver Receta</a>
                     </div>
                 </div>
             </div>
-
-            <!-- Receta 2: Brochetas de Pollo y Vegetales -->
-            <div class="col-md-4">
-                <div class="card" style="width: 18rem;">
-                    <img src="https://mandolina.co/wp-content/uploads/2020/11/comida-saludable-brochetas-pollo-y-vegetales-1200x720.jpg" class="card-img-top" alt="Brochetas de Pollo y Vegetales">
-                    <div class="card-body">
-                        <h5 class="card-title">Brochetas de Pollo y Vegetales</h5>
-                        <p class="card-text">Pechugas de pollo, pimientos, cebolla, champiñones. Condimentadas y cocinadas en brochetas en la parrilla.</p>
-                        <a href="~/Recetas/Receta1" class="btn btn-danger">Ver Receta</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Receta 3: Costillas de Cerdo con Salsa Barbacoa -->
-            <div class="col-md-4">
-                <div class="card" style="width: 18rem;">
-                    <img src="https://www.annarecetasfaciles.com/files/costilla-de-cerdo-en-salsa-barbacoa-casera.jpg" class="card-img-top" alt="Costillas de Cerdo con Salsa Barbacoa">
-                    <div class="card-body">
-                        <h5 class="card-title">Costillas de Cerdo con Salsa Barbacoa</h5>
-                        <p class="card-text">Condimentadas con sal, pimienta y paprika. Cocinadas lentamente en la parrilla y cubiertas con salsa barbacoa.</p>
-                        <a href="~/Recetas/Receta1" class="btn btn-danger">Ver Receta</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Receta 4: Hamburguesas de Carne de Res -->
-            <div class="col-md-4">
-                <div class="card" style="width: 18rem;">
-                    <img src="https://canadabeef.mx/wp-content/uploads/2022/05/Air-Fryer-Quarter-pound-Beef-Burgers-Fries-scr.jpg" class="card-img-top" alt="Hamburguesas de Carne de Res">
-                    <div class="card-body">
-                        <h5 class="card-title">Hamburguesas de Carne de Res</h5>
-                        <p class="card-text">Carne molida de res, condimentos, pan de hamburguesa. Preparadas y cocinadas a la parrilla con todos los acompañamientos.</p>
-                        <a href="~/Recetas/Receta1" class="btn btn-danger">Ver Receta</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Receta 5: Pescado a la Parrilla con Salsa de Limón y Hierbas -->
-            <div class="col-md-4">
-                <div class="card" style="width: 18rem;">
-                    <img src="https://mandolina.co/wp-content/uploads/2023/12/Pescado-a-la-parrilla-con-salsa-de-mango-y-cilantro-1.png" class="card-img-top" alt="Pescado a la Parrilla con Salsa de Limón y Hierbas">
-                    <div class="card-body">
-                        <h5 class="card-title">Pescado a la Parrilla con Salsa de Limón y Hierbas</h5>
-                        <p class="card-text">Filetes de pescado (salmón, trucha, lubina), salsa de limón y hierbas. Cocinados a la parrilla para una comida ligera y deliciosa.</p>
-                        <a href="~/Recetas/Receta1" class="btn btn-danger">Ver Receta</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Receta 6: Chuletas de Cordero a la Parrilla -->
-            <div class="col-md-4">
-                <div class="card" style="width: 18rem;">
-                    <img src="https://i.ytimg.com/vi/yp3ZH-QoBnQ/maxresdefault.jpg" class="card-img-top" alt="Chuletas de Cordero a la Parrilla">
-                    <div class="card-body">
-                        <h5 class="card-title">Chuletas de Cordero a la Parrilla</h5>
-                        <p class="card-text">Chuletas de cordero, aceite de oliva, ajo, romero fresco, sal, pimienta. Condimentadas y asadas a la parrilla para un sabor delicioso.</p>
-                        <a href="~/Recetas/Receta1" class="btn btn-danger">Ver Receta</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Repetir este bloque para cada receta adicional -->
-
-        </div>
+        }
     </div>
+</div>
 
-    <!-- Bootstrap JavaScript y dependencias -->
+@section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.min.js"></script>
-</body>
-</html>
-
+}

@@ -1,0 +1,119 @@
+﻿@model ANP_Academy.ViewModel.RecetaViewModel
+
+@{
+    ViewData["Title"] = "Editar Receta";
+}
+
+<link rel="stylesheet" href="~/css/Recetas/EditRecetas.css" asp-append-version="true" />
+
+<div id="receta-container">
+    <h1>Editar Receta</h1>
+
+    <form id="editRecetaForm" asp-action="EditRecetas" enctype="multipart/form-data">
+        <input type="hidden" asp-for="IdReceta" />
+        <div class="form-group">
+            <label asp-for="Titulo" class="control-label"></label>
+            <input asp-for="Titulo" class="form-control" />
+            <span asp-validation-for="Titulo" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Descripcion" class="control-label"></label>
+            <input asp-for="Descripcion" class="form-control" />
+            <span asp-validation-for="Descripcion" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Imagen Actual</label>
+            <div>
+                <img src="@Url.Action("GetImage", "Recetas", new { id = Model.IdReceta })" class="img-thumbnail" style="max-width: 200px; max-height: 200px;" />
+            </div>
+            <label asp-for="Imagen" class="control-label">Cambiar Imagen (opcional)</label>
+            <input asp-for="Imagen" type="file" class="form-control" id="imagenInput" accept=".jpg,.jpeg,.png" />
+            <span asp-validation-for="Imagen" class="text-danger"></span>
+            <div class="progress mt-2">
+                <div class="progress-bar" role="progressbar" style="width: 0%;" id="imagenProgressBar">0%</div>
+            </div>
+            <div class="text-danger mt-2" id="imagenErrorMsg" style="display:none;">Error al cargar la imagen. Por favor, inténtelo de nuevo.</div>
+        </div>
+        <div class="form-group">
+            <label asp-for="URLVideo" class="control-label"></label>
+            <input asp-for="URLVideo" class="form-control" />
+            <span asp-validation-for="URLVideo" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Archivos Actuales</label>
+            <div>
+                @foreach (var archivo in Model.ArchivosExistentes)
+                {
+                    <div>
+                        <a asp-action="DownloadFile" asp-route-id="@archivo.IdArchivo">@archivo.NombreArchivo</a>
+                        <input type="checkbox" name="ArchivosParaEliminar" value="@archivo.IdArchivo" /> Eliminar
+                    </div>
+                }
+            </div>
+            <label asp-for="ArchivosNuevos" class="control-label">Agregar Archivos (opcional)</label>
+            <input asp-for="ArchivosNuevos" type="file" class="form-control" id="archivosInput" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.jpg,.jpeg,.png" multiple />
+            <span asp-validation-for="ArchivosNuevos" class="text-danger"></span>
+            <div class="progress mt-2">
+                <div class="progress-bar" role="progressbar" style="width: 0%;" id="archivosProgressBar">0%</div>
+            </div>
+            <div class="text-danger mt-2" id="archivosErrorMsg" style="display:none;">Error al cargar los archivos. Por favor, inténtelo de nuevo.</div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Guardar" class="btn btn-primary" />
+            <a asp-action="GestionRecetas" class="btn btn-secondary">Volver a la lista</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        function uploadFile(fileInput, progressBarId, errorMsgId, formAction) {
+            var progressBar = document.getElementById(progressBarId);
+            progressBar.style.width = '0%';
+            progressBar.textContent = '0%';
+            progressBar.classList.remove('bg-success');
+            document.getElementById(errorMsgId).style.display = 'none';
+
+            var files = fileInput.files;
+            if (files.length > 0) {
+                var formData = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    formData.append(fileInput.name, files[i]);
+                }
+
+                var xhr = new XMLHttpRequest();
+                xhr.upload.addEventListener('progress', function (e) {
+                    if (e.lengthComputable) {
+                        var percentComplete = (e.loaded / e.total) * 100;
+                        progressBar.style.width = percentComplete + '%';
+                        progressBar.textContent = Math.floor(percentComplete) + '%';
+                        if (percentComplete === 100) {
+                            progressBar.classList.add('bg-success');
+                        } else {
+                            progressBar.classList.remove('bg-success');
+                        }
+                    }
+                });
+                xhr.addEventListener('error', function () {
+                    document.getElementById(errorMsgId).style.display = 'block';
+                });
+                xhr.addEventListener('abort', function () {
+                    document.getElementById(errorMsgId).style.display = 'block';
+                });
+                xhr.open('POST', formAction, true);
+                xhr.send(formData);
+            }
+        }
+
+        document.getElementById('imagenInput').addEventListener('change', function () {
+            uploadFile(this, 'imagenProgressBar', 'imagenErrorMsg', '@Url.Action("UploadImage", "Recetas")');
+        });
+
+        document.getElementById('archivosInput').addEventListener('change', function () {
+            uploadFile(this, 'archivosProgressBar', 'archivosErrorMsg', '@Url.Action("UploadFiles", "Recetas")');
+        });
+    </script>
+}
