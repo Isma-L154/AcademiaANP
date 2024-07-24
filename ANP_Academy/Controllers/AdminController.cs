@@ -374,13 +374,53 @@ namespace ANP_Academy.Controllers
             return View();
         }
 
-        public async Task<IActionResult> MostrarFacturas(string filtro, string valor)
+        public async Task<IActionResult> MostrarFacturas(string intervalo, string filtro, string valor)
         {
-            var facturas = from f in _dbContext.Facturas
-                           .Include(f => f.Usuario)
-                           .Include(f => f.Suscripcion)
-                           .Include(f => f.Solicitud)
-                           select f;
+            var suscripciones = await _dbContext.Suscripciones
+                .Where(s => !s.IsDeleted) // Excluye las suscripciones eliminadas
+                .ToListAsync();
+
+            ViewBag.Suscripciones = suscripciones;
+
+            var facturas = _dbContext.Facturas
+                .AsNoTracking()
+                .Include(f => f.Usuario)
+                .Include(f => f.Suscripcion)
+                .Include(f => f.Solicitud)
+                .AsQueryable();
+
+            // Filtrar por suscripción
+            if (!string.IsNullOrEmpty(intervalo))
+            {
+                var duracion = suscripciones.FirstOrDefault(s => s.Nombre.Equals(intervalo, StringComparison.OrdinalIgnoreCase))?.Duracion;
+                if (duracion.HasValue)
+                {
+                    facturas = facturas.Where(f => f.Suscripcion.Duracion == duracion.Value);
+                }
+            }
+
+            // Filtrar por INFO del usuario
+            if (!string.IsNullOrEmpty(filtro) && !string.IsNullOrEmpty(valor))
+            {
+                switch (filtro.ToLower())
+                {
+                    case "identificador":
+                        facturas = facturas.Where(f => f.Usuario.Id.ToString() == valor);
+                        break;
+                    case "nombre":
+                        facturas = facturas.Where(f => f.Usuario.Nombre.Contains(valor));
+                        break;
+                    case "correo electrónico":
+                        facturas = facturas.Where(f => f.Usuario.Email.Contains(valor));
+                        break;
+                    case "fecha":
+                        if (DateTime.TryParse(valor, out DateTime fecha))
+                        {
+                            facturas = facturas.Where(f => f.Fecha.Date == fecha.Date);
+                        }
+                        break;
+                }
+            }
 
             return View(await facturas.ToListAsync());
         }
@@ -680,7 +720,7 @@ namespace ANP_Academy.Controllers
             padding: 10px 20px;
             font-size: 16px;
             color: white;
-            background-color: #07AA20;
+            background-color: #aa2a07;
             text-decoration: none;
             border-radius: 5px;
             margin-top: 20px;
@@ -694,7 +734,7 @@ namespace ANP_Academy.Controllers
             padding-top: 20px;
         }}
         .factura h2 {{
-            color: #07AA20;
+            color: #aa2a07;
         }}
         .factura table {{
             width: 100%;
