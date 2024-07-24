@@ -1,4 +1,6 @@
-﻿@{
+﻿@model ANP_Academy.DAL.Models.Factura
+
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -11,27 +13,39 @@
             <form action="@Url.Action("VerFacturasUsuario", "Facturas")" method="post">
                 <div class="campo-formulario">
                     <label for="identificador">Identificador:</label>
-                    <input type="text" id="identificador" name="identificador" value="1" readonly />
+                    <input type="text" id="identificador" name="identificador" value="@Model.IdFactura" readonly />
                 </div>
                 <div class="campo-formulario">
                     <label for="NombreUsuario">Nombre cliente:</label>
-                    <input type="text" id="NombreUsuario" name="NombreUsuario" value="Andrés Elizondo" readonly />
+                    <input type="text" id="NombreUsuario" name="NombreUsuario" value="@Model.Usuario?.Nombre" readonly />
+                </div>
+                <div class="campo-formulario">
+                    <label for="ApellidoUsuario">Apellido cliente:</label>
+                    <input type="text" id="ApellidoUsuario" name="ApellidoUsuario" value="@Model.Usuario?.PrimApellido" readonly />
+                </div>
+                <div class="campo-formulario">
+                    <label for="NumeroUsuario">Numero telefonico:</label>
+                    <input type="text" id="TelefonoUsuario" name="TelefonoUsuario" value="@Model.Usuario?.PhoneNumber" readonly />
+                </div>
+                <div class="campo-formulario">
+                    <label for="TipoSuscripcion">Tipo de Suscripción:</label>
+                    <input type="text" id="TipoSuscripcion" name="TipoSuscripcion" value="@Model.Suscripcion?.Nombre" readonly />
                 </div>
                 <div class="campo-formulario">
                     <label for="fechaCompra">Fecha Compra:</label>
-                    <input type="date" id="fechaCompra" name="fechaCompra" value="2024-01-15" readonly />
+                    <input type="date" id="fechaCompra" name="fechaCompra" value="@Model.Fecha.ToString("yyyy-MM-dd")" readonly />
+                </div>
+                <div class="campo-formulario">
+                    <label for="fechaInicial">Fecha Inicial:</label>
+                    <input type="date" id="fechaInicial" name="fechaInicial" value="@Model.Solicitud?.FechaInicio?.ToString("yyyy-MM-dd")" readonly />
+                </div>
+                <div class="campo-formulario">
+                    <label for="fechaFinal">Fecha de Finalizacion:</label>
+                    <input type="date" id="fechaFinal" name="fechaFinal" value="@Model.Solicitud?.FechaFinal?.ToString("yyyy-MM-dd")" readonly />
                 </div>
                 <div class="campo-formulario">
                     <label for="precio">Precio:</label>
-                    <input type="text" id="precio" name="precio" value="₡5000" readonly />
-                </div>
-                <div class="campo-formulario">
-                    <label for="desde">Desde:</label>
-                    <input type="date" id="desde" name="desde" value="2024-01-15" readonly />
-                </div>
-                <div class="campo-formulario">
-                    <label for="hasta">Hasta:</label>
-                    <input type="date" id="hasta" name="hasta" value="2024-02-15" readonly />
+                    <input type="text" id="precio" name="precio" value="₡@Model.Precio" readonly />
                 </div>
                 <div class="botones-formulario">
                     <button type="submit" class="boton-atras">Atrás</button>

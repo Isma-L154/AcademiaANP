@@ -374,9 +374,71 @@ namespace ANP_Academy.Controllers
             return View();
         }
 
-        public IActionResult MostrarFacturas()
+        public async Task<IActionResult> MostrarFacturas(string intervalo, string filtro, string valor)
         {
-            return View();
+            var suscripciones = await _dbContext.Suscripciones
+                .Where(s => !s.IsDeleted) // Excluye las suscripciones eliminadas
+                .ToListAsync();
+
+            ViewBag.Suscripciones = suscripciones;
+
+            var facturas = _dbContext.Facturas
+                .AsNoTracking()
+                .Include(f => f.Usuario)
+                .Include(f => f.Suscripcion)
+                .Include(f => f.Solicitud)
+                .AsQueryable();
+
+            // Filtrar por suscripción
+            if (!string.IsNullOrEmpty(intervalo))
+            {
+                var duracion = suscripciones.FirstOrDefault(s => s.Nombre.Equals(intervalo, StringComparison.OrdinalIgnoreCase))?.Duracion;
+                if (duracion.HasValue)
+                {
+                    facturas = facturas.Where(f => f.Suscripcion.Duracion == duracion.Value);
+                }
+            }
+
+            // Filtrar por INFO del usuario
+            if (!string.IsNullOrEmpty(filtro) && !string.IsNullOrEmpty(valor))
+            {
+                switch (filtro.ToLower())
+                {
+                    case "identificador":
+                        facturas = facturas.Where(f => f.Usuario.Id.ToString() == valor);
+                        break;
+                    case "nombre":
+                        facturas = facturas.Where(f => f.Usuario.Nombre.Contains(valor));
+                        break;
+                    case "correo electrónico":
+                        facturas = facturas.Where(f => f.Usuario.Email.Contains(valor));
+                        break;
+                    case "fecha":
+                        if (DateTime.TryParse(valor, out DateTime fecha))
+                        {
+                            facturas = facturas.Where(f => f.Fecha.Date == fecha.Date);
+                        }
+                        break;
+                }
+            }
+
+            return View(await facturas.ToListAsync());
+        }
+
+        public async Task<IActionResult> VerDetalleFactura(int id)
+        {
+            var factura = await _dbContext.Facturas
+                .Include(f => f.Usuario)
+                .Include(f => f.Suscripcion)
+                .Include(f => f.Solicitud)
+                .FirstOrDefaultAsync(f => f.IdFactura == id);
+
+            if (factura == null)
+            {
+                return NotFound();
+            }
+
+            return View(factura);
         }
 
         public async Task<IActionResult> GestionPlanes()
@@ -596,11 +658,8 @@ namespace ANP_Academy.Controllers
                 return NotFound();
             }
 
-            // Establece fechas de inicio y finalización
             solicitud.FechaInicio = DateTime.Now;
             solicitud.FechaFinal = DateTime.Now.AddMonths(suscripcion.Duracion);
-
-            // Actualizar el estado
             solicitud.Estado = true;
 
             var user = await _userManager.FindByIdAsync(userId);
@@ -609,11 +668,9 @@ namespace ANP_Academy.Controllers
                 return NotFound();
             }
 
-            // Remover roles actuales
             var currentRoles = await _userManager.GetRolesAsync(user);
             await _userManager.RemoveFromRolesAsync(user, currentRoles);
 
-            // Agregar nuevo rol
             var result = await _userManager.AddToRoleAsync(user, "Estudiante");
             if (!result.Succeeded)
             {
@@ -635,8 +692,7 @@ namespace ANP_Academy.Controllers
             _dbContext.Facturas.Add(factura);
             await _dbContext.SaveChangesAsync();
 
-            // Enviar correo electrónico 
-            string destinatario = user.Email;  
+            string destinatario = user.Email;
             string asunto = "Solicitud Aprobada";
             string mensaje = $@"
 <!DOCTYPE html>
@@ -664,13 +720,32 @@ namespace ANP_Academy.Controllers
             padding: 10px 20px;
             font-size: 16px;
             color: white;
-            background-color: #07AA20;
+            background-color: #aa2a07;
             text-decoration: none;
             border-radius: 5px;
             margin-top: 20px;
         }}
         .btn:hover {{
             background-color: #0056b3;
+        }}
+        .factura {{
+            margin-top: 20px;
+            border-top: 1px solid #cccccc;
+            padding-top: 20px;
+        }}
+        .factura h2 {{
+            color: #aa2a07;
+        }}
+        .factura table {{
+            width: 100%;
+            border-collapse: collapse;
+        }}
+        .factura table, .factura th, .factura td {{
+            border: 1px solid #cccccc;
+        }}
+        .factura th, .factura td {{
+            padding: 10px;
+            text-align: left;
         }}
     </style>
 </head>
@@ -682,6 +757,24 @@ namespace ANP_Academy.Controllers
         <p>Tu suscripción estará activa hasta el día: <strong>{solicitud.FechaFinal:dd/MM/yyyy}</strong>.</p>
         <p>Gracias por ser parte de <strong>ANP Academy</strong>.</p>
         <a href='https://www.youtube.com/' class='btn'>Visita nuestro sitio web</a>
+
+        <div class='factura'>
+            <h2>Factura</h2>
+            <table>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Precio</th>
+                    <th>Usuario</th>
+                    <th>Suscripción</th>
+                </tr>
+                <tr>
+                    <td>{factura.Fecha:dd/MM/yyyy}</td>
+                    <td>{factura.Precio:C}</td>
+                    <td>{user.Nombre} {user.PrimApellido} {user.SegApellido}</td>
+                    <td>{suscripcion.Nombre}</td>
+                </tr>
+            </table>
+        </div>
     </div>
 
     <div class='footer'>
@@ -691,7 +784,6 @@ namespace ANP_Academy.Controllers
 </html>
 ";
 
-
             try
             {
                 SendEmail(destinatario, asunto, mensaje);
@@ -700,22 +792,6 @@ namespace ANP_Academy.Controllers
             {
                 Console.WriteLine("Error al enviar el correo: " + ex.Message);
             }
-
-            return RedirectToAction("ControlSuscrip");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> RechazarSolicitud(int idSolicitud)
-        {
-            var solicitud = await _dbContext.Solicitudes.FindAsync(idSolicitud);
-            if (solicitud == null)
-            {
-                return NotFound();
-            }
-
-            solicitud.Estado = false;
-            _dbContext.Update(solicitud);
-            await _dbContext.SaveChangesAsync();
 
             return RedirectToAction("ControlSuscrip");
         }

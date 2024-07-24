@@ -1,27 +1,80 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
+using ANP_Academy.DAL.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace ANP_Academy.Controllers
 {
     public class FacturasController : Controller
     {
+        private readonly AnpdesarrolloContext _dbContext;
+        private readonly UserManager<Usuario> _userManager;
+
+        public FacturasController(AnpdesarrolloContext dbContext, UserManager<Usuario> userManager)
+        {
+            _dbContext = dbContext;
+            _userManager = userManager;
+        }
+
         public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult VerFacturasUsuario()
+        public async Task<IActionResult> VerFacturasUsuario()
         {
-            return View();
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var facturas = await _dbContext.Facturas
+                .Where(f => f.IdUser == user.Id)
+                .Include(f => f.Suscripcion)
+                .Include(f => f.Solicitud)
+                .ToListAsync();
+
+            if (facturas == null || facturas.Count == 0)
+            {
+                ViewBag.Message = "No tiene facturas asociadas a su cuenta.";
+            }
+
+            return View(facturas);
         }
 
-        public IActionResult VerDetalleFacturaUsuario()
+        public async Task<IActionResult> VerDetalleFacturaUsuario(int id)
         {
-            return View();
+            var factura = await _dbContext.Facturas
+                .Include(f => f.Usuario)
+                .Include(f => f.Suscripcion)
+                .Include(f => f.Solicitud)
+                .FirstOrDefaultAsync(f => f.IdFactura == id);
+
+            if (factura == null)
+            {
+                return NotFound();
+            }
+
+            return View(factura);
         }
 
-        public IActionResult VerDetalleFacturaAdmin()
+        public async Task<IActionResult> VerDetalleFacturaAdmin(int id)
         {
-            return View();
+            var factura = await _dbContext.Facturas
+                .Include(f => f.Usuario)
+                .Include(f => f.Suscripcion)
+                .Include(f => f.Solicitud)
+                .FirstOrDefaultAsync(f => f.IdFactura == id);
+
+            if (factura == null)
+            {
+                return NotFound();
+            }
+
+            return View(factura);
         }
     }
 }
