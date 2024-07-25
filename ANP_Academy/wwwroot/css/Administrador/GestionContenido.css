@@ -1,40 +1,52 @@
 ﻿body {
-    background-color: #f8f9fa;
-    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #ffecd2, #fcb69f);
+    font-family: 'Arial', sans-serif;
 }
 
 .content-box {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    margin-top: 80px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+    .content-box:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+    }
+
+.btn-custom {
+    background-color: #5B2B29;
+    border: none;
+    color: #ffffff;
+    font-size: 1.25rem;
+    padding: 15px 30px;
+    border-radius: 50px;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+    .btn-custom:hover {
+        background-color: #4e2320;
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-custom:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(92, 82, 77, 0.5);
+    }
+
+.container {
+    max-width: 800px;
 }
 
 h1 {
-    color: #040404;
+    font-size: 2.5rem;
+    color: #333;
 }
 
-.btn-primary {
-    background-color: #e32a07;
-}
-
-    .btn-primary:hover {
-        background-color: #5b2b29;
-    }
-
-.table {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-    .table th,
-    .table td {
-        border-top: none;
-        vertical-align: middle;
-    }
-
-/* Estilo para los elementos del formulario */
-.form-control {
-    font-size: 20px; /* Tamaño de letra más grande */
+.d-grid {
+    gap: 2rem;
 }

@@ -18,7 +18,7 @@ namespace ANP_Academy.DAL.Models
         [Required]
         public string URLVideo { get; set; } = null!;
         [Required]
-        public byte[] Archivo { get; set; } = null!;
+        public ICollection<RecetaArchivo> Archivos { get; set; } = new List<RecetaArchivo>();
 
     }
 }

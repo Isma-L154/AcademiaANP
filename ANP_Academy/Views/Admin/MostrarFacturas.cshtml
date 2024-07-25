@@ -2,6 +2,7 @@
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var suscripciones = ViewBag.Suscripciones as List<ANP_Academy.DAL.Models.Suscripcion>;
 }
 <link rel="stylesheet" href="~/css/Facturas/VerFacturasUsuario.css" asp-append-version="true" />
 
@@ -11,11 +12,19 @@
         <div class="filtro-y-crear">
             <div class="filtro">
                 <form method="get" action="@Url.Action("MostrarFacturas", "Admin")">
-                    <select name="filtro" aria-label="Filtrar por tipo de suscripción" class="filtro-dropdown">
+                    <select name="intervalo" aria-label="Filtrar por tipo de suscripción" class="filtro-dropdown">
+                        <option value="" disabled selected>Filtrar por suscripcion...</option>
+                        @foreach (var suscripcion in suscripciones)
+                        {
+                            <option value="@suscripcion.Nombre">@suscripcion.Nombre</option>
+                        }
+                    </select>
+                    <select name="filtro" aria-label="Filtrar por detalles del usuario" class="filtro-dropdown">
                         <option value="" disabled selected>Buscar por...</option>
-                        <option value="Mensual">Mensual</option>
-                        <option value="Trimestral">Trimestral</option>
-                        <option value="Anual">Anual</option>
+                        <option value="Identificador">Identificador</option>
+                        <option value="Nombre">Nombre</option>
+                        <option value="Correo electrónico">Correo electrónico</option>
+                        <option value="Fecha de Compra">Fecha de Compra</option>
                     </select>
                     <input type="text" name="valor" aria-label="Valor de búsqueda" placeholder="Escribe aquí...">
                     <button type="submit" class="boton-buscar"><i class="fas fa-search"></i></button>

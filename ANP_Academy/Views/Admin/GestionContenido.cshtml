@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Contenidos</title>
-    <!-- Bootstrap CSS (puedes quitarlo si no lo necesitas) -->
+    <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/Administrador/GestionContenido.css" asp-append-version="true" />
 </head>
@@ -12,33 +12,12 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
-                <div class="content-box">
-                    <h1 class="text-center mb-4">Gestión de Contenidos</h1>
-                    <a href="~/Admin/ContenidoFormulario" class="btn btn-danger mb-3">Cargar Archivos</a>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Título</th>
-                                <th>Descripción</th>
-                                <th>Etiqueta</th>
-                                <th>Archivo</th>
-                                <th>Acciones<th/>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Aquí se mostrarán los datos de los contenidos -->
-                            <tr>
-                                <td>Asado de Tira a la Parrilla</td>
-                                <td>Condimentado con sal, pimienta y hierbas secas al gusto.</td>
-                                <td>Receta</td>
-                                <td><a href="/AsadoTira.pdf">AsadoTira.pdf</a></td> <!-- No redirecciona a ningun lado -->
-                                <td>
-                                    <a href="@Url.Action("EditarInventario", "Admin")" class="btn btn-danger">Editar</a>
-                                    <a class="btn btn-danger">Eliminar</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="content-box text-center">
+                    <h1 class="mb-4">Gestión de Contenidos</h1>
+                    <div class="d-grid gap-4">
+                        <a asp-controller="Clase" asp-action="GestionClases" class="btn btn-custom mb-3">Clases</a>
+                        <a asp-controller="Recetas" asp-action="GestionRecetas" class="btn btn-custom">Recetas</a>
+                    </div>
                 </div>
             </div>
         </div>

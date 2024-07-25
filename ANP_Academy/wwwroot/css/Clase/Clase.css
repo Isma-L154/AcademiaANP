@@ -1,85 +1,80 @@
-﻿.grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Columnas automáticas con un ancho mínimo de 250px */
-    gap: 20px;
+﻿/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
 }
-
-.grid-item {
-    text-align: center;
-    border: 1px solid #ccc;
-    padding: 20px;
-    position: relative; /* Para que el botón esté posicionado correctamente */
-}
-
-    .grid-item img {
-        width: 100%; /* Ancho completo */
-        height: auto; /* Altura automática para mantener la proporción */
-        object-fit: cover; /* Para que las imágenes se ajusten al contenedor */
-    }
-
-    .grid-item h3 {
-        margin-top: 10px;
-        font-size: 1.2em;
-        font-weight: bold; /* Hace que los títulos sean negrita */
-    }
-
-    .grid-item p {
-        font-size: 1em;
-        color: #666;
-        margin-bottom: 15px; /* Añadir espacio entre la descripción y el botón */
-    }
-
-.btn-primary {
-    background-color: #2c0b0b;
-}
-
-    .btn-primary:hover {
-        background-color: #5b2b29;
-    }
-
-.ver-clase-btn {
-    display: inline-block; /* Convertir en bloque para que se ajuste al contenido */
-    padding: 8px 15px; /* Ajustar el padding para hacer el botón más pequeño */
-    background-color: #2c0b0b;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none; /* Eliminar subrayado */
-    transition: background-color 0.3s ease; /* Transición suave */
-    max-width: 150px; /* Ancho máximo del botón */
-    white-space: nowrap; /* Evitar que el texto se divida en varias líneas */
-    overflow: hidden; /* Ocultar el texto que sobrepase el ancho máximo */
-    text-overflow: ellipsis; /* Agregar puntos suspensivos al texto que se recorta */
-}
-
-    .ver-clase-btn:hover {
-        background-color: #5b2b29; /* Cambiar color al pasar el ratón */
-    }
-
-.grid-title {
-    text-align: center;
+ 
+h1 {
     margin-bottom: 20px;
-    font-size: 1.5em;
+    text-align: center;
+    color: #343a40;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: #fff; /* Fondo blanco para que las imágenes pequeñas se vean bien */
+}
+
+.card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center; /* Centrar elementos horizontalmente */
+    text-align: center; /* Centrar texto */
+}
+
+.card-title {
+    font-size: 1.25rem;
     font-weight: bold;
 }
 
-.progress-bar-container {
-    width: 100%; /* Ancho completo */
-    height: 10px; /* Altura de la barra de progreso */
-    background-color: #3c3c3c; /* Color de fondo */
-    border-radius: 5px; /* Bordes redondeados */
-    margin-top: 10px; /* Espacio superior */
-    overflow: hidden; /* Ocultar el exceso de contenido */
+.card-text {
+    font-size: 1rem;
+    color: #555;
+}
+
+.btn-primary {
+    background-color: #5b2b39;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+    .btn-primary:hover {
+        background-color: #4e2532; /* Color más oscuro para el hover */
+    }
+
+.progress {
+    height: 25px;
+    background-color: #e9ecef;
+    border-radius: 0.25rem;
+    width: 100%; /* Hacer la barra de progreso ocupar todo el ancho del card */
 }
 
 .progress-bar {
-    height: 100%; /* Altura completa */
-    background-color: #343434; /* Color de la barra de progreso */
-}
-
-@media (max-width: 768px) { /* Media query para dispositivos con un ancho máximo de 768px */
-    .grid-container {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Columnas automáticas con un ancho mínimo de 200px */
-    }
+    line-height: 25px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: black;
+    transition: width 0.6s ease;
 }

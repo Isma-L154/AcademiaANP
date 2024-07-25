@@ -1,0 +1,140 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+#receta-container h1 {
+    text-align: center;
+    margin-top: 20px;
+    color: #333;
+}
+
+#receta-container form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#receta-container .form-group {
+    margin-bottom: 15px;
+}
+
+    #receta-container .form-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #555;
+    }
+
+#receta-container .form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+    #receta-container .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+    }
+
+#receta-container .text-danger {
+    color: #dc3545;
+    font-size: 14px;
+}
+
+#receta-container .progress {
+    height: 20px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+#receta-container .progress-bar {
+    height: 100%;
+    background-color: #007bff;
+    text-align: center;
+    color: #fff;
+    transition: width 0.4s ease;
+}
+
+#receta-container .bg-success {
+    background-color: #5B2A1B !important;
+}
+
+#receta-container .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+#receta-container .btn-primary {
+    background-color: #5B2A1B;
+}
+
+#receta-container .btn-secondary {
+    background-color: #6c757d;
+}
+
+#receta-container .btn:hover {
+    background-color: #5B2A1B;
+}
+
+#receta-container .btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+#receta-container #imagenErrorMsg, #archivosErrorMsg {
+    display: none;
+    color: #dc3545;
+    margin-top: 10px;
+}
+
+#receta-container .mt-2 {
+    margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #receta-container form {
+        padding: 15px;
+    }
+
+    #receta-container .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    #receta-container .progress {
+        height: 15px;
+    }
+
+    #receta-container .progress-bar {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 576px) {
+    #receta-container .form-control {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    #receta-container .btn {
+        font-size: 14px;
+    }
+}
