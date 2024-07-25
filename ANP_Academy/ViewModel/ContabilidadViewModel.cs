@@ -4,7 +4,7 @@ namespace ANP_Academy.ViewModel
 {
     public class ContabilidadViewModel
     {
-        public IEnumerable<Solicitudes> Solicitudes { get; set; }
+        public IEnumerable<Factura> Facturas { get; set; }
         public IEnumerable<Suscripcion>  Suscripciones { get; set; }
     }
 }

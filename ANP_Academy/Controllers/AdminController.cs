@@ -369,11 +369,6 @@ namespace ANP_Academy.Controllers
             return RedirectToAction(nameof(GestionInventario));
         }
 
-        public IActionResult MostrarContabilidad()
-        {
-            return View();
-        }
-
         public async Task<IActionResult> MostrarFacturas(string intervalo, string filtro, string valor)
         {
             var suscripciones = await _dbContext.Suscripciones
@@ -829,12 +824,12 @@ namespace ANP_Academy.Controllers
         public IActionResult MostrarContabilidad()
         {
             var suscripciones = _dbContext.Suscripciones.ToList();
-            var solicitudes = _dbContext.Solicitudes.ToList();
+            var facturas = _dbContext.Facturas.ToList();
 
             var viewModel = new ContabilidadViewModel
             {
                 Suscripciones = suscripciones,
-                Solicitudes = solicitudes
+                Facturas = facturas
             };
             return View(viewModel);
         }

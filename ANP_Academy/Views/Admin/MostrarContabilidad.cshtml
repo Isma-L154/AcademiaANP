@@ -30,14 +30,14 @@
                     </tr>
                     @foreach (var suscripcion in Model.Suscripciones)
                     {
-                        var cantidad = Model.Solicitudes.Count(s => s.IdSuscripcion == suscripcion.IdSuscripcion && s.Estado == true);
+                        var cantidad = Model.Facturas.Count(s => s.IdSuscripcion == suscripcion.IdSuscripcion);
                         var total = suscripcion.Precio * cantidad;
 
                         <tr>
                             <td>@suscripcion.Nombre</td>
-                            <td>₡@suscripcion.Precio</td>
+                            <td>₡@suscripcion.Precio.ToString("N0")</td>
                             <td>@cantidad</td>
-                            <td>₡@total</td>
+                            <td>₡@total.ToString("N0")</td>
                         </tr>
                     }
 
@@ -46,15 +46,12 @@
         </div>
         </div>
         <div class="recaudacion-y-fecha">
-            <div class="fecha-corte">
-                <h3>Fecha de corte: 20//04/2024</h3>
-            </div>
             @{
                 var totalGeneral = Model.Suscripciones.Sum(s =>
-                Model.Solicitudes.Where(sol => sol.IdSuscripcion == s.IdSuscripcion && sol.Estado == true)
+                Model.Facturas.Where(sol => sol.IdSuscripcion == s.IdSuscripcion)
                 .Sum(sol => s.Precio));
             }
-            <h3>Recaudación total: ₡@totalGeneral</h3>
+            <h3>Recaudación total: ₡@totalGeneral.ToString("N0")</h3>
         </div>
     </section>
 </main>
