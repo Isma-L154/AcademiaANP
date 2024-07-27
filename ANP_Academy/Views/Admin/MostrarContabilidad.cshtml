@@ -1,4 +1,5 @@
-﻿@model ANP_Academy.ViewModel.ContabilidadViewModel
+﻿@using ANP_Academy.ViewModel.Contabilidad
+@model ContabilidadViewModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -11,16 +12,16 @@
             <div class="filtro">
                 <div class="fecha-corte-busqueda">
                     <label for="fechaCorte" class="etiqueta-fecha-corte">Selecciona una fecha de corte:</label>
-                    <input type="date" id="fechaCorte" name="valor" aria-label="Valor de búsqueda" class="input-fecha-corte">
-                    <button type="submit" class="boton-buscar"><i class="fas fa-search"></i></button>
+                    <input type="month" id="fechaCorte" name="valor" aria-label="Valor de búsqueda" class="input-fecha-corte">
+                    <button id="FiltroConta" type="submit" class="boton-buscar"><i class="fas fa-search"></i></button>
+                    <button type="button" id="ResetFiltro" class="boton-reset" style="display: none;"> <i class="fas fa-refresh"></i> Resetear </button>
                 </div>
             </div>
             <div class="crear-usuario">
                 <a href="@Url.Action("MostrarContabilidad", "Admin")" class="boton-crear">Descargar facturas asociadas al corte</a>
             </div>
         </div>
-        <div class="tabla">
-            <div class="tabla">
+        <div class="tabla" id="ContaTable">
                 <table>
                     <tr>
                         <th>Tipo de suscripción</th>
@@ -28,31 +29,28 @@
                         <th>Cantidad</th>
                         <th>Recaudación</th>
                     </tr>
-                    @foreach (var suscripcion in Model.Suscripciones)
+                    <tbody>
+                    @foreach (var item in Model.SuscripcionesFacturas)
                     {
-                        var cantidad = Model.Facturas.Count(s => s.IdSuscripcion == suscripcion.IdSuscripcion);
-                        var total = suscripcion.Precio * cantidad;
-
-                        <tr>
-                            <td>@suscripcion.Nombre</td>
-                            <td>₡@suscripcion.Precio.ToString("N0")</td>
-                            <td>@cantidad</td>
-                            <td>₡@total.ToString("N0")</td>
+                        <tr data-fecha="@item.FechaFactura"
+                            data-cantidad-original="@item.Cantidad"
+                            data-total-original="₡@item.Total.ToString("N0")">
+                            <td>@item.Nombre</td>
+                            <td class="precio">₡@item.Precio.ToString("N0")</td>
+                            <td class="cantidad">@item.Cantidad</td>
+                            <td class="total">₡@item.Total.ToString("N0")</td>
                         </tr>
                     }
+                    </tbody>
+                    
 
                 </table>
 
         </div>
-        </div>
-        <div class="recaudacion-y-fecha">
-            @{
-                var totalGeneral = Model.Suscripciones.Sum(s =>
-                Model.Facturas.Where(sol => sol.IdSuscripcion == s.IdSuscripcion)
-                .Sum(sol => s.Precio));
-            }
-            <h3>Recaudación total: ₡@totalGeneral.ToString("N0")</h3>
+        <div class="recaudacion-y-fecha" id="totalFiltrado" data-total-general="@Model.TotalGeneral.ToString("N0")">
+            <h3>Recaudación total: ₡@Model.TotalGeneral.ToString("N0")</h3>
         </div>
     </section>
 </main>
+<script src="~/js/Admin/Contabilidad.js"></script>
 

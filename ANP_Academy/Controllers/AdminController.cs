@@ -15,6 +15,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Drawing.Printing;
+using ANP_Academy.ViewModel.Contabilidad;
 
 namespace ANP_Academy.Controllers
 {
@@ -825,12 +826,23 @@ namespace ANP_Academy.Controllers
         {
             var suscripciones = _dbContext.Suscripciones.ToList();
             var facturas = _dbContext.Facturas.ToList();
+            var suscripcionesFacturas = suscripciones.Select(suscripcion => new SuscripcionFacturaViewModel
+            {
+                Nombre = suscripcion.Nombre,
+                Precio = suscripcion.Precio,
+                Cantidad = facturas.Count(f => f.IdSuscripcion == suscripcion.IdSuscripcion),
+                Total = suscripcion.Precio * facturas.Count(f => f.IdSuscripcion == suscripcion.IdSuscripcion),
+                FechaFactura = facturas.FirstOrDefault(f => f.IdSuscripcion == suscripcion.IdSuscripcion)?.Fecha.ToString("yyyy-MM") ?? "No Disponible"
+            }).ToList();
+
+            var totalGeneral = suscripcionesFacturas.Sum(s => s.Total);
 
             var viewModel = new ContabilidadViewModel
             {
-                Suscripciones = suscripciones,
-                Facturas = facturas
+                SuscripcionesFacturas = suscripcionesFacturas,
+                TotalGeneral = totalGeneral
             };
+
             return View(viewModel);
         }
     }

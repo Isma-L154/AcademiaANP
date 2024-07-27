@@ -1,6 +1,7 @@
 ﻿using ANP_Academy.DAL.Migrations.Anpdesarrollo;
 using ANP_Academy.DAL.Models;
 using ANP_Academy.ViewModel;
+using ANP_Academy.ViewModel.Foro;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

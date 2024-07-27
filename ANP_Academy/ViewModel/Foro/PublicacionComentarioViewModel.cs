@@ -1,6 +1,6 @@
 ﻿using ANP_Academy.DAL.Models;
 
-namespace ANP_Academy.ViewModel
+namespace ANP_Academy.ViewModel.Foro
 {
     public class PublicacionComentarioViewModel
     {
