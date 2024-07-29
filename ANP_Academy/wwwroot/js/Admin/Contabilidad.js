@@ -5,6 +5,7 @@
 
         var fechaCorte = $('#fechaCorte').val(); //Obtenemos la fecha de corte
         if (fechaCorte) {
+            $('#fechaDescarga').val(fechaCorte); // Actualiza fecha en el boton de descarga
             var totalFiltrado = 0;
 
             $('#ContaTable tbody tr').each(function () {

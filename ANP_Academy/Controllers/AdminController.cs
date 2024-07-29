@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Drawing.Printing;
 using ANP_Academy.ViewModel.Contabilidad;
+using System.Globalization;
+using System.Text;
 
 namespace ANP_Academy.Controllers
 {
@@ -844,6 +846,30 @@ namespace ANP_Academy.Controllers
             };
 
             return View(viewModel);
+        }
+
+        public async Task<IActionResult> DescargarFacturas(string fechaCorte)
+        {
+            if (DateTime.TryParseExact(fechaCorte, "yyyy-MM", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fecha))
+            {
+                var inicioMes = new DateTime(fecha.Year, fecha.Month, 1);
+                var finMes = inicioMes.AddMonths(1).AddDays(-1);
+
+                var facturas = await _dbContext.Facturas
+                    .Where(f => f.Fecha >= inicioMes && f.Fecha <= finMes)
+                    .ToListAsync();
+
+                var sb = new StringBuilder();
+                sb.AppendLine("IdFactura,Fecha,Precio,IdUser,IdSuscripcion,IdSolicitud");
+                foreach (var factura in facturas)
+                {
+                    sb.AppendLine($"{factura.IdFactura},{factura.Fecha:yyyy-MM-dd},{factura.Precio},{factura.IdUser},{factura.IdSuscripcion},{factura.IdSolicitud}");
+                }
+
+                return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "Facturas.csv");
+            }
+
+            return View("Error"); // O retorna a una vista de error si la fecha no es válida
         }
     }
 }

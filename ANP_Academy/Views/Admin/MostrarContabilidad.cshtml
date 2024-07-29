@@ -18,7 +18,10 @@
                 </div>
             </div>
             <div class="crear-usuario">
-                <a href="@Url.Action("MostrarContabilidad", "Admin")" class="boton-crear">Descargar facturas asociadas al corte</a>
+                <form action="@Url.Action("DescargarFacturas", "Admin")" method="get">
+                    <input type="hidden" id="fechaDescarga" name="fechaCorte" value="">
+                    <button type="submit" class="boton-crear">Descargar facturas asociadas al corte</button>
+                </form>
             </div>
         </div>
         <div class="tabla" id="ContaTable">
