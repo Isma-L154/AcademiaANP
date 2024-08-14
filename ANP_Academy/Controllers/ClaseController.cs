@@ -2,14 +2,21 @@
 using ANP_Academy.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Mail;
+using System.Net;
+using Microsoft.AspNetCore.Identity;
 
 public class ClaseController : Controller
 {
     private readonly AnpdesarrolloContext _dbContext;
+    private readonly IConfiguration _configuration;
+    private readonly UserManager<Usuario> _userManager;
 
-    public ClaseController(AnpdesarrolloContext dbContext)
+    public ClaseController(UserManager<Usuario> userManager, AnpdesarrolloContext dbContext, IConfiguration configuration)
     {
         _dbContext = dbContext;
+        _configuration = configuration;
+        _userManager = userManager;
     }
 
     public async Task<IActionResult> Index()
@@ -17,19 +24,16 @@ public class ClaseController : Controller
         return View(await _dbContext.Clases.ToListAsync());
     }
 
-    // READ: Mostrar todas las clases
     public async Task<IActionResult> GestionClases()
     {
         return View(await _dbContext.Clases.ToListAsync());
     }
 
-    // CREATE: Mostrar formulario de creación
     public IActionResult CreateClases()
     {
         return View();
     }
 
-    // CREATE: Procesar formulario de creación
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateClases(ClaseViewModel model)
@@ -51,21 +55,126 @@ public class ClaseController : Controller
 
             _dbContext.Add(clase);
             await _dbContext.SaveChangesAsync();
+
+            // Enviar notificación por correo electrónico a los estudiantes suscritos
+            await NotificarEstudiantesSuscritos(clase);
+
             return RedirectToAction(nameof(GestionClases));
         }
 
         return View(model);
     }
 
-    // Método para verificar si el archivo es una imagen válida (sin GIF)
-    private bool IsImageFile(IFormFile file)
+    private async Task NotificarEstudiantesSuscritos(Clase clase)
     {
-        string[] permittedExtensions = { ".jpg", ".jpeg", ".png" };
-        var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
-        return !string.IsNullOrEmpty(ext) && permittedExtensions.Contains(ext);
+        // Obtén los estudiantes suscritos
+        var estudiantesSuscritos = await _userManager.Users
+            .Where(u => u.Suscrito == true) // Verifica si el usuario está suscrito
+            .ToListAsync();
+
+        if (estudiantesSuscritos.Count == 0)
+        {
+            Console.WriteLine("No se encontraron estudiantes suscritos.");
+            return;
+        }
+
+        foreach (var estudiante in estudiantesSuscritos)
+        {
+            string destinatario = estudiante.Email;
+            string asunto = "Nueva Clase Agregada";
+            string mensaje = $@"
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333333;
+        }}
+       
+        .content {{
+            padding: 20px;
+        }}
+        .footer {{
+            margin-top: 20px;
+            padding: 10px;
+            text-align: center;
+            font-size: 12px;
+            color: #777777;
+        }}
+        .btn {{
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #aa2a07;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }}
+        .btn:hover {{
+            background-color: #0056b3;
+        }}
+    </style>
+</head>
+<body>
+
+    <div class='content'>
+        <h1>Estimado(a) {estudiante.Nombre} {estudiante.PrimApellido} {estudiante.SegApellido},</h1>
+        <p>Se ha agregado una nueva clase titulada <strong>{clase.Titulo}</strong> en <strong>ANP Academy</strong>.</p>
+        <p>Descripción: {clase.Descripcion}</p>
+        <a href='{clase.URLVideo}' class='btn'>Ver Clase</a>
+    </div>
+
+    <div class='footer'>
+        <p>ANP Academy - Todos los derechos reservados.</p>
+    </div>
+</body>
+</html>
+";
+
+            try
+            {
+                SendEmail(destinatario, asunto, mensaje);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error al enviar el correo: " + ex.Message);
+            }
+        }
     }
 
-    // DETAILS: Mostrar detalles de una clase
+
+    public void SendEmail(string destinatario, string asunto, string mensaje)
+    {
+        var emailSettings = _configuration.GetSection("EmailSettings");
+
+        string CuentaEmail = emailSettings["CuentaEmail"];
+        string PasswordEmail = emailSettings["PasswordEmail"];
+        string Host = emailSettings["Host"];
+        int Port = int.Parse(emailSettings["Port"]);
+
+        MailMessage msg = new MailMessage();
+        msg.To.Add(new MailAddress(destinatario));
+        msg.From = new MailAddress(CuentaEmail);
+        msg.Subject = asunto;
+        msg.Body = mensaje;
+        msg.IsBodyHtml = true;
+
+        SmtpClient client = new SmtpClient
+        {
+            UseDefaultCredentials = false,
+            Credentials = new NetworkCredential(CuentaEmail, PasswordEmail),
+            Port = Port,
+            Host = Host,
+            DeliveryMethod = SmtpDeliveryMethod.Network,
+            EnableSsl = true
+        };
+
+        client.Send(msg);
+    }
+
     public async Task<IActionResult> DetailsClases(int? id)
     {
         if (id == null)
@@ -73,8 +182,7 @@ public class ClaseController : Controller
             return NotFound();
         }
 
-        var clase = await _dbContext.Clases
-            .FirstOrDefaultAsync(m => m.IdClase == id);
+        var clase = await _dbContext.Clases.FirstOrDefaultAsync(m => m.IdClase == id);
         if (clase == null)
         {
             return NotFound();
@@ -83,8 +191,6 @@ public class ClaseController : Controller
         return View(clase);
     }
 
-
-    // UPDATE: Mostrar formulario de edición
     public async Task<IActionResult> EditClases(int? id)
     {
         if (id == null)
@@ -169,7 +275,6 @@ public class ClaseController : Controller
         return View(model);
     }
 
-
     public IActionResult GetImage(int id)
     {
         var clase = _dbContext.Clases.Find(id);
@@ -180,8 +285,6 @@ public class ClaseController : Controller
         return NotFound();
     }
 
-
-    // DELETE: Mostrar formulario de confirmación de eliminación
     public async Task<IActionResult> DeleteClases(int? id)
     {
         if (id == null)
@@ -189,8 +292,7 @@ public class ClaseController : Controller
             return NotFound();
         }
 
-        var clase = await _dbContext.Clases
-            .FirstOrDefaultAsync(m => m.IdClase == id);
+        var clase = await _dbContext.Clases.FirstOrDefaultAsync(m => m.IdClase == id);
         if (clase == null)
         {
             return NotFound();
@@ -199,7 +301,6 @@ public class ClaseController : Controller
         return View(clase);
     }
 
-    // DELETE: Procesar eliminación
     [HttpPost, ActionName("DeleteClases")]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteClasesConfirmed(int id)
@@ -210,9 +311,17 @@ public class ClaseController : Controller
         return RedirectToAction(nameof(GestionClases));
     }
 
-
     private bool ClaseExists(int id)
     {
         return _dbContext.Clases.Any(e => e.IdClase == id);
     }
+
+    private bool IsImageFile(IFormFile file)
+    {
+        string[] permittedExtensions = { ".jpg", ".jpeg", ".png" };
+        var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
+        return !string.IsNullOrEmpty(ext) && permittedExtensions.Contains(ext);
+    }
 }
+
+

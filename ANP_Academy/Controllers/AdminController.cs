@@ -644,28 +644,33 @@ namespace ANP_Academy.Controllers
         [HttpPost]
         public async Task<IActionResult> AprobarSolicitud(int idSolicitud, string userId, int idSuscripcion)
         {
+            // Obtener la solicitud por id
             var solicitud = await _dbContext.Solicitudes.FindAsync(idSolicitud);
             if (solicitud == null)
             {
                 return NotFound();
             }
 
+            // Obtener la suscripción por id
             var suscripcion = await _dbContext.Suscripciones.FindAsync(idSuscripcion);
             if (suscripcion == null)
             {
                 return NotFound();
             }
 
+            // Actualizar la solicitud
             solicitud.FechaInicio = DateTime.Now;
             solicitud.FechaFinal = DateTime.Now.AddMonths(suscripcion.Duracion);
             solicitud.Estado = true;
 
+            // Obtener el usuario por id
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
                 return NotFound();
             }
 
+            // Remover roles actuales y asignar el rol de Estudiante
             var currentRoles = await _userManager.GetRolesAsync(user);
             await _userManager.RemoveFromRolesAsync(user, currentRoles);
 
@@ -675,9 +680,15 @@ namespace ANP_Academy.Controllers
                 return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
 
+            // Marcar al usuario como suscrito
+            user.Suscrito = true;
+
+            // Actualizar el usuario y la solicitud en la base de datos
             _dbContext.Update(solicitud);
+            _dbContext.Update(user);
             await _dbContext.SaveChangesAsync();
 
+            // Crear y guardar la factura en la base de datos
             var factura = new Factura
             {
                 Fecha = DateTime.Now,
@@ -690,6 +701,7 @@ namespace ANP_Academy.Controllers
             _dbContext.Facturas.Add(factura);
             await _dbContext.SaveChangesAsync();
 
+            // Enviar correo electrónico de confirmación
             string destinatario = user.Email;
             string asunto = "Solicitud Aprobada";
             string mensaje = $@"
@@ -791,6 +803,7 @@ namespace ANP_Academy.Controllers
                 Console.WriteLine("Error al enviar el correo: " + ex.Message);
             }
 
+            // Redirigir al control de suscripciones
             return RedirectToAction("ControlSuscrip");
         }
 

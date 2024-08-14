@@ -23,7 +23,7 @@ namespace ANP_Academy.DAL.Models{
 
         public bool? Activo { get; set; }
 
-        public bool? Suscrito { get; private set; }
+        public bool? Suscrito { get;  set; }
 
         public int? SuscripcionId { get; set; }
         public Suscripcion? Suscripcion { get; set; }
