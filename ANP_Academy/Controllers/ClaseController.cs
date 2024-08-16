@@ -67,14 +67,14 @@ public class ClaseController : Controller
 
     private async Task NotificarEstudiantesSuscritos(Clase clase)
     {
-        // Obtén los estudiantes suscritos
+        // Obtén los estudiantes suscritos que desean recibir notificaciones
         var estudiantesSuscritos = await _userManager.Users
-            .Where(u => u.Suscrito == true) // Verifica si el usuario está suscrito
+            .Where(u => u.Suscrito == true && u.Notificaciones == true)
             .ToListAsync();
 
         if (estudiantesSuscritos.Count == 0)
         {
-            Console.WriteLine("No se encontraron estudiantes suscritos.");
+            Console.WriteLine("No se encontraron estudiantes suscritos que deseen notificaciones.");
             return;
         }
 
@@ -83,56 +83,25 @@ public class ClaseController : Controller
             string destinatario = estudiante.Email;
             string asunto = "Nueva Clase Agregada";
             string mensaje = $@"
-<!DOCTYPE html>
-<html>
-<head>
-    <style>
-        body {{
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333333;
-        }}
-       
-        .content {{
-            padding: 20px;
-        }}
-        .footer {{
-            margin-top: 20px;
-            padding: 10px;
-            text-align: center;
-            font-size: 12px;
-            color: #777777;
-        }}
-        .btn {{
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: white;
-            background-color: #aa2a07;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
-        }}
-        .btn:hover {{
-            background-color: #0056b3;
-        }}
-    </style>
-</head>
-<body>
-
-    <div class='content'>
-        <h1>Estimado(a) {estudiante.Nombre} {estudiante.PrimApellido} {estudiante.SegApellido},</h1>
-        <p>Se ha agregado una nueva clase titulada <strong>{clase.Titulo}</strong> en <strong>ANP Academy</strong>.</p>
-        <p>Descripción: {clase.Descripcion}</p>
-        <a href='{clase.URLVideo}' class='btn'>Ver Clase</a>
-    </div>
-
-    <div class='footer'>
-        <p>ANP Academy - Todos los derechos reservados.</p>
-    </div>
-</body>
-</html>
-";
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                /* estilos CSS */
+            </style>
+        </head>
+        <body>
+            <div class='content'>
+                <h1>Estimado(a) {estudiante.Nombre} {estudiante.PrimApellido} {estudiante.SegApellido},</h1>
+                <p>Se ha agregado una nueva clase titulada <strong>{clase.Titulo}</strong> en <strong>ANP Academy</strong>.</p>
+                <p>Descripción: {clase.Descripcion}</p>
+                <a href='{clase.URLVideo}' class='btn'>Ver Clase</a>
+            </div>
+            <div class='footer'>
+                <p>ANP Academy - Todos los derechos reservados.</p>
+            </div>
+        </body>
+        </html>";
 
             try
             {

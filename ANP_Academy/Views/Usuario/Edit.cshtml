@@ -43,8 +43,15 @@
         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
     </div>
 
+    <div class="form-group">
+        <label asp-for="Notificaciones">¿Desea recibir notificaciones de nuevas clases?</label>
+        <input asp-for="Notificaciones" type="checkbox" />
+        <span asp-validation-for="Notificaciones" class="text-danger"></span>
+    </div>
+
     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
     <button type="button" class="btn btn-secondary" onclick="history.back()">Atrás</button>
+
 </form>
 
 @section Scripts {

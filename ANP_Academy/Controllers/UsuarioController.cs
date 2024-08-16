@@ -76,6 +76,7 @@ namespace ANP_Academy.Controllers
             user.SegApellido = model.SegApellido;
             user.PhoneNumber = model.PhoneNumber;
             user.UserName = model.UserName;
+            user.Notificaciones = model.Notificaciones;
 
             var result = await _userManager.UpdateAsync(user);
             if (result.Succeeded)
