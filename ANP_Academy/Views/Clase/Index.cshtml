@@ -23,6 +23,7 @@
                             <h5 class="card-title">@clase.Titulo</h5>
                             <p class="card-text">@clase.Descripcion</p>
                             <a href="@clase.URLVideo" class="btn btn-primary" target="_blank">Ver Clase</a>
+                            <a asp-action="ComentariosClase" asp-route-id="@clase.IdClase" class="btn btn-primary">Comentar</a>
                             <div class="progress mt-3">
                                 <div class="progress-bar" role="progressbar" style="width: 80%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>

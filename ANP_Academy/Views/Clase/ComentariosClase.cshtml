@@ -1,0 +1,115 @@
+﻿@using ANP_Academy.ViewModel.Clases
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Usuario> SignInManager
+@model ComentarioClasesViewModel
+@{
+    var nuevoComentarioId = TempData["NuevoComentarioId"] as int?;
+    var userId = ViewData["UserId"] as string;
+}
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="~/css/Clase/ClaseComentario.css" asp-append-version="true" />
+
+<div class="container">
+    <div class="profile-wrapper">
+        <div class="profile-section-user">
+            <div class="profile-cover-img">
+                <img src="@Url.Action("GetImage", "Clase", new { id = @Model.Clase.IdClase })" alt="Imagen de la clase">
+            </div>
+            <div class="profile-info-brief p-3">
+                <div class="text-center">
+                    <h5 class="text-uppercase mb-4">@Model.Clase.Titulo</h5>
+                    <p class="text-muted fz-base">@Model.Clase.Descripcion</p>
+                    <a href="@Model.Clase.URLVideo" class="btn btn-primary" target="_blank">Ver Clase</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-section-main">
+            <div class="tab-content profile-tabs-content">
+                <div class="tab-pane active" id="profile-overview" role="tabpanel">
+                    <div class="post-editor">
+                        <form asp-action="CrearComentario" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="input-group">
+                                <input type="hidden" name="IdClase" asp-for="@Model.Clase.IdClase" />
+                                <textarea id="TextInput_@Model.Clase.IdClase" name="ContenidoComentario" asp-for="NuevoComentario.ContenidoComentario" class="form-control post-field" placeholder="Comparte tu opinión" oninput="VerficarTexto('@Model.Clase.IdClase')"></textarea>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" id="ButtonSubmit_@Model.Clase.IdClase" type="submit" disabled>
+                                        <i class="fa fa-send"></i> Comentar
+                                    </button>
+                                </span>
+                            </div>
+                            <span asp-validation-for="NuevoComentario.ContenidoComentario" class="text-danger"></span>
+                        </form>
+                    </div>
+
+                    <!-- Mostrar Comentarios -->
+                    <div class="stream-posts">
+                       
+                        @if (nuevoComentarioId.HasValue)
+                        {
+                            // Mostrar el comentario recién creado primero
+                            var nuevoComentario = Model.Comentarios.FirstOrDefault(c => c.IdComentario == nuevoComentarioId.Value);
+                            if (nuevoComentario != null)
+                            {
+                                <div class="stream-post">
+                                    <div class="sp-author">
+                                        <a class="sp-author-avatar">
+                                            <img src="https://cdn-icons-png.flaticon.com/512/44/44948.png" alt="avatar">
+                                        </a>
+                                        <h6 class="sp-author-name">@nuevoComentario.CodigoUsuario.Nombre</h6>
+                                        @if (@nuevoComentario.CodigoUsuarioId == userId)
+                                        {
+                                            <form id="deleteForm" asp-action="DeleteComentario" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@nuevoComentario.IdComentario" />
+                                                <input type="hidden" name="idClase" value="@Model.Clase.IdClase" />
+                                                <button type="submit" class="btn btn-link text-danger p-0 ml-2 tooltip-button">
+                                                    <i class="fa fa-trash fa-lg"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                    </div>
+                                    <div class="sp-content">
+                                        <div class="sp-info">@nuevoComentario.FechaComentario.ToShortTimeString()</div>
+                                        <p class="sp-paragraph mb-0">@nuevoComentario.ContenidoComentario</p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        @foreach (var cc in Model.ComentariosClases.Where(cc => cc.ClaseId == Model.Clase.IdClase && cc.ComentarioId != nuevoComentarioId))
+                        {
+                            var comentario = Model.Comentarios.FirstOrDefault(c => c.IdComentario == cc.ComentarioId);
+                            if (comentario != null)
+                            {
+                                <div class="stream-post">
+                                    <div class="sp-author">
+                                        <a class="sp-author-avatar">
+                                            <img src="https://cdn-icons-png.flaticon.com/512/44/44948.png" alt="avatar">
+                                        </a>
+                                        <h6 class="sp-author-name">@comentario.CodigoUsuario.Nombre</h6>
+                                        @if (comentario.CodigoUsuarioId == userId)
+                                        {
+                                            <form id="deleteForm" asp-action="DeleteComentario" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="@comentario.IdComentario" />
+                                                <input type="hidden" name="idClase" value="@Model.Clase.IdClase" />
+                                                <button type="submit" class="btn btn-link text-danger p-0 ml-2 tooltip-button">
+                                                    <i class="fa fa-trash fa-lg"></i>
+                                                </button>
+                                            </form>
+                                        }
+                                    </div>
+                                    <div class="sp-content">
+                                        <div class="sp-info">@comentario.FechaComentario.ToShortTimeString()</div>
+                                        <p class="sp-paragraph mb-0">@comentario.ContenidoComentario</p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/Clases/ComentarioClase.js"></script>

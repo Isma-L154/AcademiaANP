@@ -37,6 +37,8 @@ namespace ANP_Academy.DAL.Models
         public virtual DbSet<Clase> Clases{ get; set; }
         public virtual DbSet<Receta> Recetas { get; set; }
         public virtual DbSet<RecetaArchivo> RecetaArchivos { get; set; }
+        public virtual DbSet<ClaseComentario> ClaseComentario { get; set; }
+        public virtual DbSet<ClaseXComentarios> ClaseXComentario { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -65,6 +67,9 @@ namespace ANP_Academy.DAL.Models
 
             modelBuilder.Entity<PublicacionComentario>()
                        .HasKey(pc => new { pc.PublicacionId, pc.ComentarioId });
+
+            modelBuilder.Entity<ClaseXComentarios>()
+                       .HasKey(pc => new { pc.ClaseId, pc.ComentarioId });
 
 
             modelBuilder.Entity<Facturacion>(entity =>

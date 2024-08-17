@@ -5,6 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Net.Mail;
 using System.Net;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using ANP_Academy.ViewModel.Foro;
+using ANP_Academy.ViewModel.Clases;
 
 public class ClaseController : Controller
 {
@@ -291,6 +296,131 @@ public class ClaseController : Controller
         var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
         return !string.IsNullOrEmpty(ext) && permittedExtensions.Contains(ext);
     }
+
+
+    //Metodos para que los usuarios puedan realizar un CRUD con comentarios a las Clases
+
+    [Authorize]
+    //Vizualizar comentarios de una publicacion
+    public async Task<IActionResult> ComentariosClase(int Id)
+    {
+        var identidadUsuario = User.Identity as ClaimsIdentity;
+        string userId = identidadUsuario.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        ViewData["UserId"] = userId;
+        //Esto se hace para la paginacion
+        var Clase = await _dbContext.Clases.FirstOrDefaultAsync(m => m.IdClase == Id);
+        var comentarios = await _dbContext.ClaseComentario.Include(c => c.CodigoUsuario).ToListAsync();
+        var ComentarioClase = await _dbContext.ClaseXComentario.ToListAsync();
+
+        var viewModel = new ComentarioClasesViewModel
+        {
+            Clase = Clase,
+            Comentarios = comentarios,
+            ComentariosClases = ComentarioClase,
+        };
+
+        return View(viewModel);
+    }
+
+    //POST CrearComentario
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize]
+    public async Task<IActionResult> CrearComentario([Bind("ContenidoComentario")] ClaseComentario comentario, int IdClase)
+    {
+        var identidad = User.Identity as ClaimsIdentity;
+        string idUsuarioLoggeado = identidad.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
+        if (idUsuarioLoggeado == null)
+        {
+            return Unauthorized();
+        }
+
+        comentario.CodigoUsuarioId = idUsuarioLoggeado;
+        comentario.FechaComentario = DateTime.Now;
+
+        if (ModelState.IsValid)
+        {
+            _dbContext.Add(comentario);
+            await _dbContext.SaveChangesAsync();
+            TempData["NuevoComentarioId"] = comentario.IdComentario;
+
+            var ClaseXComentarios = new ClaseXComentarios
+            {
+                ClaseId = IdClase,
+                ComentarioId = comentario.IdComentario
+            };
+
+            _dbContext.Add(ClaseXComentarios);
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(ComentariosClase), new { Id = IdClase });
+
+        }
+        return RedirectToAction(nameof(ComentariosClase), new { Id = IdClase });
+
+    }
+
+    //Editar Un Comentario de una clase
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize]
+    public async Task<IActionResult> Edit(int id, [Bind("ContenidoComentario,FechaComentario")] ClaseComentario claseComentario)
+    {
+        if (id != claseComentario.IdComentario)
+        {
+            return NotFound();
+        }
+        claseComentario.FechaComentario = DateTime.Now;
+        if (ModelState.IsValid)
+        {
+            try
+            {
+                _dbContext.Update(claseComentario);
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ClaseComentarioExists(claseComentario.IdComentario))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        ViewData["CodigoUsuarioId"] = new SelectList(_dbContext.Set<Usuario>(), "Id", "Id", claseComentario.CodigoUsuarioId);
+        return View(claseComentario);
+    }
+
+    //Delete para eliminar un comentario tanto de la tabla de enlace como la de tabla original
+    [HttpPost, ActionName("DeleteComentario")]
+    [ValidateAntiForgeryToken]
+    [Authorize]
+    public async Task<IActionResult> DeleteConfirmed(int id, int idClase)
+    {
+        var claseComentario = await _dbContext.ClaseComentario.FindAsync(id);
+        var comentarioEnlace = await _dbContext.ClaseXComentario
+                .FirstOrDefaultAsync(c => c.ComentarioId == id && c.ClaseId == idClase);
+        
+        if (claseComentario != null && comentarioEnlace != null)
+        {
+            _dbContext.ClaseXComentario.Remove(comentarioEnlace);   
+            _dbContext.ClaseComentario.Remove(claseComentario);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        return RedirectToAction(nameof(ComentariosClase), new { Id = idClase });
+    }
+
+    //Validar que exista el comentario
+    private bool ClaseComentarioExists(int id)
+    {
+        return _dbContext.ClaseComentario.Any(e => e.IdComentario == id);
+    }
+
 }
 
 
