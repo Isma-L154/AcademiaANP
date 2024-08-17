@@ -58,8 +58,12 @@
                                             <img src="https://cdn-icons-png.flaticon.com/512/44/44948.png" alt="avatar">
                                         </a>
                                         <h6 class="sp-author-name">@nuevoComentario.CodigoUsuario.Nombre</h6>
-                                        @if (@nuevoComentario.CodigoUsuarioId == userId)
+                                        @if (nuevoComentario.CodigoUsuarioId == userId)
                                         {
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-link text-primary p-0 ml-2" onclick="toggleEditForm('@nuevoComentario.IdComentario')">
+                                                    <i class="fa fa-edit fa-lg"></i>
+                                                </button>
                                             <form id="deleteForm" asp-action="DeleteComentario" method="post" class="d-inline">
                                                 <input type="hidden" name="id" value="@nuevoComentario.IdComentario" />
                                                 <input type="hidden" name="idClase" value="@Model.Clase.IdClase" />
@@ -67,11 +71,22 @@
                                                     <i class="fa fa-trash fa-lg"></i>
                                                 </button>
                                             </form>
+                                           </div>
                                         }
                                     </div>
                                     <div class="sp-content">
-                                        <div class="sp-info">@nuevoComentario.FechaComentario.ToShortTimeString()</div>
-                                        <p class="sp-paragraph mb-0">@nuevoComentario.ContenidoComentario</p>
+                                        <div class="sp-info">@nuevoComentario.FechaComentario.ToShortDateString()</div>
+                                        <p class="sp-paragraph mb-0" id="commentContent_@nuevoComentario.IdComentario">@nuevoComentario.ContenidoComentario</p>
+                                        <form id="editForm_@nuevoComentario.IdComentario" asp-action="EditComentario" method="post" style="display: none;">
+
+                                            <input type="hidden" name="idComentario" value="@nuevoComentario.IdComentario" />
+                                            <input type="hidden" name="idClase" value="@Model.Clase.IdClase" />
+
+                                            <textarea name="contenidoComentario" class="form-control" rows="3">@nuevoComentario.ContenidoComentario</textarea>
+                                            <button type="submit" class="btn btn-primary mt-2">Guardar</button>
+                                            <button type="button" class="btn btn-secondary mt-2" onclick="toggleEditForm('@nuevoComentario.IdComentario')">Cancelar</button>
+
+                                        </form>
                                     </div>
                                 </div>
                             }
@@ -89,18 +104,33 @@
                                         <h6 class="sp-author-name">@comentario.CodigoUsuario.Nombre</h6>
                                         @if (comentario.CodigoUsuarioId == userId)
                                         {
-                                            <form id="deleteForm" asp-action="DeleteComentario" method="post" class="d-inline">
-                                                <input type="hidden" name="id" value="@comentario.IdComentario" />
-                                                <input type="hidden" name="idClase" value="@Model.Clase.IdClase" />
-                                                <button type="submit" class="btn btn-link text-danger p-0 ml-2 tooltip-button">
-                                                    <i class="fa fa-trash fa-lg"></i>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-link text-primary p-0 ml-2" onclick="toggleEditForm('@comentario.IdComentario')">
+                                                    <i class="fa fa-edit fa-lg"></i>
                                                 </button>
-                                            </form>
+                                                <form id="deleteForm" asp-action="DeleteComentario" method="post" class="d-inline">
+                                                    <input type="hidden" name="id" value="@comentario.IdComentario" />
+                                                    <input type="hidden" name="idClase" value="@Model.Clase.IdClase" />
+                                                    <button type="submit" class="btn btn-link text-danger p-0 ml-2 tooltip-button">
+                                                        <i class="fa fa-trash fa-lg"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         }
                                     </div>
                                     <div class="sp-content">
-                                        <div class="sp-info">@comentario.FechaComentario.ToShortTimeString()</div>
-                                        <p class="sp-paragraph mb-0">@comentario.ContenidoComentario</p>
+                                        <div class="sp-info">@comentario.FechaComentario.ToShortDateString()</div>
+                                        <p class="sp-paragraph mb-0" id="commentContent_@comentario.IdComentario">@comentario.ContenidoComentario</p>
+                                        <form id="editForm_@comentario.IdComentario" asp-action="EditComentario" method="post" style="display: none;">
+
+                                            <input type="hidden" name="idComentario" value="@comentario.IdComentario" />
+                                            <input type="hidden" name="idClase" value="@Model.Clase.IdClase" />
+
+                                            <textarea name="contenidoComentario" class="form-control" rows="3">@comentario.ContenidoComentario</textarea>
+                                            <button type="submit" class="btn btn-primary mt-2">Guardar</button>
+                                            <button type="button" class="btn btn-secondary mt-2" onclick="toggleEditForm('@comentario.IdComentario')">Cancelar</button>
+
+                                        </form>
                                     </div>
                                 </div>
                             }

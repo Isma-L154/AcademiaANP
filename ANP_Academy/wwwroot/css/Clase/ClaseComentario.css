@@ -167,6 +167,14 @@ body.menubar-top .profile-wrapper {
         margin: .5rem 0
     }
 
+.btn-group {
+    display: flex;
+    gap: 10px;
+    margin-left: 1rem; 
+    z-index: 10;
+}
+
+
 @media (min-width:992px) {
     .sp-author {
         position: absolute;
@@ -181,7 +189,7 @@ body.menubar-top .profile-wrapper {
             left: 80px;
             top: 8px;
             background: rgba(0, 0, 0, .9);
-            color:white;
+            color: white;
             padding: .75rem 1.5rem;
             border-radius: 6px;
             z-index: -1;
@@ -202,7 +210,6 @@ body.menubar-top .profile-wrapper {
             }
 
         .sp-author .sp-author-avatar:hover + .sp-author-name {
-
             z-index: 9999;
             -webkit-transform: rotate(0);
             -ms-transform: rotate(0);
@@ -229,7 +236,7 @@ body.menubar-top .profile-wrapper {
     border-radius: .25rem;
     background: #fff;
     padding: 1rem;
-    margin-top: 1rem
+    margin-top: 2rem
 }
 
     .sp-content .sp-info {
@@ -237,7 +244,10 @@ body.menubar-top .profile-wrapper {
         color: #636c72;
         position: absolute;
         top: -3rem;
-        left: 80px
+        left: 80px;
+        display: block;
+        margin-bottom: 1rem;
+        margin-top: 2rem
     }
 
     .sp-content .sp-paragraph {

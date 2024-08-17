@@ -46,3 +46,16 @@ $(document).ready(function () {
     }
 });
 
+//Funcion para editar un comentario
+function toggleEditForm(commentId) {
+    const contentElement = document.getElementById(`commentContent_${commentId}`);
+    const editForm = document.getElementById(`editForm_${commentId}`);
+
+    if (editForm.style.display === 'none' || editForm.style.display === '') {
+        editForm.style.display = 'block';
+        contentElement.style.display = 'none';
+    } else {
+        editForm.style.display = 'none';
+        contentElement.style.display = 'block';
+    }
+}

@@ -361,26 +361,33 @@ public class ClaseController : Controller
     }
 
     //Editar Un Comentario de una clase
-    [HttpPost]
+    [HttpPost, ActionName("EditComentario")]
     [ValidateAntiForgeryToken]
     [Authorize]
-    public async Task<IActionResult> Edit(int id, [Bind("ContenidoComentario,FechaComentario")] ClaseComentario claseComentario)
+    public async Task<IActionResult> Edit(int idClase, int idComentario, [Bind("ContenidoComentario")] ClaseComentario claseComentario)
     {
-        if (id != claseComentario.IdComentario)
+        var existingComentario = await _dbContext.ClaseComentario.FindAsync(idComentario);
+
+        if (existingComentario == null)
         {
             return NotFound();
         }
-        claseComentario.FechaComentario = DateTime.Now;
+
+        existingComentario.ContenidoComentario = claseComentario.ContenidoComentario;
+        existingComentario.FechaComentario = DateTime.Now;
+
         if (ModelState.IsValid)
         {
             try
             {
-                _dbContext.Update(claseComentario);
+                
+                _dbContext.Update(existingComentario);
                 await _dbContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ClaseComentarioExists(claseComentario.IdComentario))
+                
+                if (!ClaseComentarioExists(idComentario))
                 {
                     return NotFound();
                 }
@@ -389,11 +396,13 @@ public class ClaseController : Controller
                     throw;
                 }
             }
-            return RedirectToAction(nameof(Index));
+            
+            return RedirectToAction(nameof(ComentariosClase), new { Id = idClase });
         }
-        ViewData["CodigoUsuarioId"] = new SelectList(_dbContext.Set<Usuario>(), "Id", "Id", claseComentario.CodigoUsuarioId);
-        return View(claseComentario);
+        
+        return RedirectToAction(nameof(ComentariosClase), new { Id = idClase });
     }
+
 
     //Delete para eliminar un comentario tanto de la tabla de enlace como la de tabla original
     [HttpPost, ActionName("DeleteComentario")]
