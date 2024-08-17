@@ -39,6 +39,7 @@ namespace ANP_Academy.DAL.Models
         public virtual DbSet<RecetaArchivo> RecetaArchivos { get; set; }
         public virtual DbSet<ClaseComentario> ClaseComentario { get; set; }
         public virtual DbSet<ClaseXComentarios> ClaseXComentario { get; set; }
+        public virtual DbSet<FAQ> FAQs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

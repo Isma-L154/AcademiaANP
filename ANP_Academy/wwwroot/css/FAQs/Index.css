@@ -1,0 +1,138 @@
+﻿/* faqs.css */
+
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0px;
+}
+
+h1 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #343a40;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+}
+
+.btn {
+    margin-right: 5px;
+    margin-bottom: 10px;
+    font-size: 0.9375rem; /* Aumentar ligeramente el tamaño de la fuente */
+    padding: 8px 16px; /* Mantener el padding */
+    text-transform: none; /* Respetar mayúsculas y minúsculas */
+    transition: background-color 0.3s ease; /* Añadir transición para el hover */
+}
+
+.btn-primary {
+    background-color: #5b2b39;
+    border: none;
+    color: white;
+}
+
+    .btn-primary:hover {
+        background-color: #4e2532; /* Color más oscuro para el hover */
+    }
+
+.btn-info {
+    background-color: gray;
+    border: none;
+    color: white;
+}
+
+    .btn-info:hover {
+        background-color: #5f5f5f; /* Color más oscuro para el hover */
+    }
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+    color: white;
+}
+
+    .btn-danger:hover {
+        background-color: #c82333; /* Color más oscuro para el hover */
+    }
+
+.btn-success {
+    background-color: #5b2b39;
+    border: none;
+    color: white;
+}
+
+    .btn-success:hover {
+        background-color: #4e2532; /* Color más oscuro para el hover */
+    }
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    border-collapse: collapse;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: antiquewhite;
+}
+
+    .table th, .table td {
+        padding: 0.75rem;
+        vertical-align: top;
+        border: 1px solid #F2F2F2;
+        text-align: left;
+    }
+
+    .table thead th {
+        background-color: #F2F2F2;
+        color: black;
+    }
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.table-hover tbody tr:hover {
+    color: #212529;
+    background-color: rgba(0, 0, 0, 0.075);
+}
+
+.img-thumbnail {
+    max-width: 100px;
+    max-height: 100px;
+    border: none; /* Sin borde */
+    box-shadow: none; /* Sin sombra */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .table-wrapper {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table {
+        display: block;
+        width: 100%;
+    }
+
+        .table th, .table td {
+            white-space: nowrap;
+        }
+
+        .table th, .table td {
+            padding: 0.5rem;
+        }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .btn {
+        font-size: 0.875rem; /* Aumentar ligeramente el tamaño de la fuente en responsive */
+        padding: 8px 16px; /* Mantener el padding */
+    }
+}
