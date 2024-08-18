@@ -22,7 +22,7 @@
                 <li><a href="~/Clase/Index">Clases</a></li>
                 <li><a asp-controller="SobreNosotros" asp-action="SobreNosotros">Sobre Nosotros</a></li>
                 <li><a href="~/Recetas/Index">Recetas</a></li>
-                <li><a href="~/FAQs/Index">FAQs</a></li>
+                <li><a href="~/FAQs/VistaFAQs">FAQs</a></li>
                 <li><a href="~/Foro/Index">Foro</a></li>
                 <li><a href="~/Suscripciones/Index">Suscripciones</a></li> 
                 <li><a href="#chat">ChatBot</a></li>
@@ -69,6 +69,12 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="MostrarContabilidad" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-money-bill-trend-up" style="margin-right: 15px;"></i> Contabilidad</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" asp-controller="FAQs" asp-action="Index" style="color: #2A2A2A; font-size: x-large;">
+                                <i class="fa-solid fa-question-circle" style="margin-right: 15px;"></i> FAQs
+                            </a>
+                        </li>
+
                 </ul>
             <!--Fin de Menu desplegable para Modulos de Admin-->
             <!--Inicio de Menu desplegable para Perfil-->
@@ -139,6 +145,7 @@
                     <button class="boton-enviar" type="submit">Enviar</button>
                 </form>
             </div>
+
         </div>
         <div class="footer-bottom">
             &copy; 2024 ANP Academy | Designed by ANP Design Team

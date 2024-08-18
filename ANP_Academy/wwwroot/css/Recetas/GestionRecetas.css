@@ -103,6 +103,29 @@ h1 {
     box-shadow: none; /* Sin sombra */
 }
 
+.rating {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    direction: ltr;
+}
+
+    .rating span {
+        font-size: 1rem;
+        color: #333;
+    }
+
+    .rating .full-star,
+    .rating .half-star {
+        color: black;
+    }
+
+.rating-average {
+    margin-left: 5px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .table-wrapper {
@@ -134,3 +157,28 @@ h1 {
         padding: 8px 16px; /* Mantener el padding */
     }
 }
+
+/* Estilos para la pantalla de carga superpuesta */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.loading-content {
+    text-align: center;
+}
+
+    .loading-content p {
+        margin-top: 10px;
+        font-size: 1.2rem;
+        color: #333;
+    }

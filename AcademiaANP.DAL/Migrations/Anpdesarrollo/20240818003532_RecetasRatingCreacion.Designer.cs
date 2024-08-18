@@ -4,6 +4,7 @@ using ANP_Academy.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 {
     [DbContext(typeof(AnpdesarrolloContext))]
-    partial class AnpdesarrolloContextModelSnapshot : ModelSnapshot
+    [Migration("20240818003532_RecetasRatingCreacion")]
+    partial class RecetasRatingCreacion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -307,36 +310,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.HasIndex("IdUbicacion");
 
                     b.ToTable("Inventario", (string)null);
-                });
-
-            modelBuilder.Entity("ANP_Academy.DAL.Models.Notificacion", b =>
-                {
-                    b.Property<int>("IdNotificacion")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdNotificacion"));
-
-                    b.Property<string>("Contenido")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EsLeido")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("IdUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("TipoContenido")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdNotificacion");
-
-                    b.HasIndex("IdUser");
-
-                    b.ToTable("Notificaciones");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Pago", b =>
@@ -900,17 +873,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.Navigation("IdUbicacionNavigation");
                 });
 
-            modelBuilder.Entity("ANP_Academy.DAL.Models.Notificacion", b =>
-                {
-                    b.HasOne("ANP_Academy.DAL.Models.Usuario", "Usuario")
-                        .WithMany("Notificacion")
-                        .HasForeignKey("IdUser")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Usuario");
-                });
-
             modelBuilder.Entity("ANP_Academy.DAL.Models.Pago", b =>
                 {
                     b.HasOne("ANP_Academy.DAL.Models.Suscripcion", "IdSuscripcionNavigation")
@@ -1109,8 +1071,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Usuario", b =>
                 {
-                    b.Navigation("Notificacion");
-
                     b.Navigation("Solicitudes");
                 });
 #pragma warning restore 612, 618

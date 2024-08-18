@@ -4,6 +4,7 @@ using ANP_Academy.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 {
     [DbContext(typeof(AnpdesarrolloContext))]
-    partial class AnpdesarrolloContextModelSnapshot : ModelSnapshot
+    [Migration("20240818000219_ClasesRatingActualizacion")]
+    partial class ClasesRatingActualizacion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -309,36 +312,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.ToTable("Inventario", (string)null);
                 });
 
-            modelBuilder.Entity("ANP_Academy.DAL.Models.Notificacion", b =>
-                {
-                    b.Property<int>("IdNotificacion")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdNotificacion"));
-
-                    b.Property<string>("Contenido")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EsLeido")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("IdUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("TipoContenido")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdNotificacion");
-
-                    b.HasIndex("IdUser");
-
-                    b.ToTable("Notificaciones");
-                });
-
             modelBuilder.Entity("ANP_Academy.DAL.Models.Pago", b =>
                 {
                     b.Property<int>("IdPagos")
@@ -515,9 +488,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<float>("Rating")
-                        .HasColumnType("real");
-
                     b.Property<string>("Titulo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -559,36 +529,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.HasIndex("RecetaId");
 
                     b.ToTable("RecetaArchivo");
-                });
-
-            modelBuilder.Entity("ANP_Academy.DAL.Models.RecetaRating", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("IdReceta")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdReceta");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RecetaRating");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Solicitudes", b =>
@@ -900,17 +840,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.Navigation("IdUbicacionNavigation");
                 });
 
-            modelBuilder.Entity("ANP_Academy.DAL.Models.Notificacion", b =>
-                {
-                    b.HasOne("ANP_Academy.DAL.Models.Usuario", "Usuario")
-                        .WithMany("Notificacion")
-                        .HasForeignKey("IdUser")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Usuario");
-                });
-
             modelBuilder.Entity("ANP_Academy.DAL.Models.Pago", b =>
                 {
                     b.HasOne("ANP_Academy.DAL.Models.Suscripcion", "IdSuscripcionNavigation")
@@ -981,25 +910,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                         .IsRequired();
 
                     b.Navigation("Receta");
-                });
-
-            modelBuilder.Entity("ANP_Academy.DAL.Models.RecetaRating", b =>
-                {
-                    b.HasOne("ANP_Academy.DAL.Models.Receta", "Receta")
-                        .WithMany("Ratings")
-                        .HasForeignKey("IdReceta")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ANP_Academy.DAL.Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Receta");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Solicitudes", b =>
@@ -1087,8 +997,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
             modelBuilder.Entity("ANP_Academy.DAL.Models.Receta", b =>
                 {
                     b.Navigation("Archivos");
-
-                    b.Navigation("Ratings");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Suscripcion", b =>
@@ -1109,8 +1017,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Usuario", b =>
                 {
-                    b.Navigation("Notificacion");
-
                     b.Navigation("Solicitudes");
                 });
 #pragma warning restore 612, 618

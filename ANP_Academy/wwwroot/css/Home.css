@@ -161,6 +161,7 @@ footer {
 }
 
 .contact-form input, .contact-form textarea {
+    background-color: rgba(255, 255, 255, 0.7);
     width: 100%;
     padding: 0.5em;
     margin: 0.5em 0;
@@ -178,9 +179,6 @@ footer {
     .contact-form button:hover {
         background: #fa4747;
     }
-
-
-
 
 @media (max-width: 768px) {
     .footer-content {

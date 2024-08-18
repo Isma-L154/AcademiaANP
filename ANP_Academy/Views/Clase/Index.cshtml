@@ -21,6 +21,40 @@
                         <img src="@Url.Action("GetImage", "Clase", new { id = clase.IdClase })" class="card-img-top" alt="Imagen de la clase">
                         <div class="card-body">
                             <h5 class="card-title">@clase.Titulo</h5>
+
+                            <!-- Mostrar el promedio de calificación debajo del título -->
+                            <div class="rating">
+                                @{
+                                    var fullStars = (int)clase.Rating;
+                                    var hasHalfStar = clase.Rating - fullStars >= 0.5;
+                                }
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <input type="radio" name="rating-@clase.IdClase" id="star-@i-@clase.IdClase" value="@i" @(i == fullStars + 1 && hasHalfStar ? "checked" : "") />
+                                    @if (i <= fullStars)
+                                    {
+                                        <label for="star-@i-@clase.IdClase" class="full-star">★</label>
+                                    }
+                                    else if (i == fullStars + 1 && hasHalfStar)
+                                    {
+                                        <label for="star-@i-@clase.IdClase" class="half-star">☆</label>
+                                    }
+                                    else
+                                    {
+                                        <label for="star-@i-@clase.IdClase">☆</label>
+                                    }
+                                }
+
+                                <!-- Mostrar el promedio como número -->
+                                <span class="rating-average">(@clase.Rating.ToString("0.0"))</span>
+                                <!-- Spinner de carga -->
+                                <div class="loading-spinner spinner-border text-warning" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <!-- Mensaje temporal -->
+                                <div class="temp-message">Gracias por su calificación</div>
+                            </div>
+
                             <p class="card-text">@clase.Descripcion</p>
 
                             <!-- Contenedor flex para alinear los botones en una línea -->
@@ -43,5 +77,70 @@
             }
         </div>
     </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Script para manejar la calificación con estrellas -->
+    <script>
+        $(document).ready(function () {
+            $('input[type="radio"]').change(function () {
+                var rating = $(this).val();
+                var idClase = $(this).attr('name').split('-')[1];
+                var token = $('input[name="__RequestVerificationToken"]').val();
+                var $spinner = $(this).closest('.rating').find('.loading-spinner');
+                var $ratingAverage = $(this).closest('.rating').find('.rating-average');
+                var $message = $(this).closest('.rating').find('.temp-message');
+                var $starsContainer = $(this).closest('.rating');
+
+                // Mostrar el spinner de carga
+                $spinner.show();
+
+                $.ajax({
+                    url: '@Url.Action("RateClass", "Clase")',
+                    type: 'POST',
+                    headers: {
+                        'RequestVerificationToken': token
+                    },
+                    data: {
+                        __RequestVerificationToken: token,
+                        idClase: idClase,
+                        rating: rating
+                    },
+                    success: function (response) {
+                        // Actualizar el promedio de calificación
+                        if (response.newRating !== undefined) {
+                            $ratingAverage.text('(' + response.newRating.toFixed(1) + ')');
+                            // Actualizar las estrellas
+                            var fullStars = Math.floor(response.newRating);
+                            var hasHalfStar = response.newRating - fullStars >= 0.5;
+
+                            $starsContainer.find('label').each(function (index) {
+                                if (index < fullStars) {
+                                    $(this).removeClass('half-star').addClass('full-star').text('★');
+                                } else if (index === fullStars && hasHalfStar) {
+                                    $(this).removeClass('full-star').addClass('half-star').text('☆');
+                                } else {
+                                    $(this).removeClass('full-star half-star').text('☆');
+                                }
+                            });
+                        }
+                        // Mostrar el mensaje temporal
+                        $message.show().delay(2000).fadeOut();
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Hubo un error al enviar su calificación.');
+                        console.log("Error: " + error);
+                        console.log("Status: " + status);
+                        console.log(xhr.responseText);
+                    },
+                    complete: function () {
+                        // Ocultar el spinner de carga
+                        $spinner.hide();
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

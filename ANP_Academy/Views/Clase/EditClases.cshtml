@@ -8,7 +8,7 @@
 <h1>Editar Clase</h1>
 
 <div class="form-container">
-    <form asp-action="EditClases" enctype="multipart/form-data">
+    <form asp-action="EditClases" enctype="multipart/form-data" id="editForm">
         <div class="form-group">
             <input type="hidden" asp-for="IdClase" />
 
@@ -42,8 +42,51 @@
     </form>
 </div>
 
+<!-- Pantalla de carga superpuesta -->
+<div id="loadingOverlay" class="loading-overlay" style="display:none;">
+    <div class="loading-content">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Cargando...</span>
+        </div>
+        <p>Cargando, por favor espere...</p>
+    </div>
+</div>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        document.getElementById('editForm').addEventListener('submit', function (e) {
+            // Mostrar la pantalla de carga
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        });
+    </script>
 }
+
+@* <style>
+    /* Estilos para la pantalla de carga superpuesta */
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.8);
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .loading-content {
+        text-align: center;
+    }
+
+        .loading-content p {
+            margin-top: 10px;
+            font-size: 1.2rem;
+            color: #333;
+        }
+</style> *@

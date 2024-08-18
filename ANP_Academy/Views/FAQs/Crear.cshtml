@@ -1,0 +1,24 @@
+﻿@model ANP_Academy.DAL.Models.FAQ
+
+<link rel="stylesheet" href="~/css/FAQs/Crear.css" asp-append-version="true" />
+
+<h2>Crear Nueva Pregunta</h2>
+
+<div class="form-container">
+    <form asp-action="Crear">
+        <div class="form-group">
+            <label for="Pregunta">Pregunta</label>
+            <input type="text" class="form-control" asp-for="Pregunta" />
+            <span asp-validation-for="Pregunta" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="Respuesta">Respuesta</label>
+            <textarea class="form-control" asp-for="Respuesta"></textarea>
+            <span asp-validation-for="Respuesta" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <a href="javascript:history.back()" class="btn btn-secondary">Atrás</a>
+        </div>
+    </form>
+</div>

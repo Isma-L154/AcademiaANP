@@ -27,7 +27,7 @@
             <div class="progress mt-2">
                 <div class="progress-bar" role="progressbar" style="width: 0%;" id="imagenProgressBar">0%</div>
             </div>
-            <div class="text-danger mt-2" id="imagenErrorMsg">Error al cargar la imagen. Por favor, inténtelo de nuevo.</div>
+            <div class="text-danger mt-2" id="imagenErrorMsg" style="display:none;">Error al cargar la imagen. Por favor, inténtelo de nuevo.</div>
         </div>
         <div class="form-group">
             <label asp-for="URLVideo" class="control-label"></label>
@@ -42,13 +42,23 @@
             <div class="progress mt-2">
                 <div class="progress-bar" role="progressbar" style="width: 0%;" id="archivosProgressBar">0%</div>
             </div>
-            <div class="text-danger mt-2" id="archivosErrorMsg">Error al cargar los archivos. Por favor, inténtelo de nuevo.</div>
+            <div class="text-danger mt-2" id="archivosErrorMsg" style="display:none;">Error al cargar los archivos. Por favor, inténtelo de nuevo.</div>
         </div>
         <div class="form-group">
             <input type="submit" value="Guardar" class="btn btn-primary" />
             <a asp-action="GestionRecetas" class="btn btn-secondary">Volver a la lista</a>
         </div>
     </form>
+</div>
+
+<!-- Pantalla de carga superpuesta -->
+<div id="loadingOverlay" class="loading-overlay" style="display:none;">
+    <div class="loading-content">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Cargando...</span>
+        </div>
+        <p>Cargando, por favor espere a la siguente pantalla...</p>
+    </div>
 </div>
 
 @section Scripts {
@@ -108,6 +118,9 @@
         document.getElementById('createRecetaForm').addEventListener('submit', function (e) {
             e.preventDefault();
 
+            // Mostrar la pantalla de carga
+            document.getElementById('loadingOverlay').style.display = 'flex';
+
             var form = e.target;
             var formData = new FormData(form);
 
@@ -126,12 +139,17 @@
             xhr.addEventListener('error', function () {
                 document.getElementById('imagenErrorMsg').style.display = 'block';
                 document.getElementById('archivosErrorMsg').style.display = 'block';
+                // Ocultar la pantalla de carga en caso de error
+                document.getElementById('loadingOverlay').style.display = 'none';
             });
 
             xhr.open('POST', form.action, true);
             xhr.setRequestHeader('RequestVerificationToken', form.querySelector('input[name="__RequestVerificationToken"]').value);
 
             xhr.onload = function () {
+                // Ocultar la pantalla de carga
+                document.getElementById('loadingOverlay').style.display = 'none';
+
                 if (xhr.status === 200) {
                     console.log('Carga completa');
                     window.location.href = '@Url.Action("GestionRecetas")';

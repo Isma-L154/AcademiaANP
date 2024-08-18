@@ -21,6 +21,7 @@
                 <th>Imagen</th>
                 <th>URL del Video</th>
                 <th>Archivos</th>
+                <th>Rating</th> <!-- Nueva columna para mostrar el Rating -->
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -45,10 +46,35 @@
                         }
                     </td>
                     <td>
-                        <a asp-action="EditRecetas" asp-route-id="@item.IdReceta" class="btn btn-primary">Editar</a>
-                        <form asp-action="DeleteRecetas" asp-route-id="@item.IdReceta" method="post" style="display:inline;" onsubmit="return confirm('¿Está seguro que desea eliminar esta receta?');">
+                        <!-- Mostrar el promedio de calificación -->
+                        <div class="rating">
+                            @{
+                                var fullStars = (int)item.Rating;
+                                var hasHalfStar = item.Rating - fullStars >= 0.5;
+                            }
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= fullStars)
+                                {
+                                    <span class="full-star">★</span>
+                                }
+                                else if (i == fullStars + 1 && hasHalfStar)
+                                {
+                                    <span class="half-star">☆</span>
+                                }
+                                else
+                                {
+                                    <span>☆</span>
+                                }
+                            }
+                            <span class="rating-average">(@item.Rating.ToString("0.0"))</span>
+                        </div>
+                    </td>
+                    <td>
+                        <form asp-action="DeleteRecetas" asp-route-id="@item.IdReceta" method="post" class="delete-receta-form" onsubmit="return confirm('¿Está seguro que desea eliminar esta receta?');">
                             <input type="submit" value="Eliminar" class="btn btn-danger" />
                         </form>
+                        <a asp-action="EditRecetas" asp-route-id="@item.IdReceta" class="btn btn-primary">Editar</a>
                     </td>
                 </tr>
             }
@@ -56,3 +82,23 @@
     </table>
 </div>
 
+<!-- Pantalla de carga superpuesta -->
+<div id="loadingOverlay" class="loading-overlay" style="display:none;">
+    <div class="loading-content">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Cargando...</span>
+        </div>
+        <p>Cargando, por favor espere a la eliminación...</p>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.delete-receta-form').forEach(function (form) {
+            form.addEventListener('submit', function () {
+                // Mostrar la pantalla de carga
+                document.getElementById('loadingOverlay').style.display = 'flex';
+            });
+        });
+    </script>
+}

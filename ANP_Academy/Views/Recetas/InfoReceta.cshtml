@@ -22,6 +22,34 @@
                     <dl class="row">
                         <dt class="col-sm-4">Descripción</dt>
                         <dd class="col-sm-8">@Model.Descripcion</dd>
+
+                        <!-- Mostrar el promedio de calificación -->
+                        <dt class="col-sm-4">Valoración</dt>
+                        <dd class="col-sm-8">
+                            <div class="rating">
+                                @{
+                                    var fullStars = (int)Model.Rating;
+                                    var hasHalfStar = Model.Rating - fullStars >= 0.5;
+                                }
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    if (i <= fullStars)
+                                    {
+                                        <span class="full-star">★</span>
+                                    }
+                                    else if (i == fullStars + 1 && hasHalfStar)
+                                    {
+                                        <span class="half-star">☆</span>
+                                    }
+                                    else
+                                    {
+                                        <span>☆</span>
+                                    }
+                                }
+                                <span class="rating-average">(@Model.Rating.ToString("0.0"))</span>
+                            </div>
+                        </dd>
+
                         <dt class="col-sm-4">URL del Video</dt>
                         <dd class="col-sm-8"><a href="@Model.URLVideo" target="_blank" class="text-decoration-none">@Model.URLVideo</a></dd>
                         <dt class="col-sm-4">Archivos</dt>

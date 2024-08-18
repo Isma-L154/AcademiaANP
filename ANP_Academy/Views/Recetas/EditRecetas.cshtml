@@ -9,7 +9,7 @@
 <div id="receta-container">
     <h1>Editar Receta</h1>
 
-    <form id="editRecetaForm" asp-action="EditRecetas" enctype="multipart/form-data">
+    <form id="editRecetaForm" asp-action="EditRecetas" enctype="multipart/form-data" method="post">
         <input type="hidden" asp-for="IdReceta" />
         <div class="form-group">
             <label asp-for="Titulo" class="control-label"></label>
@@ -65,6 +65,16 @@
     </form>
 </div>
 
+<!-- Pantalla de carga superpuesta -->
+<div id="loadingOverlay" class="loading-overlay" style="display:none;">
+    <div class="loading-content">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Cargando...</span>
+        </div>
+        <p>Cargando, por favor espere a la siguente pantalla...</p>
+    </div>
+</div>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -114,6 +124,55 @@
 
         document.getElementById('archivosInput').addEventListener('change', function () {
             uploadFile(this, 'archivosProgressBar', 'archivosErrorMsg', '@Url.Action("UploadFiles", "Recetas")');
+        });
+
+        document.getElementById('editRecetaForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Mostrar la pantalla de carga
+            document.getElementById('loadingOverlay').style.display = 'flex';
+
+            var form = e.target;
+            var formData = new FormData(form);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.upload.addEventListener('progress', function (e) {
+                if (e.lengthComputable) {
+                    var percentComplete = (e.loaded / e.total) * 100;
+                    var imagenProgressBar = document.getElementById('imagenProgressBar');
+                    var archivosProgressBar = document.getElementById('archivosProgressBar');
+                    updateProgressBar(imagenProgressBar, percentComplete);
+                    updateProgressBar(archivosProgressBar, percentComplete);
+                }
+            });
+
+            xhr.addEventListener('error', function () {
+                document.getElementById('imagenErrorMsg').style.display = 'block';
+                document.getElementById('archivosErrorMsg').style.display = 'block';
+                // Ocultar la pantalla de carga en caso de error
+                document.getElementById('loadingOverlay').style.display = 'none';
+            });
+
+            xhr.open('POST', form.action, true);
+            xhr.setRequestHeader('RequestVerificationToken', form.querySelector('input[name="__RequestVerificationToken"]').value);
+
+            xhr.onload = function () {
+                // Ocultar la pantalla de carga
+                document.getElementById('loadingOverlay').style.display = 'none';
+
+                if (xhr.status === 200) {
+                    console.log('Carga completa');
+                    window.location.href = '@Url.Action("GestionRecetas")';
+                } else {
+                    console.error('Error durante la carga');
+                    document.getElementById('imagenErrorMsg').style.display = 'block';
+                    document.getElementById('archivosErrorMsg').style.display = 'block';
+                }
+            };
+
+            console.log('Enviando formulario');
+            xhr.send(formData);
         });
     </script>
 }

@@ -1,0 +1,37 @@
+﻿@model ANP_Academy.DAL.Models.FAQ
+
+<h2>Eliminar Pregunta</h2>
+
+<div>
+    <h3>¿Estás seguro de que deseas eliminar esta pregunta?</h3>
+    <div>
+        <h4>@Model.Pregunta</h4>
+        <p>@Model.Respuesta</p>
+    </div>
+    <button class="btn btn-danger" onclick="confirmDelete(@Model.Id)">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</div>
+
+<script>
+    function confirmDelete(id) {
+        if (confirm("¿Estás seguro de que deseas eliminar esta pregunta?")) {
+            // Realizar la solicitud AJAX para eliminar la pregunta
+            fetch('/FAQs/Eliminar/' + id, {
+                method: 'POST',
+                headers: {
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value,
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Pregunta eliminada con éxito");
+                        window.location.href = '/FAQs/Index';
+                    } else {
+                        alert("Hubo un error al eliminar la pregunta");
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    }
+</script>
