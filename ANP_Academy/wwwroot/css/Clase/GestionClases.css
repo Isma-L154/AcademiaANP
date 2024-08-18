@@ -103,6 +103,29 @@ h1 {
     box-shadow: none; /* Sin sombra */
 }
 
+.rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    direction: ltr;
+}
+
+    .rating span {
+        font-size: 1rem;
+        color: black;
+    }
+
+    .rating .full-star,
+    .rating .half-star {
+        color: black;
+    }
+
+.rating-average {
+    margin-left: 5px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .table-wrapper {

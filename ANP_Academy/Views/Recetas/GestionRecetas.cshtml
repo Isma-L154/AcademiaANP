@@ -21,6 +21,7 @@
                 <th>Imagen</th>
                 <th>URL del Video</th>
                 <th>Archivos</th>
+                <th>Rating</th> <!-- Nueva columna para mostrar el Rating -->
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -45,6 +46,31 @@
                         }
                     </td>
                     <td>
+                        <!-- Mostrar el promedio de calificación -->
+                        <div class="rating">
+                            @{
+                                var fullStars = (int)item.Rating;
+                                var hasHalfStar = item.Rating - fullStars >= 0.5;
+                            }
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                if (i <= fullStars)
+                                {
+                                    <span class="full-star">★</span>
+                                }
+                                else if (i == fullStars + 1 && hasHalfStar)
+                                {
+                                    <span class="half-star">☆</span>
+                                }
+                                else
+                                {
+                                    <span>☆</span>
+                                }
+                            }
+                            <span class="rating-average">(@item.Rating.ToString("0.0"))</span>
+                        </div>
+                    </td>
+                    <td>
                         <a asp-action="EditRecetas" asp-route-id="@item.IdReceta" class="btn btn-primary">Editar</a>
                         <form asp-action="DeleteRecetas" asp-route-id="@item.IdReceta" method="post" style="display:inline;" onsubmit="return confirm('¿Está seguro que desea eliminar esta receta?');">
                             <input type="submit" value="Eliminar" class="btn btn-danger" />
@@ -56,3 +82,27 @@
     </table>
 </div>
 
+<style>
+    .rating {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        direction: ltr;
+    }
+
+        .rating span {
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .rating .full-star,
+        .rating .half-star {
+            color: black;
+        }
+
+    .rating-average {
+        margin-left: 5px;
+        font-size: 0.9rem;
+        color: #333;
+    }
+</style>

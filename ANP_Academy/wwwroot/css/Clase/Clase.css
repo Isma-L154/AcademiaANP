@@ -79,3 +79,44 @@ h1 {
     background-color: black;
     transition: width 0.6s ease;
 }
+
+.rating {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    direction: ltr;
+}
+
+    .rating input {
+        display: none;
+    }
+
+    .rating label {
+        font-size: 1.5rem;
+        color: #ddd;
+        cursor: pointer;
+    }
+
+    .rating .full-star,
+    .rating .half-star {
+        color: #f7c700;
+    }
+
+.rating-average {
+    margin-left: 10px;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.loading-spinner {
+    display: none;
+    margin-left: 10px;
+}
+
+.temp-message {
+    display: none;
+    font-size: 1rem;
+    color: green;
+    margin-left: 10px;
+}

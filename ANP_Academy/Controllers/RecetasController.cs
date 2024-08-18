@@ -6,16 +6,20 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace ANP_Academy.Controllers
 {
     public class RecetasController : Controller
     {
         private readonly AnpdesarrolloContext _dbContext;
+        private readonly UserManager<Usuario> _userManager;
 
-        public RecetasController(AnpdesarrolloContext dbContext)
+        public RecetasController(AnpdesarrolloContext dbContext, UserManager<Usuario> userManager)
         {
             _dbContext = dbContext;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
@@ -316,5 +320,61 @@ namespace ANP_Academy.Controllers
             }
             return File(archivo.Archivo, archivo.TipoArchivo, archivo.NombreArchivo); // Ajusta el nombre y tipo de archivo según sea necesario
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RateReceta(int idReceta, int rating)
+        {
+            var receta = await _dbContext.Recetas.FindAsync(idReceta);
+            if (receta == null)
+            {
+                return NotFound();
+            }
+
+            if (rating < 1 || rating > 5)
+            {
+                return BadRequest("La calificación debe estar entre 1 y 5.");
+            }
+
+            var userId = _userManager.GetUserId(User);
+
+            // Buscar si el usuario ya ha calificado esta receta
+            var existingRating = await _dbContext.RecetaRatings
+                .FirstOrDefaultAsync(r => r.IdReceta == idReceta && r.UserId == userId);
+
+            if (existingRating != null)
+            {
+                // Actualizar la calificación existente
+                existingRating.Rating = rating;
+                _dbContext.Update(existingRating);
+            }
+            else
+            {
+                // Agregar una nueva calificación
+                var recetaRating = new RecetaRating
+                {
+                    IdReceta = idReceta,
+                    UserId = userId,
+                    Rating = rating,
+                    Fecha = DateTime.Now
+                };
+                _dbContext.RecetaRatings.Add(recetaRating);
+            }
+
+            await _dbContext.SaveChangesAsync();
+
+            // Calcular el nuevo promedio de calificación
+            var averageRating = await _dbContext.RecetaRatings
+                .Where(r => r.IdReceta == idReceta)
+                .AverageAsync(r => r.Rating);
+
+            receta.Rating = (float)averageRating;
+            _dbContext.Update(receta);
+            await _dbContext.SaveChangesAsync();
+
+            return Json(new { newRating = averageRating });
+        }
+
+
     }
 }

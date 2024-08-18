@@ -424,6 +424,63 @@ public class ClaseController : Controller
         return RedirectToAction(nameof(ComentariosClase), new { Id = idClase });
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize]
+    public async Task<IActionResult> RateClass(int idClase, int rating)
+    {
+        var clase = await _dbContext.Clases.FindAsync(idClase);
+        if (clase == null)
+        {
+            return NotFound();
+        }
+
+        if (rating < 1 || rating > 5)
+        {
+            return BadRequest("La calificación debe estar entre 1 y 5.");
+        }
+
+        var userId = _userManager.GetUserId(User);
+
+        // Buscar si el usuario ya ha calificado esta clase
+        var existingRating = await _dbContext.ClaseRatings
+            .FirstOrDefaultAsync(r => r.IdClase == idClase && r.UserId == userId);
+
+        if (existingRating != null)
+        {
+            // Actualizar la calificación existente
+            existingRating.Rating = rating;
+            _dbContext.Update(existingRating);
+        }
+        else
+        {
+            // Agregar una nueva calificación
+            var claseRating = new ClaseRating
+            {
+                IdClase = idClase,
+                UserId = userId,
+                Rating = rating,
+                Fecha = DateTime.Now
+            };
+            _dbContext.ClaseRatings.Add(claseRating);
+        }
+
+        await _dbContext.SaveChangesAsync();
+
+        // Calcular el nuevo promedio de calificación
+        var averageRating = await _dbContext.ClaseRatings
+            .Where(r => r.IdClase == idClase)
+            .AverageAsync(r => r.Rating);
+
+        clase.Rating = (float)averageRating;
+        _dbContext.Update(clase);
+        await _dbContext.SaveChangesAsync();
+
+        return Json(new { newRating = averageRating });
+    }
+
+
+
     //Validar que exista el comentario
     private bool ClaseComentarioExists(int id)
     {

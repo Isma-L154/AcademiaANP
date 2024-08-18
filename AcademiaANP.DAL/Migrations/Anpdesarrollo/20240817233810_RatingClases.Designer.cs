@@ -4,6 +4,7 @@ using ANP_Academy.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 {
     [DbContext(typeof(AnpdesarrolloContext))]
-    partial class AnpdesarrolloContextModelSnapshot : ModelSnapshot
+    [Migration("20240817233810_RatingClases")]
+    partial class RatingClases
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,6 +100,30 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.HasIndex("CodigoUsuarioId");
 
                     b.ToTable("ClaseComentario");
+                });
+
+            modelBuilder.Entity("ANP_Academy.DAL.Models.ClaseRating", b =>
+                {
+                    b.Property<int>("IdRating")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdRating"));
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IdClase")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdRating");
+
+                    b.HasIndex("IdClase");
+
+                    b.ToTable("ClaseRating");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.ClaseXComentarios", b =>
@@ -485,9 +512,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<float>("Rating")
-                        .HasColumnType("real");
-
                     b.Property<string>("Titulo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -529,36 +553,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.HasIndex("RecetaId");
 
                     b.ToTable("RecetaArchivo");
-                });
-
-            modelBuilder.Entity("ANP_Academy.DAL.Models.RecetaRating", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("IdReceta")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdReceta");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RecetaRating");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Solicitudes", b =>
@@ -735,36 +729,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ClaseRating", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("IdClase")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdClase");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ClaseRatings");
-                });
-
             modelBuilder.Entity("ANP_Academy.DAL.Models.ClaseComentario", b =>
                 {
                     b.HasOne("ANP_Academy.DAL.Models.Usuario", "CodigoUsuario")
@@ -772,6 +736,17 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                         .HasForeignKey("CodigoUsuarioId");
 
                     b.Navigation("CodigoUsuario");
+                });
+
+            modelBuilder.Entity("ANP_Academy.DAL.Models.ClaseRating", b =>
+                {
+                    b.HasOne("ANP_Academy.DAL.Models.Clase", "Clase")
+                        .WithMany("Ratings")
+                        .HasForeignKey("IdClase")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Clase");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.ClaseXComentarios", b =>
@@ -942,25 +917,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.Navigation("Receta");
                 });
 
-            modelBuilder.Entity("ANP_Academy.DAL.Models.RecetaRating", b =>
-                {
-                    b.HasOne("ANP_Academy.DAL.Models.Receta", "Receta")
-                        .WithMany("Ratings")
-                        .HasForeignKey("IdReceta")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ANP_Academy.DAL.Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Receta");
-
-                    b.Navigation("Usuario");
-                });
-
             modelBuilder.Entity("ANP_Academy.DAL.Models.Solicitudes", b =>
                 {
                     b.HasOne("ANP_Academy.DAL.Models.Usuario", "User")
@@ -987,25 +943,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                         .HasForeignKey("SuscripcionId");
 
                     b.Navigation("Suscripcion");
-                });
-
-            modelBuilder.Entity("ClaseRating", b =>
-                {
-                    b.HasOne("ANP_Academy.DAL.Models.Clase", "Clase")
-                        .WithMany("Ratings")
-                        .HasForeignKey("IdClase")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ANP_Academy.DAL.Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Clase");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Categoria", b =>
@@ -1046,8 +983,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
             modelBuilder.Entity("ANP_Academy.DAL.Models.Receta", b =>
                 {
                     b.Navigation("Archivos");
-
-                    b.Navigation("Ratings");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Suscripcion", b =>
