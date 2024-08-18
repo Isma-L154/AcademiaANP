@@ -100,6 +100,29 @@
         background-color: #5a6268;
     }
 
+.rating {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    direction: ltr;
+}
+
+    .rating span {
+        font-size: 1.5rem;
+        color: grey;
+    }
+
+    .rating .full-star,
+    .rating .half-star {
+        color: #f7c700;
+    }
+
+.rating-average {
+    margin-left: 5px;
+    font-size: 1.25rem;
+    color: black;
+}
+
 /* Responsive Design */
 @media (max-width: 576px) {
     #receta-detalle-container {

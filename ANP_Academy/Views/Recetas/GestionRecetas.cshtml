@@ -71,10 +71,10 @@
                         </div>
                     </td>
                     <td>
-                        <a asp-action="EditRecetas" asp-route-id="@item.IdReceta" class="btn btn-primary">Editar</a>
-                        <form asp-action="DeleteRecetas" asp-route-id="@item.IdReceta" method="post" style="display:inline;" onsubmit="return confirm('¿Está seguro que desea eliminar esta receta?');">
+                        <form asp-action="DeleteRecetas" asp-route-id="@item.IdReceta" method="post" class="delete-receta-form" onsubmit="return confirm('¿Está seguro que desea eliminar esta receta?');">
                             <input type="submit" value="Eliminar" class="btn btn-danger" />
                         </form>
+                        <a asp-action="EditRecetas" asp-route-id="@item.IdReceta" class="btn btn-primary">Editar</a>
                     </td>
                 </tr>
             }
@@ -82,27 +82,23 @@
     </table>
 </div>
 
-<style>
-    .rating {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        direction: ltr;
-    }
+<!-- Pantalla de carga superpuesta -->
+<div id="loadingOverlay" class="loading-overlay" style="display:none;">
+    <div class="loading-content">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Cargando...</span>
+        </div>
+        <p>Cargando, por favor espere a la eliminación...</p>
+    </div>
+</div>
 
-        .rating span {
-            font-size: 1rem;
-            color: #333;
-        }
-
-        .rating .full-star,
-        .rating .half-star {
-            color: black;
-        }
-
-    .rating-average {
-        margin-left: 5px;
-        font-size: 0.9rem;
-        color: #333;
-    }
-</style>
+@section Scripts {
+    <script>
+        document.querySelectorAll('.delete-receta-form').forEach(function (form) {
+            form.addEventListener('submit', function () {
+                // Mostrar la pantalla de carga
+                document.getElementById('loadingOverlay').style.display = 'flex';
+            });
+        });
+    </script>
+}
