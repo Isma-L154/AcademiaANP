@@ -39,6 +39,8 @@ namespace ANP_Academy.DAL.Models
         public virtual DbSet<RecetaArchivo> RecetaArchivos { get; set; }
         public virtual DbSet<ClaseComentario> ClaseComentario { get; set; }
         public virtual DbSet<ClaseXComentarios> ClaseXComentario { get; set; }
+        public virtual DbSet<Notificacion> Notificaciones { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -221,6 +223,13 @@ namespace ANP_Academy.DAL.Models
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(256)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Notificacion>(entity =>
+            {
+                entity.HasOne(n => n.Usuario)
+                      .WithMany(u => u.Notificacion)
+                      .HasForeignKey(n => n.IdUser);
             });
 
             OnModelCreatingPartial(modelBuilder);

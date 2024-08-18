@@ -61,6 +61,10 @@ public class ClaseController : Controller
             _dbContext.Add(clase);
             await _dbContext.SaveChangesAsync();
 
+            // Generar notificación dentro de la plataforma a los usuarios.
+            await GenerarNotificacionClase(clase);
+            //
+
             // Enviar notificación por correo electrónico a los estudiantes suscritos
             await NotificarEstudiantesSuscritos(clase);
 
@@ -69,6 +73,28 @@ public class ClaseController : Controller
 
         return View(model);
     }
+
+    private async Task GenerarNotificacionClase(Clase clase)
+    {
+        var estudiantesSuscritos = await _userManager.Users
+            .Where(u => u.Suscrito == true && u.Notificaciones == true)
+            .ToListAsync();
+
+        foreach (var estudiante in estudiantesSuscritos)
+        {
+            var notificacion = new Notificacion
+            {
+                IdUser = estudiante.Id,
+                Contenido = $"¡La Academia ha publicado una nueva clase! Conoce más sobre {clase.Titulo} en la sección de Clases",
+                TipoContenido = "Clase",
+                EsLeido = false
+            };
+
+            _dbContext.Add(notificacion);
+            await _dbContext.SaveChangesAsync();
+        }
+    }
+
 
     private async Task NotificarEstudiantesSuscritos(Clase clase)
     {
@@ -148,6 +174,7 @@ public class ClaseController : Controller
 
         client.Send(msg);
     }
+
 
     public async Task<IActionResult> DetailsClases(int? id)
     {
