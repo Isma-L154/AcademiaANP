@@ -7,31 +7,38 @@
 
 <div class="container">
     <h2>Mis Notificaciones</h2>
-    <div class="notification-cards">
-        @foreach (var notificacion in Model)
-        {
-            <div class="card @(notificacion.EsLeido ? "leido" : "no-leido")">
-                <div class="card-body">
-                    <p>@notificacion.Contenido</p>
+    @if (!Model.Any()) // Verifica si no hay notificaciones
+    {
+        <p class="no-notifications">El usuario no tiene notificaciones disponibles en este momento.</p>
+    }
+    else
+    {
+        <div class="notification-cards">
+            @foreach (var notificacion in Model)
+            {
+                <div class="card @(notificacion.EsLeido ? "leido" : "no-leido")">
+                    <div class="card-body">
+                        <p>@notificacion.Contenido</p>
+                    </div>
+                    <div class="card-footer">
+                        <form asp-action="@(notificacion.TipoRecurso == "Clase" ? "Index" : "InfoReceta")" asp-controller="@(notificacion.TipoRecurso == "Clase" ? "Clase" : "Recetas")" asp-route-id="@notificacion.IdRecurso" method="get" class="action-form">
+                            <button type="submit" class="action-btn ir-btn" title="Llévame ahí">
+                                <i class="fa-solid fa-location-arrow"></i>
+                            </button>
+                        </form>
+                        <form asp-action="@(notificacion.EsLeido ? "MarcarComoNoLeido" : "MarcarComoLeido")" asp-route-id="@notificacion.IdNotificacion" method="post" class="action-form">
+                            <button type="submit" class="action-btn leido-btn" title="@(notificacion.EsLeido ? "Marcar como no leído" : "Marcar como leído")">
+                                <i class="fa-solid fa-@(notificacion.EsLeido ? "rotate-left" : "pencil")"></i>
+                            </button>
+                        </form>
+                        <form asp-action="EliminarNotificacion" asp-route-id="@notificacion.IdNotificacion" method="post" class="action-form" onsubmit="return confirm('¿Está seguro que desea eliminar esta notificación?');">
+                            <button type="submit" class="action-btn eliminar-btn" title="Eliminar notificación">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <form asp-action="@(notificacion.TipoRecurso == "Clase" ? "Index" : "InfoReceta")" asp-controller="@(notificacion.TipoRecurso == "Clase" ? "Clase" : "Recetas")" asp-route-id="@notificacion.IdRecurso" method="get" class="action-form">
-                        <button type="submit" class="action-btn ir-btn" title="Llévame ahí">
-                            <i class="fa-solid fa-location-arrow"></i>
-                        </button>
-                    </form>
-                    <form asp-action="@(notificacion.EsLeido ? "MarcarComoNoLeido" : "MarcarComoLeido")" asp-route-id="@notificacion.IdNotificacion" method="post" class="action-form">
-                        <button type="submit" class="action-btn leido-btn" title="@(notificacion.EsLeido ? "Marcar como no leído" : "Marcar como leído")">
-                            <i class="fa-solid fa-@(notificacion.EsLeido ? "rotate-left" : "pencil")"></i>
-                        </button>
-                    </form>
-                    <form asp-action="EliminarNotificacion" asp-route-id="@notificacion.IdNotificacion" method="post" class="action-form" onsubmit="return confirm('¿Está seguro que desea eliminar esta notificación?');">
-                        <button type="submit" class="action-btn eliminar-btn" title="Eliminar notificación">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        }
-    </div>
+            }
+        </div>
+    }
 </div>
