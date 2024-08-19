@@ -98,7 +98,12 @@
                             <a class="nav-link" asp-controller="Facturas" asp-action="VerFacturasUsuario" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-file-invoice" style="margin-right: 15px;"></i>Mis facturas</a>
                         </li>
                         <li class="nav-item">
-                            <a href="@Url.Action("MisSuscripciones", "Suscripciones")" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-chalkboard-user" style="margin-right: 15px;"></i>Mis suscripciones</a>
+                            <a 
+                            <a class="nav-link" asp-controller="Suscripciones" asp-action="MisSuscripciones" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-chalkboard-user" style="margin-right: 15px;"></i>Mis suscripciones</a>
+                        </li>
+                        <li class="nav-item">
+                            <a
+                            <a class="nav-link" asp-controller="Notificaciones" asp-action="MisNotificaciones" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-bell" style="margin-right: 15px;"></i>Mis notificaciones</a>
                         </li>
                        
                     </ul>

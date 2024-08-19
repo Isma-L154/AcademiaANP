@@ -4,6 +4,7 @@ using ANP_Academy.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 {
     [DbContext(typeof(AnpdesarrolloContext))]
-    partial class AnpdesarrolloContextModelSnapshot : ModelSnapshot
+    [Migration("20240818214756_AgregarTablaNotificaciones")]
+    partial class AgregarTablaNotificaciones
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -327,8 +330,9 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IdRecurso")
-                        .HasColumnType("int");
+                    b.Property<string>("IdRecurso")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IdUser")
                         .IsRequired()
@@ -909,7 +913,7 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
             modelBuilder.Entity("ANP_Academy.DAL.Models.Notificacion", b =>
                 {
                     b.HasOne("ANP_Academy.DAL.Models.Usuario", "Usuario")
-                        .WithMany("Notificacion")
+                        .WithMany()
                         .HasForeignKey("IdUser")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1115,8 +1119,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Usuario", b =>
                 {
-                    b.Navigation("Notificacion");
-
                     b.Navigation("Solicitudes");
                 });
 #pragma warning restore 612, 618

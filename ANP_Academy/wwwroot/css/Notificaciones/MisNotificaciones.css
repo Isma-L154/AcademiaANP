@@ -1,0 +1,68 @@
+﻿.notification-cards .card {
+    background-color: #fff;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    padding: 20px;
+    transition: box-shadow 0.3s, transform 0.3s;
+    width: auto;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card.leido {
+    background-color: #898989;
+}
+
+.card.no-leido {
+    background-color: #e7dfd1;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: start;
+    border-top: none;
+}
+
+.action-btn {
+    margin-right: 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #fff;
+}
+
+.ir-btn {
+    background-color: #2c0b0b;
+}
+
+.leido-btn {
+    background-color: #5b2b29;
+}
+
+.eliminar-btn {
+    background-color: #e32a07;
+}
+
+.action-btn:hover {
+    scale: 1.1;
+}
+
+.action-btn[title]:hover:after {
+    content: attr(title);
+    position: absolute;
+    padding: 4px 8px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border-radius: 5px;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    z-index: 20;
+}

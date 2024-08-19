@@ -99,10 +99,37 @@ namespace ANP_Academy.Controllers
 
                 _dbContext.Recetas.Add(receta);
                 await _dbContext.SaveChangesAsync();
+
+                // Generar notificación dentro de la plataforma a los usuarios.
+                await GenerarNotificacionReceta(receta);
+
                 return RedirectToAction(nameof(GestionRecetas));
             }
 
             return View(model);
+        }
+
+        private async Task GenerarNotificacionReceta(Receta receta)
+        {
+            var estudiantesSuscritos = await _userManager.Users
+                .Where(u => u.Suscrito == true && u.Notificaciones == true)
+                .ToListAsync();
+
+            foreach (var estudiante in estudiantesSuscritos)
+            {
+                var notificacion = new Notificacion
+                {
+                    IdUser = estudiante.Id,
+                    Contenido = $"¡La Academia ha publicado una nueva receta! Conoce más sobre {receta.Titulo} en la sección de recetas.",
+                    IdRecurso = receta.IdReceta,
+                    TipoRecurso = "Receta",
+                    EsLeido = false,
+                    Fecha = DateTime.Now
+                };
+
+                _dbContext.Add(notificacion);
+                await _dbContext.SaveChangesAsync();
+            }
         }
 
         public async Task<IActionResult> DetailsRecetas(int? id)

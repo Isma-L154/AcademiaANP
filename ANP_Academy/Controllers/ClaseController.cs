@@ -85,9 +85,11 @@ public class ClaseController : Controller
             var notificacion = new Notificacion
             {
                 IdUser = estudiante.Id,
-                Contenido = $"¡La Academia ha publicado una nueva clase! Conoce más sobre {clase.Titulo} en la sección de Clases",
-                TipoContenido = "Clase",
-                EsLeido = false
+                Contenido = $"¡La Academia ha publicado una nueva clase! Conoce más sobre {clase.Titulo} en la sección de clases.",
+                IdRecurso = clase.IdClase,
+                TipoRecurso = "Clase",
+                EsLeido = false,
+                Fecha = DateTime.Now
             };
 
             _dbContext.Add(notificacion);

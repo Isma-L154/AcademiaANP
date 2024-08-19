@@ -31,7 +31,7 @@ namespace ANP_Academy.DAL.Models{
         public bool Notificaciones { get; set; }
 
         public virtual ICollection<Solicitudes> Solicitudes { get; set; } = new List<Solicitudes>();
+        public virtual ICollection<Notificacion> Notificacion { get; set; } = new List<Notificacion>();
 
-        public virtual ICollection<Notificacion>  Notificacion { get; set; } = new List<Notificacion>();
     }
 }
