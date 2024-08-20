@@ -26,9 +26,24 @@ public class ClaseController : Controller
 
     public async Task<IActionResult> Index()
     {
-        return View(await _dbContext.Clases.ToListAsync());
-    }
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var clases = await _dbContext.Clases
+            .Include(c => c.ClasesVistas)
+            .Include(c => c.Ratings) // Incluye las calificaciones para calcular el promedio
+            .ToListAsync();
 
+        var viewModel = clases.Select(c => new ClaseViewModel
+        {
+            IdClase = c.IdClase,
+            Titulo = c.Titulo,
+            Descripcion = c.Descripcion,
+            URLVideo = c.URLVideo,
+            Rating = c.Ratings.Any() ? (float)c.Ratings.Average(r => r.Rating) : 0, // Convertir de double a float
+            EsLeida = c.ClasesVistas.Any(cv => cv.UserId == userId)
+        }).ToList();
+
+        return View(viewModel);
+    }
     public async Task<IActionResult> GestionClases()
     {
         return View(await _dbContext.Clases.ToListAsync());
@@ -508,6 +523,48 @@ public class ClaseController : Controller
         return Json(new { newRating = averageRating });
     }
 
+    [Authorize]
+    [HttpPost]
+    public async Task<IActionResult> MarcarComoLeida(int idClase)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var claseVista = await _dbContext.ClasesVistas
+            .FirstOrDefaultAsync(cv => cv.IdClase == idClase && cv.UserId == userId);
+
+        if (claseVista == null)
+        {
+            claseVista = new ClaseVista
+            {
+                IdClase = idClase,
+                UserId = userId,
+                FechaVista = DateTime.Now
+            };
+
+            _dbContext.ClasesVistas.Add(claseVista);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        return Json(new { success = true });
+    }
+
+    [Authorize]
+    [HttpPost]
+    public async Task<IActionResult> MarcarComoNoLeido(int idClase)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var claseVista = await _dbContext.ClasesVistas
+            .FirstOrDefaultAsync(cv => cv.IdClase == idClase && cv.UserId == userId);
+
+        if (claseVista != null)
+        {
+            _dbContext.ClasesVistas.Remove(claseVista);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        return Json(new { success = true });
+    }
 
 
     //Validar que exista el comentario

@@ -7,5 +7,8 @@
         public string Descripcion { get; set; } = null!;
         public string URLVideo { get; set; } = null!;
         public IFormFile? Imagen { get; set; }
+
+        public float Rating { get; set; }
+        public bool EsLeida { get; set; }
     }
 }

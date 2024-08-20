@@ -22,10 +22,11 @@ namespace ANP_Academy.DAL.Models
         [Required]
         public string URLVideo { get; set; } = null!;
 
-        // Nueva propiedad para la valoración promedio
         [Range(0, 5)]
-        public float Rating { get; set; } = 0f; // Valoración promedio
+        public float Rating { get; set; } = 0f;
 
         public ICollection<ClaseRating> Ratings { get; set; }
+
+        public ICollection<ClaseVista> ClasesVistas { get; set; }
     }
 }

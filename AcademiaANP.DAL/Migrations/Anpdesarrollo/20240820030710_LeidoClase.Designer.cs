@@ -4,6 +4,7 @@ using ANP_Academy.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 {
     [DbContext(typeof(AnpdesarrolloContext))]
-    partial class AnpdesarrolloContextModelSnapshot : ModelSnapshot
+    [Migration("20240820030710_LeidoClase")]
+    partial class LeidoClase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,6 +57,9 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("EsLeida")
+                        .HasColumnType("bit");
 
                     b.Property<byte[]>("Imagen")
                         .IsRequired()
@@ -97,33 +103,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.HasIndex("CodigoUsuarioId");
 
                     b.ToTable("ClaseComentario");
-                });
-
-            modelBuilder.Entity("ANP_Academy.DAL.Models.ClaseVista", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("FechaVista")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("IdClase")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdClase");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ClaseVista");
                 });
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.ClaseXComentarios", b =>
@@ -837,25 +816,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
                     b.Navigation("CodigoUsuario");
                 });
 
-            modelBuilder.Entity("ANP_Academy.DAL.Models.ClaseVista", b =>
-                {
-                    b.HasOne("ANP_Academy.DAL.Models.Clase", "Clase")
-                        .WithMany("ClasesVistas")
-                        .HasForeignKey("IdClase")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ANP_Academy.DAL.Models.Usuario", "Usuario")
-                        .WithMany("ClasesVistas")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Clase");
-
-                    b.Navigation("Usuario");
-                });
-
             modelBuilder.Entity("ANP_Academy.DAL.Models.ClaseXComentarios", b =>
                 {
                     b.HasOne("ANP_Academy.DAL.Models.Clase", "Clase")
@@ -1108,8 +1068,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Clase", b =>
                 {
-                    b.Navigation("ClasesVistas");
-
                     b.Navigation("Ratings");
                 });
 
@@ -1163,8 +1121,6 @@ namespace ANP_Academy.DAL.Migrations.Anpdesarrollo
 
             modelBuilder.Entity("ANP_Academy.DAL.Models.Usuario", b =>
                 {
-                    b.Navigation("ClasesVistas");
-
                     b.Navigation("Notificacion");
 
                     b.Navigation("Solicitudes");

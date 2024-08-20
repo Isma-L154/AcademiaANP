@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ANP_Academy.DAL.Models.Clase>
+﻿@model IEnumerable<ANP_Academy.ViewModel.ClaseViewModel>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -9,44 +9,88 @@
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/Clase/Clase.css" asp-append-version="true" />
+    <style>
+        .leido {
+            opacity: 0.8;
+            background-color: #e0e0e0;
+            position: relative;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5em;
+            color: green;
+        }
+
+        .btn-leido {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-no-leido {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .rating input[type="radio"] {
+            display: none;
+        }
+
+        .rating label {
+            font-size: 1.5em;
+            color: gold;
+            cursor: pointer;
+        }
+
+        .full-star {
+            color: gold;
+        }
+
+        .half-star {
+            color: lightgray;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1 class="text-center mt-4 mb-4">Clases</h1>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            @foreach (var clase in Model)
+            @foreach (var claseViewModel in Model)
             {
+                var esLeida = claseViewModel.EsLeida;
                 <div class="col">
-                    <div class="card h-100">
-                        <img src="@Url.Action("GetImage", "Clase", new { id = clase.IdClase })" class="card-img-top" alt="Imagen de la clase">
+                    <div class="card h-100 @(esLeida ? "leido" : "no-leido")">
+                        <img src="@Url.Action("GetImage", "Clase", new { id = claseViewModel.IdClase })" class="card-img-top" alt="Imagen de la clase">
                         <div class="card-body">
-                            <h5 class="card-title">@clase.Titulo</h5>
+                            <h5 class="card-title">@claseViewModel.Titulo</h5>
 
                             <!-- Mostrar el promedio de calificación debajo del título -->
                             <div class="rating">
                                 @{
-                                    var fullStars = (int)clase.Rating;
-                                    var hasHalfStar = clase.Rating - fullStars >= 0.5;
+                                    var fullStars = (int)claseViewModel.Rating;
+                                    var hasHalfStar = claseViewModel.Rating - fullStars >= 0.5;
                                 }
                                 @for (int i = 1; i <= 5; i++)
                                 {
-                                    <input type="radio" name="rating-@clase.IdClase" id="star-@i-@clase.IdClase" value="@i" @(i == fullStars + 1 && hasHalfStar ? "checked" : "") />
+                                    <input type="radio" name="rating-@claseViewModel.IdClase" id="star-@i-@claseViewModel.IdClase" value="@i" />
                                     @if (i <= fullStars)
                                     {
-                                        <label for="star-@i-@clase.IdClase" class="full-star">★</label>
+                                        <label for="star-@i-@claseViewModel.IdClase" class="full-star">★</label>
                                     }
                                     else if (i == fullStars + 1 && hasHalfStar)
                                     {
-                                        <label for="star-@i-@clase.IdClase" class="half-star">☆</label>
+                                        <label for="star-@i-@claseViewModel.IdClase" class="half-star">☆</label>
                                     }
                                     else
                                     {
-                                        <label for="star-@i-@clase.IdClase">☆</label>
+                                        <label for="star-@i-@claseViewModel.IdClase">☆</label>
                                     }
                                 }
 
                                 <!-- Mostrar el promedio como número -->
-                                <span class="rating-average">(@clase.Rating.ToString("0.0"))</span>
+                                <span class="rating-average">(@claseViewModel.Rating.ToString("0.0"))</span>
                                 <!-- Spinner de carga -->
                                 <div class="loading-spinner spinner-border text-warning" role="status">
                                     <span class="visually-hidden">Loading...</span>
@@ -55,16 +99,26 @@
                                 <div class="temp-message">Gracias por su calificación</div>
                             </div>
 
-                            <p class="card-text">@clase.Descripcion</p>
+                            <p class="card-text">@claseViewModel.Descripcion</p>
 
                             <!-- Contenedor flex para alinear los botones en una línea -->
                             <div class="d-flex align-items-center">
-                                <a href="@clase.URLVideo" class="btn btn-primary">Ver Clase</a>
+                                <a href="@claseViewModel.URLVideo" class="btn btn-primary" target="_blank">Ver Clase</a>
                                 <!-- Espaciado entre los botones -->
-                                <a asp-action="ComentariosClase" asp-route-id="@clase.IdClase" class="btn btn-secondary ml-5" data-toggle="tooltip" data-placement="top" title="Comentar">
+                                <a asp-action="ComentariosClase" asp-route-id="@claseViewModel.IdClase" class="btn btn-secondary ml-5" data-toggle="tooltip" data-placement="top" title="Comentar">
                                     <i class="fa fa-comments"></i>
                                 </a>
                             </div>
+
+                            <!-- Botón para marcar como leído/no leído -->
+                            <button class="btn @(esLeida ? "btn-no-leido" : "btn-leido") mt-3 marcar-leido-no-leido" data-id="@claseViewModel.IdClase">
+                                @(esLeida ? "Marcar como no leído" : "Marcar como leído")
+                            </button>
+
+                            @if (esLeida)
+                            {
+                                <div class="checkmark">✓</div>
+                            }
 
                             <!-- Barra de progreso -->
                             <div class="progress mt-3">
@@ -73,7 +127,6 @@
                         </div>
                     </div>
                 </div>
-
             }
         </div>
     </div>
@@ -81,9 +134,46 @@
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Script para manejar la calificación con estrellas -->
+    <!-- Script para manejar el botón de marcar como leído/no leído -->
     <script>
         $(document).ready(function () {
+            $('.marcar-leido-no-leido').click(function () {
+                var idClase = $(this).data('id');
+                var $button = $(this);
+                var $card = $button.closest('.card');
+
+                // Determinar la acción basada en el texto del botón
+                var esLeido = $button.hasClass('btn-no-leido');
+                var actionUrl = esLeido ? '@Url.Action("MarcarComoNoLeido", "Clase")' : '@Url.Action("MarcarComoLeida", "Clase")';
+
+                $.ajax({
+                    url: actionUrl,
+                    type: 'POST',
+                    data: { idClase: idClase },
+                    success: function (response) {
+                        if (response.success) {
+                            if (esLeido) {
+                                // Cambiar a estado no leído
+                                $card.removeClass('leido');
+                                $button.removeClass('btn-no-leido').addClass('btn-leido').text('Marcar como leído');
+                                $card.find('.checkmark').remove();
+                            } else {
+                                // Cambiar a estado leído
+                                $card.addClass('leido');
+                                $button.removeClass('btn-leido').addClass('btn-no-leido').text('Marcar como no leído');
+                                $card.append('<div class="checkmark">✓</div>');
+                            }
+                        } else {
+                            console.log('Error al cambiar el estado de la clase');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('Error al cambiar el estado de la clase:', error);
+                    }
+                });
+            });
+
+            // Script para manejar la calificación con estrellas
             $('input[type="radio"]').change(function () {
                 var rating = $(this).val();
                 var idClase = $(this).attr('name').split('-')[1];
