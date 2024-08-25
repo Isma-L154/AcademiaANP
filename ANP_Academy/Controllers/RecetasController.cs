@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace ANP_Academy.Controllers
 {
@@ -24,9 +25,24 @@ namespace ANP_Academy.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var recetas = await _dbContext.Recetas.ToListAsync();
-            return View(recetas);
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var recetas = await _dbContext.Recetas
+                .Include(r => r.Ratings)
+                .ToListAsync();
+
+            var viewModel = recetas.Select(r => new RecetaViewModel
+            {
+                IdReceta = r.IdReceta,
+                Titulo = r.Titulo,
+                Descripcion = r.Descripcion,
+                URLVideo = r.URLVideo,
+                Rating = r.Ratings.Any() ? (float)r.Ratings.Average(r => r.Rating) : 0,
+                EsLeida = r.RecetasVistas.Any(rv => rv.UserId == userId)
+            }).ToList();
+
+            return View(viewModel);
         }
+
 
         public async Task<IActionResult> InfoReceta(int? id)
         {
@@ -401,6 +417,50 @@ namespace ANP_Academy.Controllers
 
             return Json(new { newRating = averageRating });
         }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> MarcarComoLeida(int idReceta)
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var recetaVista = await _dbContext.RecetasVistas
+                .FirstOrDefaultAsync(rv => rv.IdReceta == idReceta && rv.UserId == userId);
+
+            if (recetaVista == null)
+            {
+                recetaVista = new RecetaVista
+                {
+                    IdReceta = idReceta,
+                    UserId = userId,
+                    FechaVista = DateTime.Now
+                };
+
+                _dbContext.RecetasVistas.Add(recetaVista);
+                await _dbContext.SaveChangesAsync();
+            }
+
+            return Json(new { success = true });
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> MarcarComoNoLeido(int idReceta)
+        {
+            var userId = _userManager.GetUserId(User);
+
+            var recetaVista = await _dbContext.RecetasVistas
+                .FirstOrDefaultAsync(rv => rv.IdReceta == idReceta && rv.UserId == userId);
+
+            if (recetaVista != null)
+            {
+                _dbContext.RecetasVistas.Remove(recetaVista);
+                await _dbContext.SaveChangesAsync();
+            }
+
+            return Json(new { success = true });
+        }
+
 
 
     }
