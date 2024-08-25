@@ -34,7 +34,7 @@
                             <td>@item.FechaSolicitud.ToString("dd/MM/yyyy")</td>
                             <td>@(item.FechaInicio.HasValue ? item.FechaInicio.Value.ToString("dd/MM/yyyy") : "Pendiente de aprobación")</td>
                             <td>@(item.FechaFinal.HasValue ? item.FechaFinal.Value.ToString("dd/MM/yyyy") : "Pendiente de aprobación")</td>
-                            <td>@(item.Estado.HasValue ? (item.Estado.Value ? "Activa" : "Inactiva") : "Pendiente. La administración se encuentra revisando su solicitud.")</td>
+                            <td>@(item.Estado.HasValue ? (item.Estado.Value ? "Activa" : "Inactiva") : "El equipo ANP Academy está revisando su solicitud.")</td>
                         </tr>
                     }
                 </tbody>
