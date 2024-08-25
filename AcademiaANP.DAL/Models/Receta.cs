@@ -30,5 +30,6 @@ namespace ANP_Academy.DAL.Models
         public float Rating { get; set; } = 0f; // Valoración promedio
 
         public ICollection<RecetaRating> Ratings { get; set; } = new List<RecetaRating>(); // Relación con calificaciones individuales
+        public ICollection<RecetaVista> RecetasVistas { get; set; } = new List<RecetaVista>();
     }
 }
