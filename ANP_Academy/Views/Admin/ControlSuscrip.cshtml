@@ -41,7 +41,10 @@ else
                             <input type="hidden" name="idSuscripcion" value="@item.IdSuscripcion" />
                             <button type="submit" class="btn btn-success">Aprobar</button>
                         </form>
-                        <button class="btn btn-danger" onclick="rechazarSolicitud('@item.IdSolicitud')">Rechazar</button>
+                        <form asp-action="RechazarSolicitud" asp-controller="Admin" method="post" onsubmit="return confirm('¿Está seguro que desea rechazar esta solicitud?');">
+                            <input type="hidden" name="idSolicitud" value="@item.IdSolicitud" />
+                            <button type="submit" class="btn btn-danger">Rechazar</button>
+                        </form>
                     </td>
                 </tr>
             }

@@ -8,7 +8,7 @@ namespace ANP_Academy.ViewModel
     public class MisSuscripcionesViewModel
     {
     public List<Solicitudes> SuscripcionesPendientes { get; set; }
-    public List<Solicitudes> SuscripcionesAprobadas { get; set; }
+    public List<Solicitudes> SuscripcionesActivas { get; set; }
     public List<Solicitudes> SuscripcionesRechazadas { get; set; }
     }
 }

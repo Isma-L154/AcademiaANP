@@ -27,6 +27,7 @@
                     <h5 class="card-title">Adjuntar Comprobante</h5>
                 </div>
                 <div class="card-body">
+                    <p>Por favor adjunta el comprobante de tu transferencia SINPE para proceder con la activación de tu suscripción.</p>
                     <form enctype="multipart/form-data" method="post" asp-action="AdjuntarComprobante" asp-controller="Suscripciones">
                         <input type="hidden" name="IdSuscripcion" value="@Model.IdSuscripcion" />
                         <input type="hidden" name="UserId" value="@UserManager.GetUserId(User)" />

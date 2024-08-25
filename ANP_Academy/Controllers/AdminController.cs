@@ -835,6 +835,24 @@ namespace ANP_Academy.Controllers
 
             client.Send(msg);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> RechazarSolicitud(int idSolicitud)
+        {
+            var solicitud = await _dbContext.Solicitudes.FindAsync(idSolicitud);
+            if (solicitud == null)
+            {
+                return NotFound();
+            }
+
+            solicitud.Estado = false; // Rechazar la solicitud
+            _dbContext.Update(solicitud);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction("ControlSuscrip"); // Redirigir al control de suscripciones
+        }
+
+
         //CONTABILIDAD 
         //TODO Organize this whole controller in different folders, is disorganize af
         public IActionResult MostrarContabilidad()

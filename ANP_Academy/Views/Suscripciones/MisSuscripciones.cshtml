@@ -34,10 +34,7 @@
                             <td>@item.FechaSolicitud.ToString("dd/MM/yyyy")</td>
                             <td>@(item.FechaInicio.HasValue ? item.FechaInicio.Value.ToString("dd/MM/yyyy") : "Pendiente de aprobación")</td>
                             <td>@(item.FechaFinal.HasValue ? item.FechaFinal.Value.ToString("dd/MM/yyyy") : "Pendiente de aprobación")</td>
-                            <td>@(item.Estado.HasValue ? (item.Estado.Value ? "Activa" : "Inactiva") : "Pendiente")</td>
-                            <td>
-                                <button class="button" onclick="confirmarEliminar()">Cancelar solicitud</button>
-                            </td>
+                            <td>@(item.Estado.HasValue ? (item.Estado.Value ? "Activa" : "Inactiva") : "Pendiente. La administración se encuentra revisando su solicitud.")</td>
                         </tr>
                     }
                 </tbody>
@@ -46,8 +43,8 @@
     </section>
 
     <section>
-        <h3>Suscripciones Aprobadas</h3>
-        @if (!Model.SuscripcionesAprobadas.Any())
+        <h3>Suscripciones Activas</h3>
+        @if (!Model.SuscripcionesActivas.Any())
         {
             <p class="no-data">No se encontraron suscripciones en esta categoría.</p>
         }
@@ -66,7 +63,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.SuscripcionesAprobadas)
+                    @foreach (var item in Model.SuscripcionesActivas)
                     {
                         <tr>
                             <td>@item.IdSolicitud</td>
@@ -76,7 +73,10 @@
                             <td>@(item.FechaFinal.HasValue ? item.FechaFinal.Value.ToString("dd/MM/yyyy") : "Contactar a servicio al cliente.")</td>
                             <td>@(item.Estado.HasValue ? (item.Estado.Value ? "Activa" : "Inactiva") : "Pendiente")</td>
                             <td>
-                                <button class="button" onclick="confirmarEliminar()">Cancelar suscripción</button>
+                                <form asp-action="CancelarSuscripcion" asp-controller="Suscripciones" method="post" onsubmit="return confirm('¿Está seguro que desea cancelar esta suscripción?');">
+                                    <input type="hidden" name="idSolicitud" value="@item.IdSolicitud" />
+                                    <button type="submit" class="btn btn-danger">Cancelar</button>
+                                </form>
                             </td>
                         </tr>
                     }
@@ -111,12 +111,9 @@
                             <td>@item.IdSolicitud</td>
                             <td>@item.SuscripcionEntity.Nombre</td>
                             <td>@item.FechaSolicitud.ToString("dd/MM/yyyy")</td>
-                            <td>@(item.FechaInicio.HasValue ? item.FechaInicio.Value.ToString("dd/MM/yyyy") : "Contactar a servicio al cliente.")</td>
-                            <td>@(item.FechaFinal.HasValue ? item.FechaFinal.Value.ToString("dd/MM/yyyy") : "Contactar a servicio al cliente.")</td>
+                            <td>@(item.FechaInicio.HasValue ? item.FechaInicio.Value.ToString("dd/MM/yyyy") : "La solicitud fue rechazada.")</td>
+                            <td>@(item.FechaFinal.HasValue ? item.FechaFinal.Value.ToString("dd/MM/yyyy") : "La solicitud fue rechazada.")</td>
                             <td>@(item.Estado.HasValue ? (item.Estado.Value ? "Activa" : "Rechazada") : "Pendiente")</td>
-                            <td>
-                                <button class="button" onclick="confirmarEliminar()">Cancelar suscripción</button>
-                            </td>
                         </tr>
                     }
                 </tbody>

@@ -1,25 +1,43 @@
 ﻿@model IEnumerable<ANP_Academy.DAL.Models.Suscripcion>
-@inject Microsoft.AspNetCore.Identity.UserManager<ANP_Academy.DAL.Models.Usuario> UserManager
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Suscripciones";
 }
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <link rel="stylesheet" href="~/css/Suscripciones/Suscripciones.css" asp-append-version="true" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
 
 <div class="container mt-4">
-    <h1 class="text-center">Suscripciones</h1>
-    <div class="row">
-        <div class="col-12">
-            <div class="description">
-                <h3>Descripción General</h3>
-                <p>
-                    Aquí puedes encontrar diferentes planes de suscripción que ofrecemos.
-                    Acceso completo a material exclusivo, actualizaciones regulares. Posibilidad de cancelar en cualquier momento sin compromisos a largo plazo. Selecciona el plan que mejor se adapte a tus necesidades y disfruta de nuestros servicios exclusivos.
-                </p>
-            </div>
-        </div>
+    <h1 class="text-center">ANP Academy</h1>
+    <div class="description card p-4 shadow-sm">
+        <h3>Beneficios de la suscripción a ANP Academy</h3>
+        <p>
+            <i class="fas fa-utensils fa-lg mr-2"></i>Accede a material exclusivo como recetas y clases de parrilla.
+        </p>
+        <p>
+            <i class="fas fa-calendar-alt fa-lg mr-2"></i>Descubre nuevas recetas y clases cada semana.
+        </p>
+        <p>
+            <i class="fas fa-pencil-alt fa-lg mr-2"></i>Participa y escribe reseñas sobre nuestras clases para obtener ayuda de expertos.
+        </p>
+        <p>
+            <i class="fas fa-users fa-lg mr-2"></i>Únete a foros y comparte consejos y recetas con otros entusiastas de la parrilla.
+        </p>
+        
+        <h4>¿Cómo me suscribo?</h4>
+        <p>
+            <i class="fas fa-hand-pointer fa-lg mr-2"></i>Selecciona el plan que mejor se adapte a tus necesidades y haz click en "Adquirir Suscripción".
+        </p>
+        <p>
+            <i class="fas fa-money-bill-wave fa-lg mr-2"></i>Realiza una transferencia SINPE y adjunta el comprobante en el formulario del sistema.
+        </p>
+        <p>
+            <i class="fas fa-clock fa-lg mr-2"></i>Tu suscripción se activará en menos de 24 horas tras la verificación del pago.
+        </p>
+        <p>
+            <i class="fas fa-envelope fa-lg mr-2"></i>Serás notificado por correo cuando se apruebe tu suscripción.
+        </p>
     </div>
 
     <div class="row">
@@ -32,15 +50,13 @@
                         <p class="card-text">Precio: <span class="font-weight-bold">@item.Precio CRC</span></p>
                         <p class="card-text">Duración: <span class="font-weight-bold">@item.Duracion meses</span></p>
                         <div class="btn-center mt-auto">
-                            <!-- Usar directamente el enlace como un botón -->
-                            <a class="btn btn-danger btn-lg" href="@Url.Action("AdquirirSuscripcion", "Suscripciones", new { id = item.IdSuscripcion})">Adquirir Plan</a>
+                            <a class="btn btn-danger btn-lg" href="@Url.Action("AdquirirSuscripcion", "Suscripciones", new { id = item.IdSuscripcion})">Adquirir Suscripción</a>
                         </div>
                     </div>
                 </div>
             </div>
         }
     </div>
-
 </div>
 
 <script src="~/js/Admin/GestionPlanes.js"></script>
