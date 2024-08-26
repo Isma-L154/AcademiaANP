@@ -9,18 +9,23 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using System.Net.Mail;
+using System.Net;
+using System.Numerics;
 
 namespace ANP_Academy.Controllers
 {
     public class RecetasController : Controller
     {
         private readonly AnpdesarrolloContext _dbContext;
+        private readonly IConfiguration _configuration;
         private readonly UserManager<Usuario> _userManager;
 
-        public RecetasController(AnpdesarrolloContext dbContext, UserManager<Usuario> userManager)
+        public RecetasController(AnpdesarrolloContext dbContext, UserManager<Usuario> userManager, IConfiguration configuration)
         {
             _dbContext = dbContext;
             _userManager = userManager;
+            _configuration = configuration;
         }
 
         public async Task<IActionResult> Index()
@@ -119,6 +124,8 @@ namespace ANP_Academy.Controllers
                 // Generar notificación dentro de la plataforma a los usuarios.
                 await GenerarNotificacionReceta(receta);
 
+                await NotificarEstudiantesSuscritos(receta);
+
                 return RedirectToAction(nameof(GestionRecetas));
             }
 
@@ -146,6 +153,85 @@ namespace ANP_Academy.Controllers
                 _dbContext.Add(notificacion);
                 await _dbContext.SaveChangesAsync();
             }
+        }
+
+        private async Task NotificarEstudiantesSuscritos(Receta receta)
+        {
+            // Obtén los estudiantes suscritos que desean recibir notificaciones
+            var estudiantesSuscritos = await _userManager.Users
+                .Where(u => u.Suscrito == true && u.Notificaciones == true)
+                .ToListAsync();
+
+            if (estudiantesSuscritos.Count == 0)
+            {
+                Console.WriteLine("No se encontraron estudiantes suscritos que deseen notificaciones.");
+                return;
+            }
+
+            foreach (var estudiante in estudiantesSuscritos)
+            {
+                string destinatario = estudiante.Email;
+                string asunto = "Nueva Receta Agregada";
+                string mensaje = $@"
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                /* estilos CSS */
+            </style>
+        </head>
+        <body>
+            <div class='content'>
+                <h1>Estimado(a) {estudiante.Nombre} {estudiante.PrimApellido} {estudiante.SegApellido},</h1>
+                <p>Se ha agregado una nueva receta titulada <strong>{receta.Titulo}</strong> en <strong>ANP Academy</strong>.</p>
+                <p>Descripción: {receta.Descripcion}</p>
+                <a href='{receta.URLVideo}' class='btn'>Ver Receta</a>
+            </div>
+            <div class='footer'>
+                <p>ANP Academy - Todos los derechos reservados.</p>
+            </div>
+        </body>
+        </html>";
+
+                try
+                {
+                    SendEmail(destinatario, asunto, mensaje);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al enviar el correo: " + ex.Message);
+                }
+            }
+        }
+
+
+        public void SendEmail(string destinatario, string asunto, string mensaje)
+        {
+            var emailSettings = _configuration.GetSection("EmailSettings");
+
+            string CuentaEmail = emailSettings["CuentaEmail"];
+            string PasswordEmail = emailSettings["PasswordEmail"];
+            string Host = emailSettings["Host"];
+            int Port = int.Parse(emailSettings["Port"]);
+
+            MailMessage msg = new MailMessage();
+            msg.To.Add(new MailAddress(destinatario));
+            msg.From = new MailAddress(CuentaEmail);
+            msg.Subject = asunto;
+            msg.Body = mensaje;
+            msg.IsBodyHtml = true;
+
+            SmtpClient client = new SmtpClient
+            {
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(CuentaEmail, PasswordEmail),
+                Port = Port,
+                Host = Host,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                EnableSsl = true
+            };
+
+            client.Send(msg);
         }
 
         public async Task<IActionResult> DetailsRecetas(int? id)
