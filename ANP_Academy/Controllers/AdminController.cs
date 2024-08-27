@@ -37,101 +37,6 @@ namespace ANP_Academy.Controllers
             _configuration = configuration;
         }
 
-        public async Task<IActionResult> GestionRoles()
-        {
-            var usuarios = await _userManager.Users.ToListAsync();
-            var roles = await _roleManager.Roles.ToListAsync();
-            var userRoles = new List<RoleUpdateViewModel>();
-
-            foreach (var user in usuarios)
-            {
-                var userRolesList = await _userManager.GetRolesAsync(user);
-                var userRole = userRolesList.FirstOrDefault();
-
-                userRoles.Add(new RoleUpdateViewModel
-                {
-                    Usuario = user,
-                    Role = userRole,
-                    Roles = new SelectList(roles, "Id", "Name", roles.FirstOrDefault(r => r.Name == userRole)?.Id)
-                });
-            }
-
-            return View(userRoles);
-        }
-
-
-        [HttpGet]
-        public async Task<IActionResult> EditarRol(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            var roles = await _roleManager.Roles.ToListAsync();
-            var userRoles = await _userManager.GetRolesAsync(user);
-            var userRole = userRoles.FirstOrDefault();
-
-            var roleSelectList = new SelectList(roles, "Id", "Name", roles.FirstOrDefault(r => r.Name == userRole)?.Id);
-
-            var model = new RoleUpdateViewModel
-            {
-                Usuario = user,
-                Role = userRole,
-                Roles = roleSelectList
-            };
-
-            return View(model);
-        }
-
-        //[HttpPost]
-        //public async Task<IActionResult> ActualizarRol(RoleUpdateViewModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        // Recargar la lista de roles para la vista
-        //        var roles = await _roleManager.Roles.ToListAsync();
-        //        model.Roles = new SelectList(roles, "Id", "Name", model.SelectedRoleId);
-        //        return View("EditarRol", model); // Cambiar a la vista de edición de rol
-        //    }
-
-        //    var user = await _userManager.FindByIdAsync(model.Usuario.Id);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var currentRoles = await _userManager.GetRolesAsync(user);
-        //    var result = await _userManager.RemoveFromRolesAsync(user, currentRoles);
-
-        //    if (!result.Succeeded)
-        //    {
-        //        ModelState.AddModelError("", "Failed to remove user roles.");
-        //        var roles = await _roleManager.Roles.ToListAsync();
-        //        model.Roles = new SelectList(roles, "Id", "Name", model.SelectedRoleId);
-        //        return View("EditarRol", model); // Cambiar a la vista de edición de rol
-        //    }
-
-        //    var newRole = await _roleManager.FindByIdAsync(model.SelectedRoleId);
-        //    result = await _userManager.AddToRoleAsync(user, newRole.Name);
-
-        //    if (result.Succeeded)
-        //    {
-        //        return RedirectToAction("GestionRoles");
-        //    }
-
-        //    foreach (var error in result.Errors)
-        //    {
-        //        ModelState.AddModelError(string.Empty, error.Description);
-        //    }
-
-        //    var roleList = await _roleManager.Roles.ToListAsync();
-        //    model.Roles = new SelectList(roleList, "Id", "Name", model.SelectedRoleId);
-        //    return View("EditarRol", model); // Cambiar a la vista de edición de rol
-        //}
-
-
         public async Task<IActionResult> GestionUsuarios()
             {
                 var usuarios = await _userManager.Users.ToListAsync();
@@ -155,50 +60,77 @@ namespace ANP_Academy.Controllers
         [HttpGet]
         public async Task<IActionResult> EditarUsuario(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
+            var usuario = await _userManager.FindByIdAsync(id);
+            if (usuario == null)
             {
                 return NotFound();
             }
 
-            return View(user);
+            var userRoles = await _userManager.GetRolesAsync(usuario);
+            var roles = await _roleManager.Roles.ToListAsync();
+
+            var roleList = new SelectList(roles, "Name", "Name", userRoles.FirstOrDefault());
+
+            ViewBag.Roles = roleList; 
+
+            var viewModel = new UserRoleViewModel
+            {
+                Usuario = usuario,
+                Role = userRoles.FirstOrDefault()
+            };
+
+            return View(viewModel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> EditarUsuario(Usuario model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
 
-            var user = await _userManager.FindByIdAsync(model.Id);
+
+        [HttpPost]
+        public async Task<IActionResult> EditarUsuario(Usuario usuario, string role)
+        {
+            
+            var user = await _userManager.FindByIdAsync(usuario.Id);
             if (user == null)
             {
                 return NotFound();
             }
 
-            user.Nombre = model.Nombre;
-            user.PrimApellido = model.PrimApellido;
-            user.SegApellido = model.SegApellido;
-            user.PhoneNumber = model.PhoneNumber;
-            user.UserName = model.UserName;
-            user.Email = model.Email;
+            
+            user.Nombre = usuario.Nombre;
+            user.PrimApellido = usuario.PrimApellido;
+            user.SegApellido = usuario.SegApellido;
+            user.PhoneNumber = usuario.PhoneNumber;
+            user.UserName = usuario.UserName;
+            user.Email = usuario.Email;
 
             var result = await _userManager.UpdateAsync(user);
-            if (result.Succeeded)
+            
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            if (!currentRoles.Contains(role))
             {
-                await _dbContext.SaveChangesAsync();
+                var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
+                if (!removeResult.Succeeded)
+                {
+                    foreach (var error in removeResult.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    return View(usuario);
+                }
 
-                return RedirectToAction("GestionUsuarios");
+                var addRoleResult = await _userManager.AddToRoleAsync(user, role);
+                if (!addRoleResult.Succeeded)
+                {
+                    foreach (var error in addRoleResult.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    return View(usuario);
+                }
             }
 
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.Description);
-            }
+            await _dbContext.SaveChangesAsync();
 
-            return View(model);
+            return RedirectToAction("GestionUsuarios");
         }
 
         [HttpPost]
@@ -644,33 +576,33 @@ namespace ANP_Academy.Controllers
         [HttpPost]
         public async Task<IActionResult> AprobarSolicitud(int idSolicitud, string userId, int idSuscripcion)
         {
-            // Obtener la solicitud por id
+            
             var solicitud = await _dbContext.Solicitudes.FindAsync(idSolicitud);
             if (solicitud == null)
             {
                 return NotFound();
             }
 
-            // Obtener la suscripción por id
+           
             var suscripcion = await _dbContext.Suscripciones.FindAsync(idSuscripcion);
             if (suscripcion == null)
             {
                 return NotFound();
             }
 
-            // Actualizar la solicitud
+            
             solicitud.FechaInicio = DateTime.Now;
             solicitud.FechaFinal = DateTime.Now.AddMonths(suscripcion.Duracion);
             solicitud.Estado = true;
 
-            // Obtener el usuario por id
+            
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
                 return NotFound();
             }
 
-            // Remover roles actuales y asignar el rol de Estudiante
+            
             var currentRoles = await _userManager.GetRolesAsync(user);
             await _userManager.RemoveFromRolesAsync(user, currentRoles);
 
@@ -680,15 +612,15 @@ namespace ANP_Academy.Controllers
                 return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
 
-            // Marcar al usuario como suscrito
+            
             user.Suscrito = true;
 
-            // Actualizar el usuario y la solicitud en la base de datos
+            
             _dbContext.Update(solicitud);
             _dbContext.Update(user);
             await _dbContext.SaveChangesAsync();
 
-            // Crear y guardar la factura en la base de datos
+            
             var factura = new Factura
             {
                 Fecha = DateTime.Now,
@@ -701,7 +633,7 @@ namespace ANP_Academy.Controllers
             _dbContext.Facturas.Add(factura);
             await _dbContext.SaveChangesAsync();
 
-            // Enviar correo electrónico de confirmación
+            
             string destinatario = user.Email;
             string asunto = "Solicitud Aprobada";
             string mensaje = $@"
@@ -803,7 +735,7 @@ namespace ANP_Academy.Controllers
                 Console.WriteLine("Error al enviar el correo: " + ex.Message);
             }
 
-            // Redirigir al control de suscripciones
+            
             return RedirectToAction("ControlSuscrip");
         }
 
@@ -845,11 +777,11 @@ namespace ANP_Academy.Controllers
                 return NotFound();
             }
 
-            solicitud.Estado = false; // Rechazar la solicitud
+            solicitud.Estado = false; 
             _dbContext.Update(solicitud);
             await _dbContext.SaveChangesAsync();
 
-            return RedirectToAction("ControlSuscrip"); // Redirigir al control de suscripciones
+            return RedirectToAction("ControlSuscrip");
         }
 
 

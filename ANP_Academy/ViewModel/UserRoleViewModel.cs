@@ -9,7 +9,6 @@ namespace ANP_Academy.ViewModel
     {
         public Usuario Usuario { get; set; }
         public string Role { get; set; }
-        public SelectList Roles { get; set; }
     }
 }
 

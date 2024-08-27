@@ -1,4 +1,4 @@
-﻿@model ANP_Academy.DAL.Models.Usuario
+﻿@model ANP_Academy.ViewModel.UserRoleViewModel
 
 <link rel="stylesheet" href="~/css/Administrador/EditarUsuario.css" asp-append-version="true" />
 
@@ -15,37 +15,41 @@
 
         <div class="formulario-edicion">
             <form asp-action="EditarUsuario" method="post">
+                <input type="hidden" asp-for="Usuario.Id" />
                 <div class="campo-formulario">
-                    <label asp-for="UserName">Usuario</label>
-                    <input asp-for="UserName" class="form-control" required />
-                    <span asp-validation-for="UserName" class="text-danger"></span>
+                    <label asp-for="Usuario.UserName">Usuario</label>
+                    <input asp-for="Usuario.UserName" class="form-control" required />
+                    <span asp-validation-for="Usuario.UserName" class="text-danger"></span>
                 </div>
                 <div class="campo-formulario">
-                    <label asp-for="Email">Correo Electrónico</label>
-                    <input asp-for="Email" class="form-control" type="email" required readonly />
-                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <label asp-for="Usuario.Email">Correo Electrónico</label>
+                    <input asp-for="Usuario.Email" class="form-control" type="email" required readonly />
+                    <span asp-validation-for="Usuario.Email" class="text-danger"></span>
                 </div>
                 <div class="campo-formulario">
-                    <label asp-for="Nombre">Nombre</label>
-                    <input asp-for="Nombre" class="form-control" required />
-                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                    <label asp-for="Usuario.Nombre">Nombre</label>
+                    <input asp-for="Usuario.Nombre" class="form-control" required />
+                    <span asp-validation-for="Usuario.Nombre" class="text-danger"></span>
                 </div>
                 <div class="campo-formulario">
-                    <label asp-for="PrimApellido">Primer Apellido</label>
-                    <input asp-for="PrimApellido" class="form-control" required />
-                    <span asp-validation-for="PrimApellido" class="text-danger"></span>
+                    <label asp-for="Usuario.PrimApellido">Primer Apellido</label>
+                    <input asp-for="Usuario.PrimApellido" class="form-control" required />
+                    <span asp-validation-for="Usuario.PrimApellido" class="text-danger"></span>
                 </div>
                 <div class="campo-formulario">
-                    <label asp-for="SegApellido">Segundo Apellido</label>
-                    <input asp-for="SegApellido" class="form-control" />
-                    <span asp-validation-for="SegApellido" class="text-danger"></span>
+                    <label asp-for="Usuario.SegApellido">Segundo Apellido</label>
+                    <input asp-for="Usuario.SegApellido" class="form-control" />
+                    <span asp-validation-for="Usuario.SegApellido" class="text-danger"></span>
                 </div>
                 <div class="campo-formulario">
-                    <label asp-for="PhoneNumber">Teléfono</label>
-                    <input asp-for="PhoneNumber" class="form-control" required pattern="\d{8,}" title="El número de teléfono debe tener al menos 8 caracteres numéricos." />
-                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    <label asp-for="Usuario.PhoneNumber">Teléfono</label>
+                    <input asp-for="Usuario.PhoneNumber" class="form-control" required pattern="\d{8,}" title="El número de teléfono debe tener al menos 8 caracteres numéricos." />
+                    <span asp-validation-for="Usuario.PhoneNumber" class="text-danger"></span>
                 </div>
-
+                <div class="campo-formulario">
+                    <label asp-for="Role">Rol</label>
+                    <select asp-for="Role" asp-items="@(ViewBag.Roles as SelectList)" class="form-control"></select>
+                </div>
                 <div class="botones-formulario">
                     <button type="submit" class="boton-verde">Guardar Cambios</button>
                     <button type="button" class="boton-atras" onclick="history.back()">Atrás</button>
