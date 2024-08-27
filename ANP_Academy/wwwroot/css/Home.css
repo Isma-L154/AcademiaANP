@@ -1,77 +1,101 @@
-
-
 body {
     overflow-x: hidden;
     height: 100%;
-    margin:0;
-    font-family: "Inconsolata", sans-serif
+    margin: 0;
+    font-family: "Inconsolata", sans-serif;
 }
 
 header {
-    background-color: #040404; 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.nav-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px;
+    background-color: #040404;
+    padding: 10px 0;
 }
 
-.nav-links {
-    list-style-type: none; 
-    margin: 0;
-    padding: 0;
-    display: flex;
-}
-    .nav-links li {
-        display: inline;
-        margin-left: 20px;
-    }
-
-    .nav-links a {
-        text-decoration: none;
-        color: white!important;
-        font-size: 16px;
-    }
-    .nav-links button{
-        margin-left: 20px;
-        
-    }
-
-    
-
-/*Botones de autenticacion para los usuarios*/
-.auth-buttons {
-    display: flex; 
-    align-items: center; 
-    justify-content: flex-end; 
+.navbar {
+    padding: 0 20px;
 }
 
-    .auth-buttons a {
-        text-decoration: none;
-        padding: 10px 20px;
-        margin-right: 10px;
-        border: 2px solid #E32A07;
-        border-radius: 5px;
-        background-color: #E32A07;
-        color: #E7DFD1 !important;
-        transition: all 0.3s ease;
+.navbar-brand img {
+    height: 70px;
+    width: 100px;
+}
+
+.navbar-nav .nav-link {
+    color: white !important;
+    font-size: 17px;
+    margin-left: 10px;
+}
+
+.navbar-nav .btn {
+    margin-left: 20px;
+}
+
+/* Centrado del navbar y sus elementos */
+.navbar-nav {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+    .navbar-nav.ms-4 {
+        margin-right: 0;
+        margin-left: auto;
     }
 
-        .auth-buttons a:hover {
-            border: 2px solid darkred;
-            background-color: darkred;
-            color: white !important;
-        }
+/* Estilo del botón de hamburguesa */
+.navbar-toggler {
+    border-color: transparent;
+}
 
-    /*Main*/
-    .hero {
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba%28255, 255, 255, 0.5%29' stroke-width='2' linecap='round' linejoin='round' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+
+.offcanvas {
+    background-color: #ffffff; /* Asegura un fondo blanco o el color que prefieras */
+    color: #2A2A2A; /* Asegura que el texto sea visible */
+}
+
+.offcanvas-body {
+    color: #2A2A2A; /* Establece el color del texto dentro del cuerpo del offcanvas */
+}
+
+.nav-link {
+    color: #2A2A2A !important; /* Asegura que los enlaces sean visibles */
+}
+
+    .nav-link:hover {
+        color: #ed3330 !important; /* Color del texto al pasar el cursor */
+    }
+
+/* Asegúrate de que todos los elementos de texto dentro del offcanvas tengan un color de texto visible */
+.offcanvas .nav-item .nav-link {
+    color: #2A2A2A !important; /* Color visible para los enlaces */
+}
+
+    .offcanvas .nav-item .nav-link:hover {
+        color: #ed3330 !important; /* Color de hover para los enlaces */
+    }
+
+.offcanvas-header button.btn-close {
+    color: #2A2A2A; /* Asegura que el color de la equis sea visible */
+    background-color: transparent; /* Sin fondo para el botón */
+    border: none; /* Sin borde */
+    opacity: 1; /* Asegura que el botón sea completamente opaco */
+    filter: none; /* Asegura que no se aplique ningún filtro que lo haga invisible */
+}
+
+    .offcanvas-header button.btn-close:hover {
+        color: #ed3330; /* Cambia el color al pasar el cursor por encima */
+    }
+
+
+
+
+/*Main*/
+.hero {
     text-align: center;
     padding: 100px 20px;
-    }
+}
 
     .hero h1 {
         font-size: 48px;
@@ -94,8 +118,6 @@ main {
         margin-bottom: 20px;
     }
 
-
-
 /* Responsive Typography */
 @media (max-width: 768px) {
     .hero h1 {
@@ -106,7 +128,6 @@ main {
         font-size: 24px;
     }
 }
-
 
 footer {
     background: #040404;

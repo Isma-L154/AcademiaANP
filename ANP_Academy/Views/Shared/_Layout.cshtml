@@ -16,112 +16,123 @@
 </head>
 <body>
     <header>
-        <nav class="nav-container">
-            <div class="logo"><a  asp-controller="Home" asp-action="Index" ><img src="~/Img/LogoANP.png" alt="LogoANP" style="height: 95px; width: 120px; margin-left:10px"></a></div>
-            <ul class="nav-links">
-                <li><a href="~/Clase/Index">Clases</a></li>
-                <li><a asp-controller="SobreNosotros" asp-action="SobreNosotros">Sobre Nosotros</a></li>
-                <li><a href="~/Recetas/Index">Recetas</a></li>
-                <li><a href="~/FAQs/VistaFAQs">FAQs</a></li>
-                <li><a href="~/Foro/Index">Foro</a></li>
-                <li><a href="~/Suscripciones/Index">Suscripciones</a></li> 
-                <li><a href="#chat">ChatBot</a></li>
-                <button type="button" class="btn btn-outline-danger" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Admin Menu">Admin</button>
-                <button type="button" class="btn btn-outline-danger" data-bs-toggle="offcanvas" data-bs-target="#offcanvasPerfil" aria-controls="offcanvasPerfil">Mi Perfil</button>
-                
-            </ul>
-            <!--Inicio de Menu desplegable para Modulos de Admin-->
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-          <div class="offcanvas-header">
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          </div>
-          <div class="offcanvas-body">
-                 <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 m-3">
-
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    <img src="~/Img/LogoANP.png" alt="LogoANP" style="height: 95px; width: 120px;">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mx-auto">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="ControlSuscrip" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-wallet" style="margin-right: 15px;"></i> Suscripciones</a>
+                            <a class="nav-link" href="~/Clase/Index">Clases</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="GestionUsuarios"  style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-user" style="margin-right: 15px;"></i> Gestión de Usuarios</a>
+                            <a class="nav-link" asp-controller="SobreNosotros" asp-action="SobreNosotros">Sobre Nosotros</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="GestionPlanes" style="color: #2A2A2A; font-size: x-large;">
-                                <i class="fa-solid fa-receipt" style="margin-right: 15px;"></i> Gestionar Planes
-                            </a>
+                            <a class="nav-link" href="~/Recetas/Index">Recetas</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="GestionInventario" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-boxes-stacked" style="margin-right: 15px;"></i> Inventario</a>
+                            <a class="nav-link" href="~/FAQs/VistaFAQs">FAQs</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="GestionForo" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-bullhorn" style="margin-right: 15px;"></i> Gestión del Foro</a>
+                            <a class="nav-link" href="~/Foro/Index">Foro</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="GestionContenido" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-photo-film" style="margin-right: 15px;"></i> Gestión Contenidos</a>
+                            <a class="nav-link" href="~/Suscripciones/Index">Suscripciones</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="MostrarFacturas" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-file-invoice-dollar" style="margin-right: 15px;"></i> Facturación</a>
+                            <a class="nav-link" href="#chat">ChatBot</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="MostrarContabilidad" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-money-bill-trend-up" style="margin-right: 15px;"></i> Contabilidad</a>
+                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Admin Menu">Admin</button>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" asp-controller="FAQs" asp-action="Index" style="color: #2A2A2A; font-size: x-large;">
-                                <i class="fa-solid fa-question-circle" style="margin-right: 15px;"></i> FAQs
-                            </a>
+                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="offcanvas" data-bs-target="#offcanvasPerfil" aria-controls="offcanvasPerfil">Mi Perfil</button>
                         </li>
-
-                </ul>
-            <!--Fin de Menu desplegable para Modulos de Admin-->
-            <!--Inicio de Menu desplegable para Perfil-->
-                </div>
-            </div>
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasPerfil" aria-labelledby="offcanvasPerfilLabel">
-                <div class="offcanvas-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 m-3">
-                        <li classcon="nav-item">
-                            <a class="nav-link" asp-controller="Usuario" asp-action="Index" style="color: #2A2A2A; font-size: x-large;">
-                                <i class="fa-solid fa-user" style="margin-right: 15px;"></i>Ver Perfil
-                            </a>
-                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-4">
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Usuario" asp-action="Edit" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-address-card" style="margin-right: 15px;"></i>Editar Perfil</a>
+                            <partial name="_LoginPartial" />
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Facturas" asp-action="VerFacturasUsuario" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-file-invoice" style="margin-right: 15px;"></i>Mis facturas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a 
-                            <a class="nav-link" asp-controller="Suscripciones" asp-action="MisSuscripciones" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-chalkboard-user" style="margin-right: 15px;"></i>Mis suscripciones</a>
-                        </li>
-                        <li class="nav-item">
-                            <a
-                            <a class="nav-link" asp-controller="Notificaciones" asp-action="MisNotificaciones" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-bell" style="margin-right: 15px;"></i>Mis notificaciones</a>
-                        </li>
-                       
                     </ul>
                 </div>
-                
             </div>
-
-        
-            
-         @* <div class="auth-buttons">
-            <a href="@Url.Action("Signup", "Usuario")" class="register">Regístrate</a>
-            <a href="@Url.Action("Login", "Usuario")" class="login">Iniciar Sesión</a>
-         </div>  *@
-            <partial name="_LoginPartial" />
-
         </nav>
-        
+
+        <!-- Offcanvas para Admin -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+            <div class="offcanvas-header">
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 m-3">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="ControlSuscrip" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-wallet" style="margin-right: 15px;"></i> Suscripciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="GestionUsuarios" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-user" style="margin-right: 15px;"></i> Gestión de Usuarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="GestionPlanes" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-receipt" style="margin-right: 15px;"></i> Gestionar Planes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="GestionInventario" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-boxes-stacked" style="margin-right: 15px;"></i> Inventario</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="GestionForo" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-bullhorn" style="margin-right: 15px;"></i> Gestión del Foro</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="GestionContenido" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-photo-film" style="margin-right: 15px;"></i> Gestión Contenidos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="MostrarFacturas" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-file-invoice-dollar" style="margin-right: 15px;"></i> Facturación</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" asp-controller="Admin" asp-action="MostrarContabilidad" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-money-bill-trend-up" style="margin-right: 15px;"></i> Contabilidad</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" asp-controller="FAQs" asp-action="Index" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-question-circle" style="margin-right: 15px;"></i> FAQs</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Offcanvas para Perfil -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasPerfil" aria-labelledby="offcanvasPerfilLabel">
+            <div class="offcanvas-header">
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3 m-3">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Usuario" asp-action="Index" style="color: #2A2A2A; font-size: x-large;">
+                            <i class="fa-solid fa-user" style="margin-right: 15px;"></i> Ver Perfil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Usuario" asp-action="Edit" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-address-card" style="margin-right: 15px;"></i> Editar Perfil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Facturas" asp-action="VerFacturasUsuario" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-file-invoice" style="margin-right: 15px;"></i> Mis facturas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Suscripciones" asp-action="MisSuscripciones" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-chalkboard-user" style="margin-right: 15px;"></i> Mis suscripciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Notificaciones" asp-action="MisNotificaciones" style="color: #2A2A2A; font-size: x-large;"><i class="fa-solid fa-bell" style="margin-right: 15px;"></i> Mis notificaciones</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </header>
-    
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-   
+
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
 
     <footer>
         <div class="footer-content">

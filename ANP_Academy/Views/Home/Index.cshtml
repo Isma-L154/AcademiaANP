@@ -1,20 +1,49 @@
-﻿
+﻿<link rel="stylesheet" href="~/css/HomeIndex.css" asp-append-version="true" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-    <main>
+<main>
+    <!-- Hero Section -->
     <div class="hero">
         <h1>ANP<br>Academia Nacional de Parrilleros<br>Rodrigo Morales</h1>
     </div>
-        <section class="intro">
-            <h2>Aprende de los mejores expertos parrilleros desde la comodidad de tu casa.</h2>
-            <h3>Accede a recetas y clases disponibles exclusivamente en nuestra plataforma de aprendizaje en línea.</h3>
-            <p>
-                Descubre el arte del asado en nuestro paraíso de las parrillas. 
-            </p>
-            <p>
-                 Todos los meses estamos liberando nuevos cursos e increíbles recetas para tu completo aprendizaje.
-            </p>
-        </section>
 
+    <!-- Intro Section -->
+    <section class="intro">
+        <h2>Aprende de los mejores expertos parrilleros desde la comodidad de tu casa.</h2>
+        <h3>Accede a recetas y clases disponibles exclusivamente en nuestra plataforma de aprendizaje en línea.</h3>
+        <p>
+            Descubre el arte del asado en nuestro paraíso de las parrillas.
+        </p>
+        <p>
+            Todos los meses estamos liberando nuevos cursos e increíbles recetas para tu completo aprendizaje.
+        </p>
+    </section>
 
-    </main>
-
+    <!-- Featured Images Section -->
+    <section class="featured-images">        
+        <div class="image-card">
+            <img src="https://www.gourmet.cl/wp-content/uploads/2020/08/foto-portada.jpg" alt="Parrillero experto">
+            <div class="image-overlay">
+                <h3>Conoce a nuestros expertos</h3>
+                @* <a href="~/Shared/sobre-nosotros" class="btn">Sobre nosotros</a> *@
+                <a href="~/Suscripciones/Index" class="btn">Suscribete</a>
+            </div>
+        </div>
+        <div class="image-card">
+            <img src="https://img.freepik.com/fotos-premium/parrilla-variedad-carnes_934607-297.jpg" alt="Parrillero experto">
+            <div class="image-overlay">
+                <h3>Conoce a nuestros expertos</h3>
+                @* <a href="~/Shared/sobre-nosotros" class="btn">Sobre nosotros</a> *@
+                <a asp-controller="SobreNosotros" asp-action="SobreNosotros" class="btn">Sobre Nosotros</a>
+            </div>
+        </div>
+        <div class="image-card">
+            <img src="https://img.freepik.com/foto-gratis/parrilla-variedad-carnes-ella_188544-8372.jpg" alt="Preguntas frecuentes">
+            <div class="image-overlay">
+                <h3>¿Tienes preguntas?</h3>
+                <a href="~/FAQs/VistaFAQs" class="btn">Visita FAQs</a>
+            </div>
+        </div>
+    </section>
+</main>
