@@ -21,8 +21,8 @@ using System.Text;
 
 namespace ANP_Academy.Controllers
 {
-    [Authorize]
-    public class AdminController : Controller
+    [Authorize(Roles = "Admin, Profesor")]
+     public class AdminController : Controller
     {
         private readonly UserManager<Usuario> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
