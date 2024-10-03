@@ -15,6 +15,7 @@ using System.Numerics;
 
 namespace ANP_Academy.Controllers
 {
+    
     public class RecetasController : Controller
     {
         private readonly AnpdesarrolloContext _dbContext;
@@ -27,7 +28,7 @@ namespace ANP_Academy.Controllers
             _userManager = userManager;
             _configuration = configuration;
         }
-
+        
         public async Task<IActionResult> Index()
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
@@ -68,7 +69,7 @@ namespace ANP_Academy.Controllers
 
 
 
-
+        [Authorize(Roles = "Admin, Profesor")]
         public async Task<IActionResult> GestionRecetas()
         {
             var recetas = await _dbContext.Recetas
@@ -77,6 +78,7 @@ namespace ANP_Academy.Controllers
             return View(recetas);
         }
 
+        [Authorize(Roles = "Admin, Profesor")]
         public IActionResult CreateRecetas()
         {
             return View();
@@ -234,6 +236,7 @@ namespace ANP_Academy.Controllers
             client.Send(msg);
         }
 
+        [Authorize(Roles = "Admin, Profesor")]
         public async Task<IActionResult> DetailsRecetas(int? id)
         {
             if (id == null)
@@ -252,6 +255,7 @@ namespace ANP_Academy.Controllers
             return View(receta);
         }
 
+        [Authorize(Roles = "Admin, Profesor")]
         public async Task<IActionResult> EditRecetas(int? id)
         {
             if (id == null)
@@ -365,6 +369,7 @@ namespace ANP_Academy.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin, Profesor")]
         public async Task<IActionResult> DeleteRecetas(int? id)
         {
             if (id == null)

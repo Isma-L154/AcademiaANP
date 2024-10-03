@@ -1,4 +1,5 @@
 ﻿using ANP_Academy.DAL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,7 @@ namespace ANP_Academy.Controllers
             _dbContext = dbContext;
         }
 
+        [Authorize(Roles = "Admin, Profesor")]
         public async Task<IActionResult> Index()
         {
             return View(await _dbContext.FAQs.ToListAsync());
@@ -24,6 +26,7 @@ namespace ANP_Academy.Controllers
             return View(faqs);
         }
 
+        [Authorize(Roles = "Admin, Profesor")]
         public IActionResult Crear()
         {
             return View();
@@ -42,6 +45,7 @@ namespace ANP_Academy.Controllers
             return View(faq);
         }
 
+        [Authorize(Roles = "Admin, Profesor")]
         public async Task<IActionResult> Editar(int? id)
         {
             if (id == null)
@@ -90,6 +94,7 @@ namespace ANP_Academy.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, Profesor")]
         public async Task<IActionResult> Eliminar(int id)
         {
             var faq = await _dbContext.FAQs.FindAsync(id);

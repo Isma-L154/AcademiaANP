@@ -23,7 +23,7 @@ public class ClaseController : Controller
         _configuration = configuration;
         _userManager = userManager;
     }
-
+    
     public async Task<IActionResult> Index()
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -44,11 +44,14 @@ public class ClaseController : Controller
 
         return View(viewModel);
     }
+
+    [Authorize(Roles = "Admin, Profesor")]
     public async Task<IActionResult> GestionClases()
     {
         return View(await _dbContext.Clases.ToListAsync());
     }
 
+    [Authorize(Roles = "Admin, Profesor")]
     public IActionResult CreateClases()
     {
         return View();
@@ -192,7 +195,7 @@ public class ClaseController : Controller
         client.Send(msg);
     }
 
-
+    [Authorize(Roles = "Admin, Profesor")]
     public async Task<IActionResult> DetailsClases(int? id)
     {
         if (id == null)
@@ -209,6 +212,7 @@ public class ClaseController : Controller
         return View(clase);
     }
 
+    [Authorize(Roles = "Admin, Profesor")]
     public async Task<IActionResult> EditClases(int? id)
     {
         if (id == null)
@@ -303,6 +307,7 @@ public class ClaseController : Controller
         return NotFound();
     }
 
+    [Authorize(Roles = "Admin, Profesor")]
     public async Task<IActionResult> DeleteClases(int? id)
     {
         if (id == null)
