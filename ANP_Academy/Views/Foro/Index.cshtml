@@ -5,13 +5,15 @@
 
 <link rel="stylesheet" href="~/css/Foro/Foro.css" asp-append-version="true" />
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-
+@{
+    var userId = ViewData["UserId"] as string;
+}
 
 <div class="container">
-    <button class="button" onclick="window.location.href='/Foro/CrearPublicacion';">Crear Publicación</button>
     @if (SignInManager.IsSignedIn(User)){
         if (User.IsInRole("Cliente"))
         {
+            <button class="button" onclick="window.location.href='/Foro/CrearPublicacion';">Crear Publicación</button>
             <button class="button" onclick="window.location.href='/Foro/MisPublicaciones';">Mis Publicaciones</button>
         }
     }
@@ -32,7 +34,8 @@
                             <h6 class="text-muted time">@publicacion.FechaPublicacion.ToShortDateString()</h6>
                         </div>
                     </div>
-                    <!--TODO Put some type of constraints for the users so the page can load faster(Specially with the videos)-->
+                   
+                     @*  Manejar el contenido multimedia para mostrarlo *@
                     <div class="post-image">
                         @if (!string.IsNullOrEmpty(publicacion.MultimediaData))
                         {
@@ -58,14 +61,11 @@
                     <div class="post-description">
                         <p>@Html.DisplayFor(modelItem => publicacion.Descripcion)</p>
                         <div class="stats">
-                            <a href="javascript:void(0);" class="btn btn-default stat-item">
-                                <i class="fa fa-thumbs-up icon"></i> 228
-                            </a>
                             <button onclick="toggleModal('reportModal_@publicacion.IdPublicacion')" class="btn btn-default stat-item">
                                 <i class="fa-regular fa-flag fa-xl" style="color: #df0c0c;"></i>
                             </button>
 
-                            <!-- Modal/Formulario para reportar comentario -->
+                            <!-- Modal/Formulario para reportar una publicacion -->
                             <div id="reportModal_@publicacion.IdPublicacion" class="modal">
                                 <div class="modal-content">
                                     <span class="close" onclick="toggleModal('reportModal')">&times;</span>
@@ -104,7 +104,8 @@
                             <span asp-validation-for="NuevoComentario.ContenidoComentario" class="text-danger"></span>
                         </form>
 
-                        <ul class="comments-list">
+                        @*Seccion para poder mostrar los comentarios de las publicaciones*@                       
+                            <ul class="comments-list">
                             @foreach (var pc in Model.ComentariosPubli.Where(pc => pc.PublicacionId == publicacion.IdPublicacion))
                             {
                                 var comentario = Model.Comentarios.FirstOrDefault(c => c.IdComentario == pc.ComentarioId);
@@ -116,14 +117,44 @@
                                         </a>
                                         <div class="comment-body">
                                             <div class="comment-heading">
-                                                <h4 class="user">@comentario.CodigoUsuario.Nombre </h4>
+                                                <h4 class="user">@comentario.CodigoUsuario.Nombre</h4>
                                                 <h5 class="time">@comentario.FechaComentario.ToShortTimeString()</h5>
                                             </div>
-                                            <p>@comentario.ContenidoComentario</p>
+                                            <p id="commentContent_@comentario.IdComentario">@comentario.ContenidoComentario</p>
+
+                                            @* Botones de edición y eliminación *@
+                                            @if (comentario.CodigoUsuarioId == userId)
+                                            {
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-link text-primary p-0 ml-2" onclick="toggleEditForm('@comentario.IdComentario')">
+                                                        <i class="fa fa-edit fa-lg"></i>
+                                                    </button>
+                                                    <form id="deleteForm" asp-action="DeleteComentario" method="post" class="d-inline">
+                                                        <input type="hidden" name="id" value="@comentario.IdComentario" />
+                                                        <input type="hidden" name="idPubli" value="@publicacion.IdPublicacion" />
+                                                        <button type="submit" class="btn btn-link text-danger p-0 ml-2 tooltip-button">
+                                                            <i class="fa fa-trash fa-lg"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+
+
+                                                @* Formulario de edición *@
+                                                <form id="editForm_@comentario.IdComentario" asp-action="EditComentario" method="post" style="display: none;">
+                                                    <input type="hidden" name="idComentario" value="@comentario.IdComentario" />
+                                                    <input type="hidden" name="idPublicacion" value="@publicacion.IdPublicacion" />
+                                                    <textarea name="ContenidoComentario" class="form-control" rows="3">@comentario.ContenidoComentario</textarea>
+                                                    <button type="submit" class="btn btn-primary mt-2">Guardar</button>
+                                                    <button type="button" class="btn btn-secondary mt-2" onclick="toggleEditForm('@comentario.IdComentario')">Cancelar</button>
+                                                </form>
+                                            }
+
                                         </div>
                                     </li>
                                 }
                             }
+
+
                         </ul>
                     </div>
                 </div>
@@ -147,5 +178,6 @@
         </ul>
     </nav>
 </div>
+
 <script src="~/js/Foro/Index.js"></script>
 

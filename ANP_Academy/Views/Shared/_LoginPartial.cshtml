@@ -28,10 +28,3 @@
         </li>
     }
 </ul>
-
-@if (!SignInManager.IsSignedIn(User))
-{
-    <div class="alert alert-danger" role="alert">
-        Ocurrió un error al intentar acceder al perfil del usuario. Por favor, <a href="@Url.Action("Login", "Account", new { area = "Identity" })" class="alert-link">inicia sesión</a> para acceder a tu perfil.
-    </div>
-}

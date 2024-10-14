@@ -4,30 +4,62 @@
     <h2>Crear Publicación</h2>
     <div class="content-form">
 
-    <form asp-action="CrearPublicacion" enctype="multipart/form-data" method="post">
-        
+    <form asp-action="CrearPublicacion" enctype="multipart/form-data" method="post" id="publicacionForm">
+
+        <!-- Mensaje de campos obligatorios -->
+        <p><small>Los campos marcados con <span style="color:red">*</span> son obligatorios.</small></p>
+
         <div class="form-group">
-            <label asp-for="Titulo" class="control-label"></label>
+            <label asp-for="Titulo" class="control-label">Título <span style="color:red">*</span></label>
             <input asp-for="Titulo" class="form-control" />
             <span asp-validation-for="Titulo" class="text-danger"></span>
         </div>
-            
+
         <div class="form-group">
-            <label asp-for="Descripcion" class="control-label"></label>
+            <label asp-for="Descripcion" class="control-label">Descripción <span style="color:red">*</span></label>
             <input asp-for="Descripcion" class="form-control" />
             <span asp-validation-for="Descripcion" class="text-danger"></span>
         </div>
-    
+
         <div class="form-group">
             <label for="ArchivoMultimedia">Adjuntar multimedia:</label>
             <input type="file" id="ArchivoMultimedia" name="ArchivoMultimedia" accept="image/*, video/*">
+            <small class="form-text text-muted">Solo se permite videos con un tamaño máximo de 3 MB.</small>
+            <span id="fileSizeError" class="text-danger" style="display:none;">El archivo excede los 3 MB permitidos.</span>
         </div>
-        
+
         <div class="form-group">
             <input type="submit" value="CrearPublicacion" class="btn btn-danger" />
         </div>
 
-            <a href="~/Foro/Index" class="btn btn-primary btn-block">Atrás</a>
-        </form>
+        <a href="~/Foro/Index" class="btn btn-primary btn-block">Atrás</a>
+
+    </form>
+    <div id="loadingSpinner" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); z-index: 1000; text-align: center; padding-top: 20%;">
+        <div>
+            <img src="~/Img/DownloadGIF.gif" alt="Cargando..." />
+            <p>Creando publicación, por favor espera...</p>
+        </div>
+    </div>
 
     </div>
+
+<script>
+    document.getElementById('ArchivoMultimedia').addEventListener('change', function (event) {
+        const file = event.target.files[0]; // Obtenemos el archivo seleccionado
+        const maxSizeInMB = 3; // Máximo de 3 MB
+        const maxSizeInBytes = maxSizeInMB * 1024 * 1024; // Convertimos a bytes
+        const fileSizeError = document.getElementById('fileSizeError');
+
+        if (file && file.type.startsWith('video/') && file.size > maxSizeInBytes) {
+            fileSizeError.style.display = 'block'; // Mostrar mensaje de error
+            event.target.value = ''; // Resetear el input para que el usuario elija otro archivo
+        } else {
+            fileSizeError.style.display = 'none'; // Ocultar el mensaje de error
+        }
+    });
+        document.getElementById('publicacionForm').addEventListener('submit', function() {
+        // Mostrar el GIF de carga
+        document.getElementById('loadingSpinner').style.display = 'block';
+        });
+</script>

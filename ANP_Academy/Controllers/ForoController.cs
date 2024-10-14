@@ -20,32 +20,53 @@ namespace ANP_Academy.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 5)
         {
-            //Esto se hace para la paginacion
+            var identidadUsuario = User.Identity as ClaimsIdentity;
+            string userId = identidadUsuario.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            ViewData["UserId"] = userId;
+            var nuevaPublicacionId = TempData["NuevaPublicacionId"] as int?;
+
+            // Esto se hace para la paginación y para obtener las publicaciones más recientes primero
+            var totalPublicaciones = await _context.Publicaciones.CountAsync();
+
             var publicaciones = await _context.Publicaciones
                     .Include(p => p.CodigoUsuario)
+                    .OrderByDescending(p => p.FechaPublicacion) // Ordenar por fecha de publicación descendente
                     .Skip((pageNumber - 1) * pageSize)
                     .Take(pageSize)
                     .ToListAsync();
 
-            var totalPublicaciones = await _context.Publicaciones.CountAsync();
             var totalPages = (int)Math.Ceiling(totalPublicaciones / (double)pageSize);
 
+            // Obtener comentarios
             var comentarios = await _context.Comentarios.Include(c => c.CodigoUsuario).ToListAsync();
-            var ComentarioPubli = await _context.PublicacionComentarios.ToListAsync();
+            var comentarioPubli = await _context.PublicacionComentarios.ToListAsync();
 
             var viewModel = new PublicacionComentarioViewModel
             {
                 Publicaciones = publicaciones,
                 Comentarios = comentarios,
-                ComentariosPubli = ComentarioPubli,
+                ComentariosPubli = comentarioPubli,
                 PageNumber = pageNumber,
                 TotalPages = totalPages
             };
+            
+            if (nuevaPublicacionId.HasValue)
+            {
+                var nuevaPublicacion = await _context.Publicaciones
+                    .Include(p => p.CodigoUsuario)
+                    .FirstOrDefaultAsync(p => p.IdPublicacion == nuevaPublicacionId.Value);
 
+                if (nuevaPublicacion != null)
+                {
+                    publicaciones.Insert(0, nuevaPublicacion); // Insertar la nueva publicación al inicio
+                }
+            }
+            viewModel.Publicaciones = publicaciones;
             return View(viewModel);
         }
+
 
 
         [Authorize]
@@ -87,7 +108,7 @@ namespace ANP_Academy.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> CrearPublicacion( Publicacion publicacion , IFormFile ArchivoMultimedia)
+        public async Task<IActionResult> CrearPublicacion( Publicacion publicacion , IFormFile? ArchivoMultimedia)
         {
             string base64String = null;
             string MultimediaType = null;
@@ -124,6 +145,7 @@ namespace ANP_Academy.Controllers
 
                 _context.Add(publicacion);
                 await _context.SaveChangesAsync();
+                TempData["NuevaPublicacionId"] = publicacion.IdPublicacion;
                 return RedirectToAction(nameof(Index));
             }
             return View(publicacion);
@@ -251,6 +273,70 @@ namespace ANP_Academy.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //EDITAR UN COMENTARIO
+        [HttpPost, ActionName("EditComentario")]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> Edit(int idComentario, [Bind("ContenidoComentario")] Comentario comentario, int IdPublicacion)
+        {
+            var existingComentario = await _context.Comentarios.FindAsync(idComentario);
+
+            if (existingComentario == null)
+            {
+                return NotFound();
+            }
+
+            existingComentario.ContenidoComentario = comentario.ContenidoComentario;
+            existingComentario.FechaComentario = DateTime.Now;
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+
+                    _context.Update(existingComentario);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+
+                    if (!ClaseComentarioExists(idComentario))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        //ELIMINAR UN COMENTARIO
+        [HttpPost, ActionName("DeleteComentario")]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public async Task<IActionResult> DeleteConfirmed(int id, int idPubli)
+        {
+            var PubliComentario = await _context.Comentarios.FindAsync(id);
+            var comentarioEnlace = await _context.PublicacionComentarios
+                    .FirstOrDefaultAsync(c => c.ComentarioId == id && c.PublicacionId == idPubli);
+
+            if (PubliComentario != null && comentarioEnlace != null)
+            {
+                _context.PublicacionComentarios.Remove(comentarioEnlace);
+                _context.Comentarios.Remove(PubliComentario);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
         //POST para ingresar un reporte de una publicacion
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -272,6 +358,10 @@ namespace ANP_Academy.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(publicacionesReportadas);
+        }
+        private bool ClaseComentarioExists(int id)
+        {
+            return _context.Comentarios.Any(e => e.IdComentario == id);
         }
     }
 }
