@@ -53,7 +53,6 @@ function VerficarTexto(IdPublicacion) {
     const TextInput = document.getElementById('TextInput_' + IdPublicacion);
     const ButtonSubmit = document.getElementById('ButtonSubmit_' + IdPublicacion);
 
-    //Que no sea vacio
     if (TextInput.value.trim() !== '') {
         ButtonSubmit.disabled = false;
     } else {
@@ -65,11 +64,12 @@ function VerficarTexto(IdPublicacion) {
 function toggleModal(modalId) {
     var modal = document.getElementById(modalId);
     if (modal.style.display === 'block') {
-        modal.style.display = 'none'; 
+        modal.style.display = 'none';
     } else {
-        modal.style.display = 'block'; 
+        modal.style.display = 'block';
     }
 }
+
 // Cerrar el modal si se hace clic fuera de él
 window.onclick = function (event) {
     var modals = document.getElementsByClassName('modal');
@@ -79,17 +79,27 @@ window.onclick = function (event) {
         }
     }
 }
-//Funcion para que muestre un mensaje al usuario de que se envio correctamente
+
+// Función para manejar el envío del formulario
 $(document).ready(function () {
-    $('#FormReport').on('submit', function (e) {
+    // Selecciona todos los formularios de reporte
+    $('form[id^="FormReport"]').on('submit', function (e) {
         e.preventDefault();
-         e.target.submit();
+        var form = $(this); 
+        var submitButton = form.find('button[type="submit"]'); 
+
+        // Bloquea el botón para evitar múltiples clics
+        submitButton.prop('disabled', true).text('Enviando...');
+        e.target.submit();
+
+        // Guarda el mensaje en el almacenamiento de la sesión
         sessionStorage.setItem('toastrMessage', 'Reporte Enviado');
     });
+
+    // Mostrar el mensaje si está presente en sessionStorage
     var toastrMessage = sessionStorage.getItem('toastrMessage');
     if (toastrMessage) {
         toastr.success(toastrMessage);
         sessionStorage.removeItem('toastrMessage');
     }
 });
-

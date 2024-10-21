@@ -10,12 +10,9 @@
 }
 
 <div class="container">
-    @if (SignInManager.IsSignedIn(User)){
-        if (User.IsInRole("Cliente"))
-        {
+    @if (SignInManager.IsSignedIn(User)){      
             <button class="button" onclick="window.location.href='/Foro/CrearPublicacion';">Crear Publicación</button>
-            <button class="button" onclick="window.location.href='/Foro/MisPublicaciones';">Mis Publicaciones</button>
-        }
+            <button class="button" onclick="window.location.href='/Foro/MisPublicaciones';">Mis Publicaciones</button>        
     }
     @foreach (var publicacion in Model.Publicaciones)
     {
@@ -68,7 +65,6 @@
                             <!-- Modal/Formulario para reportar una publicacion -->
                             <div id="reportModal_@publicacion.IdPublicacion" class="modal">
                                 <div class="modal-content">
-                                    <span class="close" onclick="toggleModal('reportModal')">&times;</span>
                                     <form id="FormReport" asp-action="CreateReporte" method="post">
                                         <div id="report-form" class="report-form">
                                             <input type="hidden" name="IdPublicacion" asp-for="@publicacion.IdPublicacion" />
@@ -80,7 +76,7 @@
                                             </select>
                                             <label for="Explicacion">Explicación:</label>
                                             <textarea name="Explicacion" id="Explicacion" rows="4" cols="50" placeholder="Ingrese una explicación..."></textarea>
-                                            <button type="submit">Enviar reporte</button>
+                                            <button id="BtnFormReport" type="submit">Enviar reporte</button>
                                         </div>
                                     </form>
                                 </div>

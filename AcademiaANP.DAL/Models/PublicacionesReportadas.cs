@@ -16,6 +16,7 @@ namespace ANP_Academy.DAL.Models
         public string? Explicacion { get; set; }
         public string? CodigoUsuarioId { get; set; }
         public int PublicacionId { get; set; }
+        public DateTime? Fecha { get; set; }
         public virtual Publicacion? Publicacion { get; set; }
         public virtual Usuario? CodigoUsuario { get; set; }
     }

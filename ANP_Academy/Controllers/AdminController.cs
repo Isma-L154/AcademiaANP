@@ -18,6 +18,9 @@ using System.Drawing.Printing;
 using ANP_Academy.ViewModel.Contabilidad;
 using System.Globalization;
 using System.Text;
+using ANP_Academy.ViewModel.Foro;
+using System.Security.Claims;
+using ANP_Academy.DAL.Migrations.Anpdesarrollo;
 
 namespace ANP_Academy.Controllers
 {
@@ -181,11 +184,6 @@ namespace ANP_Academy.Controllers
             }
 
             return RedirectToAction("GestionUsuarios");
-        }
-
-        public IActionResult GestionForo()
-        {
-            return View();
         }
 
         public IActionResult GestionContenido()
@@ -833,6 +831,84 @@ namespace ANP_Academy.Controllers
             }
 
             return View("Error"); // O retorna a una vista de error si la fecha no es válida
+        }
+
+        //FEAATURES PARA GESTION DEL FORO
+        public IActionResult GestionForo()
+        {
+            var PubliReport = _dbContext.PublicacionesReportadas.Include(p => p.CodigoUsuario)
+                .Include(p => p.Publicacion)
+                .ToList();
+            return View(PubliReport);
+        }
+        public async Task<IActionResult> DetallePublicacion(int id)
+        {
+            // Obtener la publicación específica por su ID
+            var publicacion = await _dbContext.Publicaciones
+                .Include(p => p.CodigoUsuario) // Incluye información del usuario
+                .FirstOrDefaultAsync(p => p.IdPublicacion == id);
+
+            if (publicacion == null)
+            {
+                return NotFound();
+            }
+
+            var comentarioIds = await _dbContext.PublicacionComentarios
+        .Where(pc => pc.PublicacionId == id)
+        .Select(pc => pc.ComentarioId)
+        .ToListAsync();
+
+            // Obtener los comentarios relacionados usando los IDs
+            var comentarios = await _dbContext.Comentarios
+                .Include(c => c.CodigoUsuario) 
+                .Where(c => comentarioIds.Contains(c.IdComentario)) 
+                .ToListAsync();
+
+            // Crear el ViewModel para la vista
+            var model = new PublicacionComentarioViewModel
+            {
+                Publicacion =  publicacion, 
+                Comentarios = comentarios
+            };
+
+            return View("~/Views/Foro/PubliEspec.cshtml", model);
+        }
+
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> ConservarPublicacion(int id)
+        {
+            var PubliReport = await _dbContext.PublicacionesReportadas.FindAsync(id);
+
+            if (PubliReport == null)
+            {
+                return NotFound();
+            }
+
+            _dbContext.PublicacionesReportadas.Remove(PubliReport);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction(nameof(GestionForo));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EliminarPublicacion(int ReportId, int PubliId)
+        {
+            var PubliReport = await _dbContext.PublicacionesReportadas.FindAsync(ReportId);
+            var PubliForo = await _dbContext.Publicaciones.FindAsync(PubliId);
+            
+            if (PubliReport == null || PubliForo == null)
+            {
+                return NotFound();
+            }
+
+            _dbContext.Publicaciones.Remove(PubliForo);
+            _dbContext.PublicacionesReportadas.Remove(PubliReport);
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction(nameof(GestionForo));
         }
     }
 }

@@ -1,0 +1,88 @@
+﻿@using ANP_Academy.ViewModel.Foro
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Usuario> SignInManager
+@model PublicacionComentarioViewModel
+
+@{
+    var userId = ViewData["UserId"] as string;
+}
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link rel="stylesheet" href="~/css/Foro/PublicEspec.css" asp-append-version="true" />
+
+<div class="container">
+    <div class="profile-wrapper">
+        <!-- Sección de la publicación (izquierda) -->
+        <div class="profile-section-publicacion">
+            <div class="profile-cover-img">
+                <div class="post-image">
+                    @if (!string.IsNullOrEmpty(Model.Publicacion.MultimediaData))
+                    {
+                        if (Model.Publicacion.MultimediaType?.StartsWith("image/") == true)
+                        {
+                            <img src="data:@Model.Publicacion.MultimediaType;base64,@Model.Publicacion.MultimediaData" alt="Imagen Multimedia" width="100%" height="auto" />
+                        }
+                        else if (Model.Publicacion.MultimediaType?.StartsWith("video/") == true)
+                        {
+                            <video width="100%" controls>
+                                <source src="data:@Model.Publicacion.MultimediaType;base64,@Model.Publicacion.MultimediaData" type="@Model.Publicacion.MultimediaType">
+                                Tu navegador no soporta el video.
+                            </video>
+                        }
+                        else
+                        {
+                            <img class="no-publications-image" src="https://www.edelar.com.ar/static/theme/images/sin_imagen.jpg" alt="No Publications" />
+                        }
+                    }
+                    else
+                    {
+                        <img class="no-publications-image" src="https://www.edelar.com.ar/static/theme/images/sin_imagen.jpg" alt="No Publications" />
+                    }
+                </div>
+                <h5 class="text-uppercase mb-4">@Model.Publicacion.Titulo</h5>
+                <p class="text-muted fz-base">@Model.Publicacion.Descripcion</p>
+            </div>
+        </div>
+
+        <!-- Línea divisora -->
+        <div class="profile-divider"></div>
+
+        <!-- Sección de comentarios (derecha) -->
+        <div class="profile-section-comments">
+            <div class="comments-section">
+                <div class="tab-content profile-tabs-content">
+                    <div class="tab-pane active" id="profile-overview" role="tabpanel">
+                        <div class="stream-posts">
+                            @if (!Model.Comentarios.Any())
+                            {
+                                <div class="no-comments">
+                                    <p class="text-muted">No hay comentarios para esta publicación.</p>
+                                </div>
+                            }
+                            else
+                            {
+                                foreach (var comentario in Model.Comentarios)
+                                {
+                                    <div class="stream-post">
+                                        <div class="sp-author">
+                                            <a class="sp-author-avatar">
+                                                <img src="https://cdn-icons-png.flaticon.com/512/44/44948.png" alt="avatar" />
+                                            </a>
+                                            <h6 class="sp-author-name">@comentario.CodigoUsuario.Nombre</h6>
+                                        </div>
+                                        <div class="sp-content">
+                                            <div class="sp-info">@comentario.FechaComentario.ToShortDateString()</div>
+                                            <p class="sp-paragraph mb-0" id="commentContent_@comentario.IdComentario">@comentario.ContenidoComentario</p>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

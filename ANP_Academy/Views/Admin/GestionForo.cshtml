@@ -1,6 +1,6 @@
-﻿
+﻿@model IEnumerable<ANP_Academy.DAL.Models.PublicacionesReportadas>
 
-    <link rel="stylesheet" href="~/css/Administrador/GestForo.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/Administrador/GestForo.css" asp-append-version="true" />
 
 <div class="container d-flex justify-content-center align-items-center">
     <section class="h-custom">
@@ -13,27 +13,21 @@
                                 <div class="col-lg-8">
                                     <div class="p-5">
                                         <div class="d-flex justify-content-between align-items-center mb-5">
-                                            <h1 class="fw-bold mb-0 text-black">Gestion de Publicaciones</h1>
+                                            <h1 class="fw-bold mb-0 text-black">Gestión de Publicaciones</h1>
                                         </div>
                                         <div class="filtro">
                                             <form>
-                                                <select name="filtro" aria-label="Buscar por" class="filtro-dropdown">
-                                                    <option value="" disabled selected>Buscar por...</option>
-													<option value="Motivo">Motivo</option>
-                                                    <option value="Fecha">Fecha</option>
-                                                    
-                                                </select>
                                                 <input type="text" name="valor" aria-label="Valor de búsqueda" placeholder="Escribe aquí...">
                                                 <button type="submit" class="boton-buscar"><i class="fas fa-search"></i></button>
                                             </form>
                                         </div>
                                         <!-- Líneas divisoras hechas con Bootstrap -->
                                         <div class="row mb-4 d-flex justify-content-between align-items-center">
-                                            <div class="col-md-2 col-lg-2 col-xl-2">
-                                                <h6 class="mb-0">Usuario</h6>
+                                            <div class="col-md-3 col-lg-4 col-xl-3">
+                                                <h6 class="mb-0">Publicación</h6>
                                             </div>
                                             <div class="col-md-3 col-lg-4 col-xl-3">
-                                                <h6 class="mb-0">Publicacion</h6>
+                                                <h6 class="mb-0">Explicacion</h6>
                                             </div>
                                             <div class="col-md-3 col-lg-2 col-xl-2">
                                                 <h6 class="mb-0">Fecha Reporte</h6>
@@ -42,27 +36,53 @@
                                                 <h6 class="mb-0">Motivo</h6>
                                             </div>
                                         </div>
-                                        <!-- Cuerpo donde van las publicaciones -->
+                                        <!-- Cuerpo donde van las publicaciones dinámicas -->
                                         <hr class="my-4">
-                                        <div class="row mb-4 d-flex justify-content-between align-items-center" style="flex-wrap: nowrap;">
-                                            <div class="col-md-2 col-lg-3 col-xl-3">
-                                                <h6 class="text-muted">Alejandro Um</h6>
+                                        @foreach (var reporte in Model)
+                                        {
+                                            <div class="row mb-4 d-flex justify-content-between align-items-center" style="flex-wrap: nowrap;">
+                                                <div class="col-md-3 col-lg-4 col-xl-4">
+                                                    <h6 class="text-muted">
+                                                        @(reporte.Publicacion != null && !string.IsNullOrEmpty(reporte.Publicacion.Titulo) ? reporte.Publicacion.Titulo : "Publicación Desconocida")
+                                                    </h6>
+                                                </div>
+
+                                                <div class="col-md-3 col-lg-4 col-xl-4">
+                                                    <h6 class="text-muted">
+                                                        @(reporte.Explicacion != null && !string.IsNullOrEmpty(reporte.Explicacion) ? reporte.Explicacion : "Sin Explicacion")
+                                                    </h6>
+                                                </div>
+
+                                                <div class="col-md-3 col-lg-4 col-xl-3">
+                                                    <h6 class="text-muted">
+                                                        @(reporte.Fecha.HasValue ? reporte.Fecha.Value.ToString("dd/MM/yyyy") : "Fecha No Disponible")
+                                                    </h6>
+                                                </div>
+
+                                                <div class="col-md-3 col-lg-4 col-xl-3">
+                                                    <h6 class="text-muted">
+                                                        @(string.IsNullOrEmpty(reporte.Motivo) ? "Motivo No Especificado" : reporte.Motivo)
+                                                    </h6>
+                                                </div>
+                                                <div class="col-md-1 d-flex align-items-start">
+                                                    <button class="btn" onclick="location.href='@Url.Action("DetallePublicacion", "Admin", new { id = reporte.PublicacionId })'" alt="Ver Detalles" title="Ver Detalles">
+                                                        <i class="fa-regular fa-eye fa-lg"></i>
+                                                    </button>
+
+
+                                                    <button class="btn" alt="Eliminar" title="Eliminar" onclick="eliminarPublicacion(@reporte.ReporteId, @reporte.PublicacionId)">
+                                                        <i class="fa-solid fa-trash fa-lg"></i>
+                                                    </button>
+
+                                                    
+                                                    <button class="btn conservar-btn" data-id="@reporte.ReporteId" alt="Conservar Publicación" title="Conservar Publicación">
+                                                        <i class="fa-solid fa-check-to-slot fa-lg"></i>
+                                                    </button>
+
+                                                </div>
                                             </div>
-                                            <div class="col-md-3 col-lg-4 col-xl-4">
-                                                <h6 class="text-muted">Mi primer Ribeye</h6>
-                                            </div>
-                                            <div class="col-md-3 col-lg-4 col-xl-3">
-                                                <h6 class="text-muted">26/06/2024</h6>
-                                            </div>
-                                            <div class="col-md-3 col-lg-4 col-xl-3">
-                                                <h6 class="text-muted">Lenguaje Ofensivo</h6>
-                                            </div>
-                                            <div class="col-md-1 d-flex align-items-start">
-                                                <button class="btn" alt="Ir a Publicación" title="Ir a Publicación"><i class="fa-regular fa-eye fa-lg"></i></button>
-                                                <button class="btn" alt="Eliminar" title="Eliminar"><i class="fa-solid fa-trash fa-lg"></i></button>
-                                                <button class="btn" alt="Conservar Publicacion" title="Conservar Publicacion"><i class="fa-solid fa-check-to-slot fa-lg"></i></button>
-                                            </div>
-                                        </div>
+                                            <hr class="my-4">
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -72,6 +92,5 @@
             </div>
         </div>
     </section>
-
-       
-    </div>
+</div>
+<script src="~/js/Admin/GestForo.js"></script>

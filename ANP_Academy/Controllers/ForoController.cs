@@ -23,7 +23,15 @@ namespace ANP_Academy.Controllers
         public async Task<IActionResult> Index(int pageNumber = 1, int pageSize = 5)
         {
             var identidadUsuario = User.Identity as ClaimsIdentity;
-            string userId = identidadUsuario.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            string userId = null;
+            if (identidadUsuario != null)
+            {
+                var claim = identidadUsuario.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+                if (claim != null)
+                {
+                    userId = claim.Value; // Asigna el valor del userId
+                }
+            }
             ViewData["UserId"] = userId;
             var nuevaPublicacionId = TempData["NuevaPublicacionId"] as int?;
 
@@ -340,6 +348,7 @@ namespace ANP_Academy.Controllers
         //POST para ingresar un reporte de una publicacion
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> CreateReporte([Bind("ReporteId,Motivo,Explicacion,CodigoUsuarioId,PublicacionId")] PublicacionesReportadas publicacionesReportadas, int IdPublicacion)
         {
             var identidad = User.Identity as ClaimsIdentity;
@@ -350,6 +359,7 @@ namespace ANP_Academy.Controllers
             }
             publicacionesReportadas.CodigoUsuarioId = idUsuarioLoggeado;
             publicacionesReportadas.PublicacionId = IdPublicacion;
+            publicacionesReportadas.Fecha = DateTime.Now;
 
             if (ModelState.IsValid)
             {
