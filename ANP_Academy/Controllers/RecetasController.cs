@@ -140,6 +140,7 @@ namespace ANP_Academy.Controllers
 
                 // Generar notificación dentro de la plataforma a los usuarios.
                 await GenerarNotificacionReceta(receta);
+                await NotificarEstudiantesSuscritos(receta);
 
                 return RedirectToAction(nameof(GestionRecetas));
             }
