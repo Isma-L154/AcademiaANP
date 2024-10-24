@@ -21,6 +21,7 @@ using System.Text;
 using ANP_Academy.ViewModel.Foro;
 using System.Security.Claims;
 using ANP_Academy.DAL.Migrations.Anpdesarrollo;
+using System.Text.RegularExpressions;
 
 namespace ANP_Academy.Controllers
 {
@@ -104,6 +105,26 @@ namespace ANP_Academy.Controllers
             user.PhoneNumber = usuario.PhoneNumber;
             user.UserName = usuario.UserName;
             user.Email = usuario.Email;
+
+            if (!Regex.IsMatch(user.PhoneNumber, @"^\d{8}$"))
+            {
+                ModelState.AddModelError("Usuario.PhoneNumber", "El número de teléfono debe tener exactamente 8 dígitos y solo puede contener números.");
+
+                //Se tiene que pasar un ViewModel por eso esta reventando la validacion y se ocasionaba un bug
+                var userRoles = await _userManager.GetRolesAsync(user);
+                var roles = await _roleManager.Roles.ToListAsync();
+                var roleList = new SelectList(roles, "Name", "Name", userRoles.FirstOrDefault());
+
+                ViewBag.Roles = roleList;
+
+                var viewModel = new UserRoleViewModel
+                {
+                    Usuario = user, // Pasamos el usuario con los datos actualizados porque de fijo hay que devolver un ViewModel
+                    Role = userRoles.FirstOrDefault()
+                };
+
+                return View(viewModel); 
+            }
 
             var result = await _userManager.UpdateAsync(user);
             

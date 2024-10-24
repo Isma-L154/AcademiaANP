@@ -84,11 +84,11 @@ namespace ANP_Academy.Areas.Identity.Pages.Account
             [Display(Name = "Segundo Apellido")]
             public string SegApellido { get; set; }
 
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "El correo electrónico es obligatorio.")]
+            [EmailAddress(ErrorMessage = "El formato del correo electrónico no es válido.")]
+            [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "El correo electrónico debe contener un dominio válido después del '@'.")]
             [Display(Name = "Email")]
             public string Email { get; set; }
-
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -107,6 +107,12 @@ namespace ANP_Academy.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required(ErrorMessage = "El número de teléfono es obligatorio.")]
+            [RegularExpression(@"^\d{8}$", ErrorMessage = "El número de teléfono debe tener 8 dígitos y sin caracteres especiales.")]
+            [DataType(DataType.PhoneNumber)]
+            [Display(Name = "Telefono Movil")]
+            public string PhoneNumber { get; set; }
             public bool Activo { get; set; }
         }
 
@@ -127,6 +133,7 @@ namespace ANP_Academy.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.PhoneNumber = Input.PhoneNumber;
                 user.Nombre = Input.Nombre;
                 user.PrimApellido = Input.PrimApellido;
                 user.SegApellido = Input.SegApellido;
