@@ -91,35 +91,46 @@
         });
 
         document.getElementById('createForm').addEventListener('submit', function (e) {
-            // Mostrar la pantalla de carga
+            // Evitar el envío si hay errores de validación
+            const titulo = document.getElementById('Titulo').value;
+            const descripcion = document.getElementById('Descripcion').value;
+            const urlVideo = document.getElementById('URLVideo').value;
+            const imagen = document.getElementById('imagenInput').files.length > 0;
+
+            let hasError = false;
+
+            if (!titulo) {
+                alert('El campo Título es obligatorio.');
+                hasError = true;
+            }
+
+            if (!descripcion) {
+                alert('El campo Descripción es obligatorio.');
+                hasError = true;
+            }
+
+            if (!imagen) {
+                alert('Debe seleccionar una imagen.');
+                hasError = true;
+            }
+
+            if (!urlVideo) {
+                alert('El campo URL del Video es obligatorio.');
+                hasError = true;
+            }
+
+            // Si hay errores, no enviar el formulario
+            if (hasError) {
+                e.preventDefault();  // Prevenir que el formulario se envíe
+                document.getElementById('loadingOverlay').style.display = 'none'; // Ocultar el overlay si hay errores
+                return false;
+            }
+
+            // Si no hay errores, mostrar la pantalla de carga
             document.getElementById('loadingOverlay').style.display = 'flex';
         });
+
     </script>
 }
 
-@* <style>
-    /* Estilos para la pantalla de carga superpuesta */
-    .loading-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(255, 255, 255, 0.8);
-        z-index: 1000;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
 
-    .loading-content {
-        text-align: center;
-    }
-
-        .loading-content p {
-            margin-top: 10px;
-            font-size: 1.2rem;
-            color: #333;
-        }
-</style> *@

@@ -86,11 +86,19 @@
         }
 
         document.getElementById('imagenInput').addEventListener('change', function () {
+            var file = this.files[0];
             var progressBar = document.getElementById('imagenProgressBar');
             progressBar.style.width = '0%';
             progressBar.textContent = '0%';
             progressBar.classList.remove('bg-success');
             document.getElementById('imagenErrorMsg').style.display = 'none';
+
+            // Validar tamaño de la imagen (máximo 2MB)
+            if (file.size > 2 * 1024 * 1024) { // 2MB
+                alert("La imagen no puede ser mayor a 2MB.");
+                this.value = ''; // Limpiar el input
+                return;
+            }
 
             simulateProgressBar(progressBar);
         });
@@ -100,27 +108,76 @@
             var archivosList = document.getElementById('archivosList');
             archivosList.innerHTML = '';
 
-            for (var i = 0; i < files.length; i++) {
-                var li = document.createElement('li');
-                li.textContent = files[i].name;
-                archivosList.appendChild(li);
-            }
-
             var progressBar = document.getElementById('archivosProgressBar');
             progressBar.style.width = '0%';
             progressBar.textContent = '0%';
             progressBar.classList.remove('bg-success');
             document.getElementById('archivosErrorMsg').style.display = 'none';
 
+            for (var i = 0; i < files.length; i++) {
+                // Validar tamaño de los archivos (máximo 10MB)
+                if (files[i].size > 10 * 1024 * 1024) { // 10MB
+                    alert("Uno de los archivos excede el tamaño máximo de 10MB.");
+                    this.value = ''; // Limpiar el input
+                    return;
+                }
+
+                var li = document.createElement('li');
+                li.textContent = files[i].name;
+                archivosList.appendChild(li);
+            }
+
             simulateProgressBar(progressBar);
         });
 
         document.getElementById('createRecetaForm').addEventListener('submit', function (e) {
+            // Prevenir el envío predeterminado del formulario
             e.preventDefault();
+
+            // Validación de los campos obligatorios
+            const titulo = document.querySelector('[name="Titulo"]').value.trim();
+            const descripcion = document.querySelector('[name="Descripcion"]').value.trim();
+            const urlVideo = document.querySelector('[name="URLVideo"]').value.trim();
+            const imagen = document.getElementById('imagenInput').files.length > 0;
+            const archivos = document.getElementById('archivosInput').files.length > 0;
+
+            let hasError = false;
+
+            if (!titulo) {
+                alert('El campo Título es obligatorio.');
+                hasError = true;
+            }
+
+            if (!descripcion) {
+                alert('El campo Descripción es obligatorio.');
+                hasError = true;
+            }
+
+            if (!imagen) {
+                alert('Debe seleccionar una imagen.');
+                hasError = true;
+            }
+
+            if (!urlVideo) {
+                alert('El campo URL del Video es obligatorio.');
+                hasError = true;
+            }
+
+            if (!archivos) {
+                alert('Debe seleccionar al menos un archivo.');
+                hasError = true;
+            }
+
+            // Si hay errores, no enviar el formulario
+            if (hasError) {
+                document.getElementById('loadingOverlay').style.display = 'none'; // Ocultar la pantalla de carga si hay errores
+                return false;
+            }
 
             // Mostrar la pantalla de carga
             document.getElementById('loadingOverlay').style.display = 'flex';
 
+            // Proceder con el envío del formulario usando XMLHttpRequest
             var form = e.target;
             var formData = new FormData(form);
 
@@ -139,8 +196,7 @@
             xhr.addEventListener('error', function () {
                 document.getElementById('imagenErrorMsg').style.display = 'block';
                 document.getElementById('archivosErrorMsg').style.display = 'block';
-                // Ocultar la pantalla de carga en caso de error
-                document.getElementById('loadingOverlay').style.display = 'none';
+                document.getElementById('loadingOverlay').style.display = 'none'; // Ocultar la pantalla de carga en caso de error
             });
 
             xhr.open('POST', form.action, true);
@@ -163,5 +219,7 @@
             console.log('Enviando formulario');
             xhr.send(formData);
         });
+
+
     </script>
 }

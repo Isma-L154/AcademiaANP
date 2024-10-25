@@ -31,8 +31,9 @@ namespace ANP_Academy.Controllers
         
         public async Task<IActionResult> Index()
         {
-            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var recetas = await _dbContext.Recetas
+                .Include(r => r.RecetasVistas)
                 .Include(r => r.Ratings)
                 .ToListAsync();
 
@@ -90,10 +91,24 @@ namespace ANP_Academy.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (!ValidarArchivos(model.ArchivosNuevos))
+                // Validar el tamaño de las imágenes
+                if (model.Imagen != null && model.Imagen.Length > 2 * 1024 * 1024) // 2MB
                 {
-                    ModelState.AddModelError("ArchivosNuevos", "Los archivos subidos no son válidos.");
+                    ModelState.AddModelError("Imagen", "La imagen no puede ser mayor a 2MB.");
                     return View(model);
+                }
+
+                // Validar el tamaño de los archivos
+                if (model.ArchivosNuevos != null)
+                {
+                    foreach (var archivo in model.ArchivosNuevos)
+                    {
+                        if (archivo.Length > 10 * 1024 * 1024) // 10MB
+                        {
+                            ModelState.AddModelError("ArchivosNuevos", "Uno de los archivos excede el tamaño máximo de 10MB.");
+                            return View(model);
+                        }
+                    }
                 }
 
                 var receta = new Receta
@@ -125,7 +140,6 @@ namespace ANP_Academy.Controllers
 
                 // Generar notificación dentro de la plataforma a los usuarios.
                 await GenerarNotificacionReceta(receta);
-
                 await NotificarEstudiantesSuscritos(receta);
 
                 return RedirectToAction(nameof(GestionRecetas));
@@ -298,10 +312,24 @@ namespace ANP_Academy.Controllers
 
             if (ModelState.IsValid)
             {
-                if (!ValidarArchivos(model.ArchivosNuevos))
+                // Validar el tamaño de las imágenes
+                if (model.Imagen != null && model.Imagen.Length > 2 * 1024 * 1024) // 2MB
                 {
-                    ModelState.AddModelError("ArchivosNuevos", "Los archivos subidos no son válidos.");
+                    ModelState.AddModelError("Imagen", "La imagen no puede ser mayor a 2MB.");
                     return View(model);
+                }
+
+                // Validar el tamaño de los archivos
+                if (model.ArchivosNuevos != null)
+                {
+                    foreach (var archivo in model.ArchivosNuevos)
+                    {
+                        if (archivo.Length > 10 * 1024 * 1024) // 10MB
+                        {
+                            ModelState.AddModelError("ArchivosNuevos", "Uno de los archivos excede el tamaño máximo de 10MB.");
+                            return View(model);
+                        }
+                    }
                 }
 
                 try
@@ -318,6 +346,7 @@ namespace ANP_Academy.Controllers
                     receta.Descripcion = model.Descripcion;
                     receta.URLVideo = model.URLVideo;
 
+                    // Actualizar imagen si se cargó una nueva
                     if (model.Imagen != null)
                     {
                         receta.Imagen = await ConvertToByteArray(model.Imagen);
@@ -336,6 +365,7 @@ namespace ANP_Academy.Controllers
                         }
                     }
 
+                    // Agregar los nuevos archivos
                     if (model.ArchivosNuevos != null && model.ArchivosNuevos.Any())
                     {
                         foreach (var archivo in model.ArchivosNuevos)
@@ -513,7 +543,7 @@ namespace ANP_Academy.Controllers
         [HttpPost]
         public async Task<IActionResult> MarcarComoLeida(int idReceta)
         {
-            var userId = _userManager.GetUserId(User);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var recetaVista = await _dbContext.RecetasVistas
                 .FirstOrDefaultAsync(rv => rv.IdReceta == idReceta && rv.UserId == userId);
@@ -538,7 +568,7 @@ namespace ANP_Academy.Controllers
         [HttpPost]
         public async Task<IActionResult> MarcarComoNoLeido(int idReceta)
         {
-            var userId = _userManager.GetUserId(User);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var recetaVista = await _dbContext.RecetasVistas
                 .FirstOrDefaultAsync(rv => rv.IdReceta == idReceta && rv.UserId == userId);

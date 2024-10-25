@@ -21,6 +21,7 @@ using System.Text;
 using ANP_Academy.ViewModel.Foro;
 using System.Security.Claims;
 using ANP_Academy.DAL.Migrations.Anpdesarrollo;
+using System.Text.RegularExpressions;
 
 namespace ANP_Academy.Controllers
 {
@@ -104,6 +105,26 @@ namespace ANP_Academy.Controllers
             user.PhoneNumber = usuario.PhoneNumber;
             user.UserName = usuario.UserName;
             user.Email = usuario.Email;
+
+            if (!Regex.IsMatch(user.PhoneNumber, @"^\d{8}$"))
+            {
+                ModelState.AddModelError("Usuario.PhoneNumber", "El número de teléfono debe tener exactamente 8 dígitos y solo puede contener números.");
+
+                //Se tiene que pasar un ViewModel por eso esta reventando la validacion y se ocasionaba un bug
+                var userRoles = await _userManager.GetRolesAsync(user);
+                var roles = await _roleManager.Roles.ToListAsync();
+                var roleList = new SelectList(roles, "Name", "Name", userRoles.FirstOrDefault());
+
+                ViewBag.Roles = roleList;
+
+                var viewModel = new UserRoleViewModel
+                {
+                    Usuario = user, // Pasamos el usuario con los datos actualizados porque de fijo hay que devolver un ViewModel
+                    Role = userRoles.FirstOrDefault()
+                };
+
+                return View(viewModel); 
+            }
 
             var result = await _userManager.UpdateAsync(user);
             
@@ -696,7 +717,7 @@ namespace ANP_Academy.Controllers
         <p>Tu suscripción a la <strong>Academia Nacional de Parrilleros Rodrigo Morales</strong> ha sido aprobada de manera exitosa.</p>
         <p>Tu suscripción estará activa hasta el día: <strong>{solicitud.FechaFinal:dd/MM/yyyy}</strong>.</p>
         <p>Gracias por ser parte de <strong>ANP Academy</strong>.</p>
-        <a href='https://www.youtube.com/' class='btn'>Visita nuestro sitio web</a>
+        <a href='https://academianp.azurewebsites.net/' class='btn'>Visita nuestro sitio web</a>
 
         <div class='factura'>
             <h2>Factura</h2>
