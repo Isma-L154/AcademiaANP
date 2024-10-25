@@ -13,14 +13,9 @@
 
 <form asp-action="Edit" method="post" class="profile-form">
     <div class="form-group">
-        <label asp-for="UserName">Usuario</label>
-        <input asp-for="UserName" class="form-control" required />
+        <label asp-for="UserName">Correo Electrónico</label>
+        <input asp-for="UserName" class="form-control" readonly/>
         <span asp-validation-for="UserName" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Email">Correo Electrónico</label>
-        <input asp-for="Email" class="form-control" type="email" required />
-        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Nombre">Nombre</label>
@@ -39,7 +34,7 @@
     </div>
     <div class="form-group">
         <label asp-for="PhoneNumber">Teléfono</label>
-        <input asp-for="PhoneNumber" class="form-control" required pattern="\d{8,}" title="El número de teléfono debe tener al menos 8 caracteres numéricos." />
+        <input asp-for="PhoneNumber" class="form-control"/>
         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
     </div>
 
@@ -58,4 +53,5 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
 }

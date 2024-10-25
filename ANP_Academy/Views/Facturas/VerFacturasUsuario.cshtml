@@ -33,13 +33,14 @@
                             <td>@factura.Fecha.ToString("dd/MM/yyyy")</td>
                             <td>₡@factura.Precio</td>
                             <td>@factura.Suscripcion?.Nombre</td>
-                            <td>@factura.Solicitud?.FechaInicio</td>
-                            <td>@factura.Solicitud?.FechaFinal</td>
+                            <td>@factura.Solicitud.FechaInicio.Value.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                            <td>@factura.Solicitud.FechaFinal.Value.ToString("dd/MM/yyyy HH:mm:ss")</td>
                             <td>
                                 <a href="@Url.Action("VerDetalleFacturaUsuario", "Facturas", new { id = factura.IdFactura })" class="boton-editar">Ver detalle</a>
                             </td>
                         </tr>
                     }
+
                 </table>
             </div>
         }

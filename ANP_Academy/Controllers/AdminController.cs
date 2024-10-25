@@ -816,22 +816,38 @@ namespace ANP_Academy.Controllers
                 var inicioMes = new DateTime(fecha.Year, fecha.Month, 1);
                 var finMes = inicioMes.AddMonths(1).AddDays(-1);
 
+                // Asumiendo que las tablas son Facturas, Solicitudes y Suscripciones están relacionadas adecuadamente
                 var facturas = await _dbContext.Facturas
+                    .Include(f => f.Solicitud)
+                    .Include(f => f.Suscripcion)
                     .Where(f => f.Fecha >= inicioMes && f.Fecha <= finMes)
+                    .Select(f => new
+                    {
+                        IdFactura = f.IdFactura,
+                        Fecha = f.Fecha,
+                        Precio = f.Precio,
+                        IdUser = f.IdUser,
+                        NombreSuscripcion = f.Suscripcion.Nombre, // Asumiendo que Suscripcion tiene una propiedad Nombre
+                        IdSolicitud = f.IdSolicitud,
+                        FechaSolicitud = f.Solicitud.FechaSolicitud,
+                        FechaInicio = f.Solicitud.FechaInicio,
+                        FechaFinal = f.Solicitud.FechaFinal
+                    })
                     .ToListAsync();
 
                 var sb = new StringBuilder();
-                sb.AppendLine("IdFactura,Fecha,Precio,IdUser,IdSuscripcion,IdSolicitud");
+                sb.AppendLine("IdFactura,Fecha,Precio,IdUser,NombreSuscripcion,IdSolicitud,FechaSolicitud,FechaInicio,FechaFinal");
                 foreach (var factura in facturas)
                 {
-                    sb.AppendLine($"{factura.IdFactura},{factura.Fecha:yyyy-MM-dd},{factura.Precio},{factura.IdUser},{factura.IdSuscripcion},{factura.IdSolicitud}");
+                    sb.AppendLine($"{factura.IdFactura},{factura.Fecha:yyyy-MM-dd},{factura.Precio},{factura.IdUser},{factura.NombreSuscripcion},{factura.IdSolicitud},{factura.FechaSolicitud:yyyy-MM-dd},{factura.FechaInicio:yyyy-MM-dd},{factura.FechaFinal:yyyy-MM-dd}");
                 }
 
                 return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "Facturas.csv");
             }
 
-            return View("Error"); // O retorna a una vista de error si la fecha no es válida
+            return View("Error"); // Retorna a una vista de error si la fecha no es válida
         }
+
 
         //FEAATURES PARA GESTION DEL FORO
         public IActionResult GestionForo()
