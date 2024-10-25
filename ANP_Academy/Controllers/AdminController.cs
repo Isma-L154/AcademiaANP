@@ -717,7 +717,7 @@ namespace ANP_Academy.Controllers
         <p>Tu suscripción a la <strong>Academia Nacional de Parrilleros Rodrigo Morales</strong> ha sido aprobada de manera exitosa.</p>
         <p>Tu suscripción estará activa hasta el día: <strong>{solicitud.FechaFinal:dd/MM/yyyy}</strong>.</p>
         <p>Gracias por ser parte de <strong>ANP Academy</strong>.</p>
-        <a href='https://www.youtube.com/' class='btn'>Visita nuestro sitio web</a>
+        <a href='https://academianp.azurewebsites.net/' class='btn'>Visita nuestro sitio web</a>
 
         <div class='factura'>
             <h2>Factura</h2>

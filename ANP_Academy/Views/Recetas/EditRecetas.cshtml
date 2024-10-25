@@ -53,9 +53,9 @@
             <label asp-for="ArchivosNuevos" class="control-label">Agregar Archivos (opcional)</label>
             <input asp-for="ArchivosNuevos" type="file" class="form-control" id="archivosInput" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.jpg,.jpeg,.png" multiple />
             <span asp-validation-for="ArchivosNuevos" class="text-danger"></span>
-            <div class="progress mt-2">
-                <div class="progress-bar" role="progressbar" style="width: 0%;" id="archivosProgressBar">0%</div>
-            </div>
+            @* <div class="progress mt-2">
+            <div class="progress-bar" role="progressbar" style="width: 0%;" id="archivosProgressBar">0%</div>
+            </div> *@
             <div class="text-danger mt-2" id="archivosErrorMsg" style="display:none;">Error al cargar los archivos. Por favor, inténtelo de nuevo.</div>
         </div>
         <div class="form-group">
@@ -80,50 +80,75 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
-        function uploadFile(fileInput, progressBarId, errorMsgId, formAction) {
-            var progressBar = document.getElementById(progressBarId);
-            progressBar.style.width = '0%';
-            progressBar.textContent = '0%';
-            progressBar.classList.remove('bg-success');
-            document.getElementById(errorMsgId).style.display = 'none';
-
-            var files = fileInput.files;
-            if (files.length > 0) {
-                var formData = new FormData();
-                for (var i = 0; i < files.length; i++) {
-                    formData.append(fileInput.name, files[i]);
-                }
-
-                var xhr = new XMLHttpRequest();
-                xhr.upload.addEventListener('progress', function (e) {
-                    if (e.lengthComputable) {
-                        var percentComplete = (e.loaded / e.total) * 100;
-                        progressBar.style.width = percentComplete + '%';
-                        progressBar.textContent = Math.floor(percentComplete) + '%';
-                        if (percentComplete === 100) {
-                            progressBar.classList.add('bg-success');
-                        } else {
-                            progressBar.classList.remove('bg-success');
-                        }
-                    }
-                });
-                xhr.addEventListener('error', function () {
-                    document.getElementById(errorMsgId).style.display = 'block';
-                });
-                xhr.addEventListener('abort', function () {
-                    document.getElementById(errorMsgId).style.display = 'block';
-                });
-                xhr.open('POST', formAction, true);
-                xhr.send(formData);
+        function updateProgressBar(progressBar, percentComplete) {
+            progressBar.style.width = percentComplete + '%';
+            progressBar.textContent = Math.floor(percentComplete) + '%';
+            if (percentComplete === 100) {
+                progressBar.classList.add('bg-success');
             }
         }
 
+        function simulateProgressBar(progressBar) {
+            var percentComplete = 0;
+            var interval = setInterval(function () {
+                percentComplete += 10;
+                updateProgressBar(progressBar, percentComplete);
+                if (percentComplete >= 100) {
+                    clearInterval(interval);
+                }
+            }, 100);
+        }
+
         document.getElementById('imagenInput').addEventListener('change', function () {
-            uploadFile(this, 'imagenProgressBar', 'imagenErrorMsg', '@Url.Action("UploadImage", "Recetas")');
+            var file = this.files[0];
+            var progressBar = document.getElementById('imagenProgressBar');
+            progressBar.style.width = '0%';
+            progressBar.textContent = '0%';
+            progressBar.classList.remove('bg-success');
+            document.getElementById('imagenErrorMsg').style.display = 'none';
+
+            // Validar tamaño de la imagen (máximo 2MB)
+            if (file.size > 2 * 1024 * 1024) { // 2MB
+                alert("La imagen no puede ser mayor a 2MB.");
+                this.value = ''; // Limpiar el input
+                return;
+            }
+
+            simulateProgressBar(progressBar);
         });
 
         document.getElementById('archivosInput').addEventListener('change', function () {
-            uploadFile(this, 'archivosProgressBar', 'archivosErrorMsg', '@Url.Action("UploadFiles", "Recetas")');
+            var files = this.files;
+            var archivosList = document.getElementById('archivosList');
+            archivosList.innerHTML = ''; // Limpiar la lista de archivos
+
+            var progressBar = document.getElementById('archivosProgressBar');
+            progressBar.style.width = '0%';
+            progressBar.textContent = '0%';
+            progressBar.classList.remove('bg-success');
+            document.getElementById('archivosErrorMsg').style.display = 'none';
+
+            var totalSize = 0; // Acumular el tamaño de todos los archivos
+
+            for (var i = 0; i < files.length; i++) {
+                // Validar tamaño de los archivos (máximo 10MB)
+                if (files[i].size > 10 * 1024 * 1024) { // 10MB
+                    alert("El archivo " + files[i].name + " excede el tamaño máximo de 10MB y no será aceptado.");
+                    this.value = ''; // Limpiar el input de archivos si hay uno no válido
+                    return; // Salir del bucle para que no agregue archivos a la lista
+                }
+
+                // Mostrar la lista de archivos si son válidos
+                var li = document.createElement('li');
+                li.textContent = files[i].name;
+                archivosList.appendChild(li);
+
+                // Sumar el tamaño del archivo
+                totalSize += files[i].size;
+            }
+
+            // Simular la barra de progreso
+            simulateProgressBar(progressBar);
         });
 
         document.getElementById('editRecetaForm').addEventListener('submit', function (e) {
@@ -174,5 +199,6 @@
             console.log('Enviando formulario');
             xhr.send(formData);
         });
+
     </script>
 }

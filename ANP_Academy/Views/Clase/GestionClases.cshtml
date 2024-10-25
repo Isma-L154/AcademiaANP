@@ -30,7 +30,7 @@
                     <td data-label="Título">@clase.Titulo</td>
                     <td data-label="Descripción">@clase.Descripcion</td>
                     <td data-label="Imagen">
-                        <img src="@Url.Action("GetImage", "Clase", new { id = clase.IdClase })" alt="Imagen de la clase" class="img-thumbnail" />
+                        <img src="@Url.Action("GetImage", "Clase", new { id = clase.IdClase })" alt="Imagen de la clase" class="img-thumbnail" loading="lazy" />
                     </td>
                     <td data-label="URL del Video">
                         <a href="@clase.URLVideo" target="_blank">@clase.URLVideo</a>

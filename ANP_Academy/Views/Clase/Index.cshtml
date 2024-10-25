@@ -20,7 +20,7 @@
                 var esLeida = claseViewModel.EsLeida;
                 <div class="col">
                     <div class="card h-100 @(esLeida ? "leido" : "no-leido")">
-                        <img src="@Url.Action("GetImage", "Clase", new { id = claseViewModel.IdClase })" class="card-img-top" alt="Imagen de la clase">
+                        <img src="@Url.Action("GetImage", "Clase", new { id = claseViewModel.IdClase })" class="card-img-top" alt="Imagen de la clase" loading="lazy">
                         <div class="card-body">
                             <h5 class="card-title">@claseViewModel.Titulo</h5>
 
