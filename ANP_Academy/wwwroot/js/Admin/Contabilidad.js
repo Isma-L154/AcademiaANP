@@ -1,8 +1,14 @@
-﻿$(document).ready(function () {
+﻿document.addEventListener('DOMContentLoaded', function () {
+    const Hoy = new Date(); //Agarrar la fecha actual
+    const MesActual = Hoy.toISOString().slice(0, 7); //Agarrar el mes actual desde la variable que se creo  anteriormente
+    const fechaCorteInput = document.getElementById('fechaCorte'); //Obtenemos la etiqueta del Input para añadirle el atributo de Max con la variable de Mes que se hizo
+    fechaCorteInput.setAttribute('max', MesActual);
+});
+
+$(document).ready(function () {
     var totalOriginal = $('#totalFiltrado').data('total-general');
     $('#FiltroConta').on('click', function (e) {
         e.preventDefault();
-
         var fechaCorte = $('#fechaCorte').val(); //Obtenemos la fecha de corte
         if (fechaCorte) {
             $('#fechaDescarga').val(fechaCorte); // Actualiza fecha en el boton de descarga
@@ -35,6 +41,9 @@
             });
             //Ocultamos el boton de busqueda y habilitamos el de RESET, ademas de modificar el total general de la tabla
             $('#totalFiltrado').find('h3').text('Recaudación total filtrada: ₡' + totalFiltrado.toLocaleString());
+            if (totalFiltrado == 0) { //Si el total es 0/No hay facturas, mostrar una notificacion al usuario
+                toastr.error("No existen facturas en esta fecha");
+            }
             $('#FiltroConta').hide(); 
             $('#ResetFiltro').show();
         } else {
