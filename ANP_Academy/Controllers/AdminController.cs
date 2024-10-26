@@ -848,19 +848,16 @@ namespace ANP_Academy.Controllers
                         Fecha = f.Fecha,
                         Precio = f.Precio,
                         IdUser = f.IdUser,
-                        NombreSuscripcion = f.Suscripcion.Nombre, // Asumiendo que Suscripcion tiene una propiedad Nombre
-                        IdSolicitud = f.IdSolicitud,
-                        FechaSolicitud = f.Solicitud.FechaSolicitud,
-                        FechaInicio = f.Solicitud.FechaInicio,
-                        FechaFinal = f.Solicitud.FechaFinal
+                        IdSuscripcion = f.IdSuscripcion,
+                        IdSolicitud = f.IdSolicitud
                     })
                     .ToListAsync();
 
                 var sb = new StringBuilder();
-                sb.AppendLine("IdFactura,Fecha,Precio,IdUser,NombreSuscripcion,IdSolicitud,FechaSolicitud,FechaInicio,FechaFinal");
+                sb.AppendLine("IdFactura,Fecha,Precio,IdUser,IdSuscripcion,IdSolicitud");
                 foreach (var factura in facturas)
                 {
-                    sb.AppendLine($"{factura.IdFactura},{factura.Fecha:yyyy-MM-dd},{factura.Precio},{factura.IdUser},{factura.NombreSuscripcion},{factura.IdSolicitud},{factura.FechaSolicitud:yyyy-MM-dd},{factura.FechaInicio:yyyy-MM-dd},{factura.FechaFinal:yyyy-MM-dd}");
+                    sb.AppendLine($"{factura.IdFactura},{factura.Fecha:yyyy-MM-dd},{factura.Precio},{factura.IdUser},{factura.IdSuscripcion},{factura.IdSolicitud}");
                 }
 
                 return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "Facturas.csv");
