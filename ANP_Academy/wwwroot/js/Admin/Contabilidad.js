@@ -1,15 +1,55 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
-    const Hoy = new Date(); //Agarrar la fecha actual
-    const MesActual = Hoy.toISOString().slice(0, 7); //Agarrar el mes actual desde la variable que se creo  anteriormente
-    const fechaCorteInput = document.getElementById('fechaCorte'); //Obtenemos la etiqueta del Input para añadirle el atributo de Max con la variable de Mes que se hizo
-    fechaCorteInput.setAttribute('max', MesActual);
-});
+    const hoy = new Date();
+    const year = hoy.getFullYear();
+    const month = (hoy.getMonth() + 1).toString().padStart(2, '0');
+    const mesActual = `${year}-${month}`;
+    const fechaCorteInput = document.getElementById('fechaCorte');
 
-$(document).ready(function () {
+    // Definir el límite máximo de fecha
+    fechaCorteInput.setAttribute('max', mesActual);
+    let errorShown = false;
+    // Verificar compatibilidad de `month` en el navegador
+    if (fechaCorteInput.type !== 'month') {
+        fechaCorteInput.type = 'text';
+        fechaCorteInput.placeholder = 'YYYY-MM';
+
+
+        // Validación del formato en Firefox
+        fechaCorteInput.addEventListener('input', function (e) {
+            const valor = e.target.value;
+            const formatoValido = /^\d{4}-(0[1-9]|1[0-2])$/;
+            const caracteresInvalidos = /[^0-9-]/; // Expresión regular para caracteres no válidos
+
+            if (caracteresInvalidos.test(valor)) {
+                if (!errorShown) { 
+                    toastr.error("Formato inválido. Solo se permiten números y '-' en YYYY-MM");
+                    errorShown = true; 
+                }
+                fechaCorteInput.setCustomValidity('Formato inválido. Solo se permiten números y "-" en YYYY-MM');
+            } else if (!formatoValido.test(valor)) {
+                if (!errorShown) { 
+                    errorShown = true; 
+                }
+                fechaCorteInput.setCustomValidity('Formato inválido. Usa YYYY-MM');
+            } else if (valor > mesActual) {
+                toastr.error("No puedes seleccionar un mes futuro");
+                fechaCorteInput.setCustomValidity('No puedes seleccionar un mes futuro.');
+            } else {
+                fechaCorteInput.setCustomValidity(''); // Entrada válida
+                errorShown = false; 
+            }
+        });
+    }
     var totalOriginal = $('#totalFiltrado').data('total-general');
     $('#FiltroConta').on('click', function (e) {
         e.preventDefault();
         var fechaCorte = $('#fechaCorte').val(); //Obtenemos la fecha de corte
+
+        if (!fechaCorte || fechaCorte > mesActual) {
+            toastr.error("Seleccione una fecha válida (no futura)");
+            return; // No aplicar el filtro si la fecha no es válida
+        }
+
         if (fechaCorte) {
             $('#fechaDescarga').val(fechaCorte); // Actualiza fecha en el boton de descarga
             var totalFiltrado = 0;
@@ -25,8 +65,8 @@ $(document).ready(function () {
 
                 //Verificamos si la fehca que me estan pasando coincide con la fecha de las facturas
                 if (fechaFila && fechaFila.startsWith(fechaCorte)) {
-                    $(this).find('.cantidad').show(); 
-                    $(this).find('.total').show(); 
+                    $(this).find('.cantidad').show();
+                    $(this).find('.total').show();
 
                     var totalFila = cantidad * precio;
                     $(this).find('.total').text('₡' + totalFila.toLocaleString());
@@ -44,7 +84,7 @@ $(document).ready(function () {
             if (totalFiltrado == 0) { //Si el total es 0/No hay facturas, mostrar una notificacion al usuario
                 toastr.error("No existen facturas en esta fecha");
             }
-            $('#FiltroConta').hide(); 
+            $('#FiltroConta').hide();
             $('#ResetFiltro').show();
         } else {
             toastr.error("Seleccione una fecha de corte");
@@ -52,15 +92,20 @@ $(document).ready(function () {
     });
     //Creamos una funcion para que cuando aparezca este boton de RESET nada mas haga un 'rollback' y ponga los valores como si no tuvieran el filtro
     $('#ResetFiltro').on('click', function () {
-        $('#fechaCorte').val(''); 
+        $('#fechaCorte').val('');
         $('#ContaTable tbody tr').each(function () {
-            $(this).find('.cantidad').text($(this).data('cantidad-original')); 
-            $(this).find('.total').text($(this).data('total-original')); 
+            $(this).find('.cantidad').text($(this).data('cantidad-original'));
+            $(this).find('.total').text($(this).data('total-original'));
         });
-        $('#totalFiltrado').find('h3').text('Recaudación total: ₡' + totalOriginal); 
+        $('#totalFiltrado').find('h3').text('Recaudación total: ₡' + totalOriginal);
         $('#FiltroConta').show();
         $('#ResetFiltro').hide();
     });
+
 });
+
+//$(document).ready(function () {
+    
+//});
 
 
