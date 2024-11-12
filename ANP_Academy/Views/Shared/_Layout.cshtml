@@ -26,19 +26,6 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav mx-auto">
-                        @if (User.IsInRole("Admin") || User.IsInRole("Profesor") || User.IsInRole("Estudiante"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" href="~/Clase/Index">Clases</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="~/Recetas/Index">Recetas</a>
-                            </li>
-                            
-                        }
-                        <li class="nav-item">
-                                <a class="nav-link" href="~/Foro/Index">Foro</a>
-                            </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="SobreNosotros" asp-action="SobreNosotros">Sobre Nosotros</a>
                         </li>
@@ -48,6 +35,21 @@
                         <li class="nav-item">
                             <a class="nav-link" href="~/Suscripciones/Index">Suscripciones</a>
                         </li>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Profesor") || User.IsInRole("Estudiante"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="~/Clase/Index">Clases</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="~/Recetas/Index">Recetas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="~/Foro/Index">Foro</a>
+                            </li>
+                            
+                        }
+
+                        
                         @* <li class="nav-item">
                             <a class="nav-link" href="#chat">ChatBot</a>
                         </li> *@
@@ -55,11 +57,16 @@
                             @if (User.IsInRole("Admin"))
                             {
                                 <button type="button" class="btn btn-outline-danger" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Admin Menu">Admin</button>
+
                             }
                         </li>
                         <li class="nav-item">
-                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="offcanvas" data-bs-target="#offcanvasPerfil" aria-controls="offcanvasPerfil">Mi Perfil</button>
+                            @if (User.IsInRole("Admin") || User.IsInRole("Profesor") || User.IsInRole("Estudiante"))
+                            {
+                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="offcanvas" data-bs-target="#offcanvasPerfil" aria-controls="offcanvasPerfil">Mi Perfil</button>
+                            }
                         </li>
+
                     </ul>
                     <ul class="navbar-nav ms-4">
                         <li class="nav-item">
