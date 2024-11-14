@@ -61,7 +61,7 @@
                             }
                         </li>
                         <li class="nav-item">
-                            @if (User.IsInRole("Admin") || User.IsInRole("Profesor") || User.IsInRole("Estudiante"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("Profesor") || User.IsInRole("Estudiante") || User.IsInRole("Cliente"))
                             {
                                 <button type="button" class="btn btn-outline-danger" data-bs-toggle="offcanvas" data-bs-target="#offcanvasPerfil" aria-controls="offcanvasPerfil">Mi Perfil</button>
                             }
