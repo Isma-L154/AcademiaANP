@@ -2,7 +2,7 @@
 
 This project is a comprehensive **eLearning system** designed for [Academia Nacional de Parrilleros]. The system aims to provide an intuitive platform for both instructors and learners, allowing the creation, management, and delivery of online courses. It offers a range of features tailored to the needs of modern education, including course creation, assessments, user management, and progress tracking.
 
-**Note**: This is a prototype and was developed as a side project for a friend’s business. The project you see here is not the currently live platform, but a demonstration of how it would look and function. For more information about the client’s official platform, please visit the [official landing page](https://anprm.com/).
+**Note**: This is project for a friend’s business. For more information about the client’s official platform, please visit the [official landing page](https://anprm.com/).
 
 ## Features
 
